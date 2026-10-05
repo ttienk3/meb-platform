@@ -48,3 +48,9 @@ Bộ quy tắc bất biến dành cho mọi AI Agent và Kỹ sư tham gia phát
 
 * **RULE 010: MINH BẠCH VỀ LỖI VÀ QUYẾT ĐỊNH NGHIỆP VỤ**
   Khi phát hiện lỗi hoặc sai lệch giữa tài liệu và code, phải báo cáo rõ: Lỗi gì - Ở đâu - Nguyên nhân - Đã thử giải pháp gì - Kết quả. Khi gặp quyết định nghiệp vụ mơ hồ hoặc có rủi ro lớn, bắt buộc phải xin ý kiến định hướng.
+
+* **RULE 011: POCKETBASE CORE ENGINE MANDATE (CẤM MOCK CHẮP VÁ)**
+  Hệ thống sử dụng PocketBase Core Engine cục bộ (port 8090, CLI `meb-engine`) làm hạ tầng dữ liệu và No-Code Studio. TUYỆT ĐỐI CẤM mọi hành vi viết mock components giả lập, hardcode dữ liệu hoặc bỏ qua kết nối API.
+
+* **RULE 012: DYNAMIC ENTITIES & UOM INVARIANTS**
+  Mọi thiết kế vật thể phải hỗ trợ quy đổi đơn vị tính (UoM: Thùng <-> Bì, Bao <-> Kg), điều chuyển liên chi nhánh 2 pha và kiểm soát hạn mức công nợ theo đúng yêu cầu thực tế của chủ dự án.
