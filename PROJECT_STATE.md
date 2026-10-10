@@ -110,5 +110,12 @@
 - **Linter & TypeCheck:** `oxlint` (0 warning, 0 error), `tsc -b && vite build` (Thành công trong 942ms).
 - **Auto-Verify & Repo-Clean:** 75 files sạch 100%, 0 file rác.
 
+---
 
-
+## 🌐 3. Triển Khai Web Toàn Cầu & Vận Hành Đám Mây (Bước 10.0)
+- **Kiến Trúc Sản Xuất:** Fullstack Monolith (Node.js 22 LTS + Express 5 + React 19 PWA).
+- **Kho Mã Nguồn GitHub:** https://github.com/ttienk3/meb-platform (Nhánh `main`).
+- **Máy Chủ Đám Mây:** Render.com (Cụm máy chủ Singapore, gói Free 24/7, Blueprint Infrastructure-as-Code qua `render.yaml`).
+- **Cơ Sở Dữ Liệu Đám Mây:** Supabase Cloud AWS PostgreSQL (Session Pooler IPv4).
+- **Ứng Dụng Sản Xuất Live:** 👉 **https://meb-saas-platform.onrender.com**
+- **Tài Liệu Danh Bạ & Test Suite:** Chi tiết tại [DEPLOYMENT_LINKS.md](./DEPLOYMENT_LINKS.md).
