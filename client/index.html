@@ -1,13 +1,50 @@
 <!doctype html>
-<html lang="en">
+<html lang="vi" class="notranslate" translate="no">
   <head>
     <meta charset="UTF-8" />
+    <meta name="google" content="notranslate" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>client</title>
+    <title>MEB SAAS - Quản Trị Đa Chi Nhánh & Bán Hàng</title>
+    <!-- PWA Desktop & Mobile Meta -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#0284c7" />
+    <meta name="description" content="Nền tảng Quản trị Đa Chi Nhánh & Bán Hàng POS Không Cần Code" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="MEB POS" />
+    <link rel="apple-touch-icon" href="/icons/icon-192.png" />
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <!-- PWA Service Worker & Cache Cleanup for Development -->
+    <script>
+      const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      if ('serviceWorker' in navigator) {
+        if (isLocalhost) {
+          // Gỡ bỏ toàn bộ Service Worker và xóa Cache cũ trên localhost để chống dính màn hình trắng
+          navigator.serviceWorker.getRegistrations().then((registrations) => {
+            for (const reg of registrations) {
+              reg.unregister();
+              console.log('🧹 [MEB Dev]: Đã gỡ Service Worker cũ:', reg.scope);
+            }
+          });
+          if (window.caches) {
+            caches.keys().then((names) => {
+              for (const name of names) {
+                caches.delete(name);
+              }
+            });
+          }
+        } else {
+          window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js').catch((err) => {
+              console.warn('[SW Registration Failed]:', err);
+            });
+          });
+        }
+      }
+    </script>
   </body>
 </html>

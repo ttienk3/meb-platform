@@ -3,14 +3,27 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server/src/index.js",
+    "web": "./start-web.sh",
+    "build": "npm --prefix client install --include=dev && npm --prefix client run build",
+    "dev": "./start.sh",
+    "server": "node server/src/index.js",
+    "client": "npm run dev --prefix client",
+    "test": "node scripts/run_all_step6_tests.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "@openfeature/server-sdk": "^1.23.0",
+    "bcryptjs": "^3.0.3",
+    "casbin": "^5.51.1",
+    "cors": "^2.8.6",
     "dotenv": "^18.0.4",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
     "pg": "^8.23.0"
   }
 }

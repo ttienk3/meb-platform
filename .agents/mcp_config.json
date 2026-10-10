@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "meb-enterprise": {
+      "command": "node",
+      "args": [
+        "/home/ttien82/Data/TranTien/meb/mcp/meb-mcp-server.js"
+      ],
+      "env": {
+        "NODE_ENV": "development"
+      }
+    },
+    "meb-filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/home/ttien82/Data/TranTien/meb"
+      ]
+    }
+  }
+}

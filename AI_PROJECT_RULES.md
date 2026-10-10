@@ -54,3 +54,16 @@ Bộ quy tắc bất biến dành cho mọi AI Agent và Kỹ sư tham gia phát
 
 * **RULE 012: DYNAMIC ENTITIES & UOM INVARIANTS**
   Mọi thiết kế vật thể phải hỗ trợ quy đổi đơn vị tính (UoM: Thùng <-> Bì, Bao <-> Kg), điều chuyển liên chi nhánh 2 pha và kiểm soát hạn mức công nợ theo đúng yêu cầu thực tế của chủ dự án.
+
+---
+
+## 4. KIM CHỈ NAM HÀNH ĐỘNG CỐT LÕI (NGƯỜI DÙNG CHỈ ĐẠO)
+
+* **RULE 013: KIM CHỈ NAM THI CÔNG — CHIA NHỎ, KIỂM THỬ TỪNG MẢNH & ĐỐI CHIẾU THỰC TẾ**
+  1. **Tra cứu dự án trước tiên:** Trước khi code bất kỳ bài toán nào, BẮT BUỘC phải soi xét toàn bộ cài đặt gốc và dữ liệu hiện có của dự án.
+  2. **Học tập dự án mở chuẩn mực:** Nếu dự án chưa có, BẮT BUỘC phải tra cứu, nghiên cứu từ các dự án mã nguồn mở thực chiến lớn trên thế giới để lấy cơ sở kiến trúc áp dụng, không tự bịa giải thuật chắp vá.
+  3. **Làm từng bước nhỏ rồi ghép lại (Atomic Vertical Slices):**
+     - Tuyệt đối CẤM kiểu làm một đống mã nguồn rồi test sơ sài rồi tự nhận là hoàn thành.
+     - Phải chia nhỏ thành từng bước nhỏ độc lập: **Làm cái nhỏ $\rightarrow$ Viết test kiểm chứng nghiêm ngặt $\rightarrow$ Pass 100% $\rightarrow$ Mới làm cái tiếp theo $\rightarrow$ Rồi kết nối chúng lại với nhau.**
+     - Mọi bước hoàn thành đều phải có log chạy thực tế (Ground Truth) chứng minh!
+

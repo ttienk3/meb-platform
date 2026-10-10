@@ -50,3 +50,13 @@ Chào mừng AI Agent đến với dự án **MEB**!
    - **GĐ 4:** Sổ công nợ 2 chiều & Chốt chặn hạn mức tín dụng (Credit Limits Guard)
    - **GĐ 5:** Giao diện Bento Grid (Các ô chức năng) & Đóng gói Desktop App
    * *Mỗi giai đoạn phải có test case kiểm chứng hoàn thành 100% mới được chuyển sang giai đoạn tiếp theo!*
+
+7. **BỘ CÔNG CỤ CỤC BỘ & NGUYÊN TẮC TIẾT KIỆM TOKEN (BẮT BUỘC):**
+   - **Khảo sát cấu trúc:** Dùng `code-map server` hoặc `sg -p 'function $NAME($$$) { $$$ }' <file>` để lấy chữ ký hàm. Tuyệt đối không đọc cả file hàng trăm dòng.
+   - **Tra cứu CSDL:** Dùng `db-inspect <tên_bảng>` (hoặc `db-inspect --tables`), cấm đọc file `.sql` lớn.
+   - **Bản đồ API:** Dùng `route-map server/src/routes` để tra cứu toàn bộ endpoint trong 0.05s.
+   - **Trích xuất thân hàm:** Dùng `func-slice <file> <tên_hàm>` hoặc `view_file` giới hạn dòng hẹp.
+   - **Tìm kiếm:** Dùng `rg "<chuỗi>" server/` (ripgrep siêu tốc, tự bỏ qua file rác và dist).
+   - **Kiểm định giao diện:** Dùng `ui-check client` trước khi bàn giao component UI.
+   - **Kiểm định chất lượng mã:** Chạy `auto-verify .` (bắt 100% lỗi cú pháp và type check trong <0.1s).
+   - **Kiểm thử liên hoàn:** Chạy `node scripts/run_all_step6_tests.js` để nghiệm thu 14 bộ test.

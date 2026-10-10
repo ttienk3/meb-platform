@@ -1,182 +1,618 @@
 import { useState, useEffect, useCallback } from 'react';
-import type { 
-  BranchRecord, 
-  CustomEntityRecord, 
-  UomConversionRecord, 
-  StockAuditLogRecord,
-  InventoryLedgerRecord,
-  ActiveTab 
-} from './types';
-import { pbApi } from './services/pocketbase';
-import { Header } from './components/Header';
-import { OwnerNoCodeStudio } from './components/OwnerNoCodeStudio';
-import { BranchBentoGrid } from './components/BranchBentoGrid';
-import { PosScreen } from './components/PosScreen';
-import './App.css';
+import { Header, type NavTab } from './components/Header';
+import { branchStore } from './services/branchContext';
+import { api, type RuntimeConfig, type Branch, type ShiftInfo, type ProductInventory } from './services/api';
+import { Store, ShoppingCart, CheckCircle2 } from 'lucide-react';
+import { ProductCatalog } from './components/pos/ProductCatalog';
+import { CartPanel, type CartItem, type OrderDraft } from './components/pos/CartPanel';
+import { ShiftModal } from './components/pos/ShiftModal';
+import { CustomerDebtTab } from './components/debts/CustomerDebtTab';
+import { StockTransferTab } from './components/transfers/StockTransferTab';
+import { StudioTab } from './components/studio/StudioTab';
+import { PurchaseInboundTab } from './components/inbound/PurchaseInboundTab';
+import { ReturnModal } from './components/pos/ReturnModal';
+import { StockAuditTab } from './components/audit/StockAuditTab';
+import { PrintInvoiceModal, type InvoiceData } from './components/pos/PrintInvoiceModal';
+import { HQDashboardTab } from './components/hq/HQDashboardTab';
+import { CashbookTab } from './components/cashbook/CashbookTab';
+import { PosHelpModal } from './components/pos/PosHelpModal';
+import { CustomerDisplayView } from './components/pos/CustomerDisplayView';
 
 export function App() {
-  const [activeTab, setActiveTab] = useState<ActiveTab>('STUDIO');
-  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
-  const [engineConnected, setEngineConnected] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const isCustomerDisplay = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('view') === 'customer-display';
 
-  // Dữ liệu thời gian thực từ PocketBase Core Engine
-  const [branches, setBranches] = useState<BranchRecord[]>([]);
-  const [entities, setEntities] = useState<CustomEntityRecord[]>([]);
-  const [conversions, setConversions] = useState<UomConversionRecord[]>([]);
-  const [inventory, setInventory] = useState<InventoryLedgerRecord[]>([]);
-  const [auditLogs, setAuditLogs] = useState<StockAuditLogRecord[]>([]);
-  const [activeBranchCode, setActiveBranchCode] = useState<string>('CN_Q1');
+  if (isCustomerDisplay) {
+    return <CustomerDisplayView />;
+  }
 
-  // Load theme
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-  }, [theme]);
+  return <MainApp />;
+}
 
-  const toggleTheme = () => {
-    setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
+function MainApp() {
+  const [activeTab, setActiveTabState] = useState<NavTab>(() => {
+    if (typeof window !== 'undefined') {
+      const p = new URLSearchParams(window.location.search).get('tab') as NavTab;
+      if (p) return p;
+    }
+    return 'pos';
+  });
+
+  const setActiveTab = (tab: NavTab) => {
+    setActiveTabState(tab);
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href);
+      url.searchParams.set('tab', tab);
+      window.history.replaceState({}, '', url.toString());
+    }
   };
+  const [currentBranch, setCurrentBranch] = useState<Branch | null>(null);
+  const [currentConfig, setCurrentConfig] = useState<RuntimeConfig | null>(null);
+  const [currentShift, setCurrentShift] = useState<ShiftInfo | null>(null);
+  
+  // Quản lý đa giỏ hàng tại quầy (Multi-Tab Draft Orders)
+  const [drafts, setDrafts] = useState<OrderDraft[]>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('meb_pos_order_drafts');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        }
+      } catch (e) {
+        console.error('Lỗi đọc draft orders:', e);
+      }
+    }
+    return [{ id: 'order-1', name: 'Đơn 1', items: [], selectedPartnerId: null, note: '' }];
+  });
 
-  // Đồng bộ toàn bộ dữ liệu từ PocketBase Core Engine (Port 8090)
-  const fetchAllData = useCallback(async (showLoading = false) => {
-    if (showLoading) setIsLoading(true);
+  const [activeDraftId, setActiveDraftId] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      const savedId = localStorage.getItem('meb_pos_active_draft_id');
+      if (savedId) return savedId;
+    }
+    return 'order-1';
+  });
+
+  useEffect(() => {
     try {
-      const [branchList, entityList, convList, logList, invList] = await Promise.all([
-        pbApi.getBranches(),
-        pbApi.getCustomEntities(),
-        pbApi.getUomConversions(),
-        pbApi.getAuditLogs(),
-        pbApi.getInventory()
-      ]);
-
-      setBranches(branchList);
-      setEntities(entityList);
-      setConversions(convList);
-      setAuditLogs(logList);
-      setInventory(invList);
-      setEngineConnected(true);
-
-      // Nếu activeBranchCode chưa tồn tại, chọn chi nhánh đầu tiên
-      if (branchList.length > 0 && !branchList.some(b => b.code === activeBranchCode)) {
-        setActiveBranchCode(branchList[0].code);
-      }
-    } catch (err) {
-      console.error('[PocketBase Error]', err);
-      setEngineConnected(false);
-    } finally {
-      setIsLoading(false);
+      localStorage.setItem('meb_pos_order_drafts', JSON.stringify(drafts));
+      localStorage.setItem('meb_pos_active_draft_id', activeDraftId);
+    } catch (e) {
+      console.error('Lỗi lưu draft orders:', e);
     }
-  }, [activeBranchCode]);
+  }, [drafts, activeDraftId]);
+
+  const activeDraft = drafts.find(d => d.id === activeDraftId) || drafts[0] || {
+    id: 'order-1',
+    name: 'Đơn 1',
+    items: [],
+    selectedPartnerId: null,
+    note: ''
+  };
+
+  const handleSelectDraft = (draftId: string) => {
+    setActiveDraftId(draftId);
+  };
+
+  const handleAddDraft = useCallback(() => {
+    if (drafts.length >= 5) {
+      alert('Tối đa 5 đơn chờ cùng lúc tại quầy để tránh nhầm lẫn.');
+      return;
+    }
+    const newId = `order-${Date.now()}`;
+    const newName = `Đơn ${drafts.length + 1}`;
+    const newDraft: OrderDraft = {
+      id: newId,
+      name: newName,
+      items: [],
+      selectedPartnerId: null,
+      note: ''
+    };
+    setDrafts(prev => [...prev, newDraft]);
+    setActiveDraftId(newId);
+  }, [drafts.length]);
+
+  const handleCloseDraft = (draftId: string) => {
+    if (drafts.length <= 1) {
+      setDrafts([{ id: 'order-1', name: 'Đơn 1', items: [], selectedPartnerId: null, note: '' }]);
+      setActiveDraftId('order-1');
+      return;
+    }
+    const nextDrafts = drafts.filter(d => d.id !== draftId);
+    setDrafts(nextDrafts);
+    if (activeDraftId === draftId) {
+      setActiveDraftId(nextDrafts[0].id);
+    }
+  };
+
+  const handleUpdateActiveDraftItems = (updater: (prevItems: CartItem[]) => CartItem[]) => {
+    setDrafts(prev => prev.map(d => {
+      if (d.id === activeDraft.id) {
+        return { ...d, items: updater(d.items) };
+      }
+      return d;
+    }));
+  };
+
+  const handleSetPartnerIdForActiveDraft = (partnerId: string | null) => {
+    setDrafts(prev => prev.map(d => {
+      if (d.id === activeDraft.id) {
+        return { ...d, selectedPartnerId: partnerId };
+      }
+      return d;
+    }));
+  };
+
+  const [successOrder, setSuccessOrder] = useState<any | null>(null);
+  const [printInvoiceData, setPrintInvoiceData] = useState<InvoiceData | null>(null);
+  const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
+  const [isShiftModalOpen, setIsShiftModalOpen] = useState(false);
+  const [isReturnModalOpen, setIsReturnModalOpen] = useState(false);
+  const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
 
   useEffect(() => {
-    let ignore = false;
-    pbApi.getBranches().then(() => {
-      if (!ignore) {
-        fetchAllData(false);
-      }
-    }).catch(() => {
-      if (!ignore) setEngineConnected(false);
+    const unsub = branchStore.subscribe((config, branch) => {
+      setCurrentConfig(config);
+      setCurrentBranch(branch);
+      api.getCurrentShift().then(res => setCurrentShift(res.data)).catch(() => setCurrentShift(null));
     });
-    return () => { ignore = true; };
-  }, [fetchAllData]);
 
-  // Thao tác Chi nhánh
-  const handleCreateBranch = async (data: Omit<BranchRecord, 'id' | 'created' | 'updated'>) => {
-    await pbApi.createBranch(data);
-    await fetchAllData();
+    branchStore.initialize().then(res => {
+      if (res?.branch && res?.config) {
+        setCurrentBranch(res.branch);
+        setCurrentConfig(res.config);
+        api.getCurrentShift().then(sRes => setCurrentShift(sRes.data)).catch(() => setCurrentShift(null));
+      }
+    }).catch(err => console.error('App branchStore init error:', err));
+
+    return unsub;
+  }, []);
+
+  // Lắng nghe bộ phím tắt quầy thu ngân bán lẻ F1 - F10 & ESC toàn cục
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // F1: Mở trợ giúp phím tắt
+      if (e.key === 'F1') {
+        e.preventDefault();
+        setIsHelpModalOpen(prev => !prev);
+      }
+      // F2: Focus ô tìm kiếm & quét Barcode
+      else if (e.key === 'F2') {
+        e.preventDefault();
+        const searchInput = document.getElementById('pos-search-input') as HTMLInputElement | null;
+        if (searchInput) {
+          searchInput.focus();
+          searchInput.select();
+        }
+      }
+      // F3: Mở sổ công nợ khách hàng
+      else if (e.key === 'F3') {
+        e.preventDefault();
+        setActiveTab('debts');
+      }
+      // F4: Thêm giỏ hàng đơn mới
+      else if (e.key === 'F4') {
+        e.preventDefault();
+        handleAddDraft();
+      }
+      // F6: Chuyển đổi qua lại giữa các đơn chờ
+      else if (e.key === 'F6') {
+        e.preventDefault();
+        if (drafts.length > 1) {
+          const currentIndex = drafts.findIndex(d => d.id === activeDraftId);
+          const nextIndex = (currentIndex + 1) % drafts.length;
+          setActiveDraftId(drafts[nextIndex].id);
+        }
+      }
+      // F8: Quản lý ca / Chốt két tiền F8
+      else if (e.key === 'F8') {
+        e.preventDefault();
+        setIsShiftModalOpen(prev => !prev);
+      }
+      // F9: Thanh toán đơn hàng
+      else if (e.key === 'F9') {
+        e.preventDefault();
+        const checkoutBtn = document.getElementById('pos-checkout-btn') as HTMLButtonElement | null;
+        if (checkoutBtn && !checkoutBtn.disabled) {
+          checkoutBtn.click();
+        }
+      }
+      // F10: Đổi trả hàng RMA
+      else if (e.key === 'F10') {
+        e.preventDefault();
+        setIsReturnModalOpen(prev => !prev);
+      }
+      // Escape: Đóng modal
+      else if (e.key === 'Escape') {
+        setIsHelpModalOpen(false);
+        setIsShiftModalOpen(false);
+        setIsReturnModalOpen(false);
+        setIsPrintModalOpen(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [drafts, activeDraftId, handleAddDraft]);
+
+  // Thêm sản phẩm vào giỏ hàng của draft hiện tại
+  const handleAddToCart = (product: ProductInventory) => {
+    setSuccessOrder(null);
+    handleUpdateActiveDraftItems(prev => {
+      const existing = prev.find(item => item.product_id === product.id);
+      if (existing) {
+        return prev.map(item =>
+          item.product_id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      }
+      return [
+        ...prev,
+        {
+          product_id: product.id,
+          code: product.code,
+          name: product.name,
+          uom: product.base_uom,
+          conversion_rate: 1,
+          available_qty: Number(product.available_qty || 0),
+          quantity: 1,
+          unit_price: Number(product.default_selling_price || 0)
+        }
+      ];
+    });
   };
 
-  const handleDeleteBranch = async (id: string) => {
-    if (confirm('Bạn có chắc chắn muốn xóa chi nhánh này?')) {
-      await pbApi.deleteBranch(id);
-      await fetchAllData();
+  const handleUpdateQty = (productId: string, delta: number) => {
+    handleUpdateActiveDraftItems(prev =>
+      prev
+        .map(it => it.product_id === productId ? { ...it, quantity: it.quantity + delta } : it)
+        .filter(it => it.quantity > 0)
+    );
+  };
+
+  const handleSetQty = (productId: string, qty: number) => {
+    handleUpdateActiveDraftItems(prev =>
+      prev.map(it => it.product_id === productId ? { ...it, quantity: Math.max(1, qty) } : it)
+    );
+  };
+
+  const handleRemoveItem = (productId: string) => {
+    handleUpdateActiveDraftItems(prev => prev.filter(it => it.product_id !== productId));
+  };
+
+  const handleUpdatePrice = (productId: string, newPrice: number) => {
+    handleUpdateActiveDraftItems(prev =>
+      prev.map(it => it.product_id === productId ? { ...it, unit_price: Math.max(0, newPrice) } : it)
+    );
+  };
+
+  const handleClearCart = () => {
+    handleUpdateActiveDraftItems(() => []);
+    handleSetPartnerIdForActiveDraft(null);
+  };
+
+  const handleCheckoutSuccess = (orderResult: any) => {
+    setSuccessOrder(orderResult);
+    
+    // Chuẩn bị dữ liệu hóa đơn để mở modal in K80
+    const rawItems = orderResult?.items || activeDraft.items;
+    const inv: InvoiceData = {
+      order_id: orderResult?.order_id || orderResult?.id,
+      order_code: orderResult?.order_code || `HD-${Date.now().toString().slice(-6)}`,
+      created_at: new Date().toISOString(),
+      staff_name: currentShift?.staff_name || 'Thu Ngân Quầy',
+      customer: orderResult?.customer || null,
+      items: rawItems.map((it: any) => ({
+        name: it.name || it.product_name || 'Sản phẩm',
+        uom: it.uom || 'Đơn vị',
+        quantity: Number(it.quantity) || 1,
+        unit_price: Number(it.unit_price) || 0,
+        total: (Number(it.quantity) || 1) * (Number(it.unit_price) || 0)
+      })),
+      total_amount: Number(orderResult?.total_amount) || rawItems.reduce((s: number, i: any) => s + (Number(i.quantity) || 1) * (Number(i.unit_price) || 0), 0),
+      discount_amount: Number(orderResult?.discount_amount) || 0,
+      paid_amount: Number(orderResult?.paid_amount) || 0,
+      debt_amount: Number(orderResult?.debt_amount) || 0,
+      payment_method: orderResult?.payments?.[0]?.payment_method || 'CASH'
+    };
+    setPrintInvoiceData(inv);
+    setIsPrintModalOpen(true);
+
+    // Xử lý đóng hoặc reset tab đơn hàng hiện tại
+    if (drafts.length > 1) {
+      handleCloseDraft(activeDraft.id);
+    } else {
+      handleClearCart();
     }
   };
-
-  // Thao tác Vật thể động
-  const handleCreateEntity = async (data: Omit<CustomEntityRecord, 'id' | 'created' | 'updated'>) => {
-    await pbApi.createCustomEntity(data);
-    await fetchAllData();
-  };
-
-  const handleDeleteEntity = async (id: string) => {
-    if (confirm('Bạn có chắc chắn muốn xóa vật thể này?')) {
-      await pbApi.deleteCustomEntity(id);
-      await fetchAllData();
-    }
-  };
-
-  // Thao tác Quy đổi đa đơn vị
-  const handleCreateConversion = async (data: Omit<UomConversionRecord, 'id' | 'created' | 'updated'>) => {
-    await pbApi.createUomConversion(data);
-    await fetchAllData();
-  };
-
-  const handleDeleteConversion = async (id: string) => {
-    if (confirm('Bạn có chắc chắn muốn xóa quy tắc quy đổi này?')) {
-      await pbApi.deleteUomConversion(id);
-      await fetchAllData();
-    }
-  };
-
-  const currentActiveBranch = branches.find(b => b.code === activeBranchCode) || branches[0];
 
   return (
-    <div className="app-layout" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      {/* HEADER ĐIỀU HÀNH */}
-      <Header
-        activeTab={activeTab}
-        onSelectTab={setActiveTab}
-        theme={theme}
-        onToggleTheme={toggleTheme}
-        activeBranchName={currentActiveBranch ? currentActiveBranch.name : 'Chưa Chọn'}
-        engineConnected={engineConnected}
-        onRefresh={fetchAllData}
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      {/* 1. THANH HEADER ĐIỀU HƯỚNG & ĐỔI CHI NHÁNH */}
+      <Header 
+        activeTab={activeTab} 
+        onTabChange={setActiveTab}
+        onOpenShiftModal={() => setIsShiftModalOpen(true)}
+        onOpenReturnModal={() => setIsReturnModalOpen(true)}
       />
 
-      {/* NỘI DUNG CHÍNH */}
-      <main style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-        {activeTab === 'STUDIO' && (
-          <OwnerNoCodeStudio
-            branches={branches}
-            entities={entities}
-            conversions={conversions}
-            auditLogs={auditLogs}
-            activeBranchCode={activeBranchCode}
-            onSelectActiveBranch={(code) => {
-              setActiveBranchCode(code);
-              setActiveTab('POS'); // Khi chọn chi nhánh, chuyển ngay vào POS để thao tác bán
+      {/* 2. KHU VỰC THÂN GIAO DIỆN CHÍNH */}
+      <main style={{ flex: 1, padding: '16px 20px', maxWidth: 1600, width: '100%', margin: '0 auto', boxSizing: 'border-box' }}>
+        {/* Dải Ribbon Trạng Thái Persona Chi Nhánh Tinh Gọn (Tối Ưu Không Gian Làm Việc) */}
+        <div style={{ 
+          padding: '6px 14px', 
+          marginBottom: 14, 
+          borderRadius: 8, 
+          background: 'rgba(255,255,255,0.03)', 
+          border: '1px solid rgba(255,255,255,0.06)', 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'space-between', 
+          flexWrap: 'wrap', 
+          gap: 10,
+          fontSize: 12
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div style={{ 
+              display: 'inline-flex', 
+              alignItems: 'center', 
+              gap: 6, 
+              fontWeight: 600, 
+              color: '#f8fafc' 
+            }}>
+              <Store size={14} color={currentConfig?.features.allow_debt ? '#fbbf24' : '#34d399'} />
+              <span>{currentBranch ? `${currentBranch.code} • ${currentBranch.name}` : 'Đang tải chi nhánh...'}</span>
+            </div>
+            <span style={{ color: 'var(--text-dim)' }}>|</span>
+            <span style={{ color: 'var(--text-muted)' }}>
+              Mô hình: <strong style={{ color: '#e2e8f0', fontWeight: 600 }}>
+                {currentConfig?.features.allow_debt ? 'Vật Liệu / Sơn / Sắt Thép (Bán gối đầu & Báo giá A4)' : 'Tạp Hóa / Đồ Uống (Barcode & Bill K80)'}
+              </strong>
+            </span>
+            <span style={{ 
+              fontSize: 11, 
+              padding: '1px 6px', 
+              borderRadius: 4, 
+              background: 'rgba(255,255,255,0.06)', 
+              color: 'var(--text-dim)' 
+            }}>
+              {currentBranch?.organization_name || 'Hệ thống MEB'}
+            </span>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, color: 'var(--text-muted)' }}>
+              Barcode: <strong style={{ color: currentConfig?.features.pos_barcode ? '#34d399' : '#64748b' }}>
+                {currentConfig?.features.pos_barcode ? 'BẬT' : 'TẮT'}
+              </strong>
+            </span>
+            <span style={{ color: 'rgba(255,255,255,0.1)' }}>•</span>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, color: 'var(--text-muted)' }}>
+              Bán nợ: <strong style={{ color: currentConfig?.features.allow_debt ? '#fbbf24' : '#64748b' }}>
+                {currentConfig?.features.allow_debt ? 'CHO PHÉP' : 'CHẶN'}
+              </strong>
+            </span>
+            <span style={{ color: 'rgba(255,255,255,0.1)' }}>•</span>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, color: 'var(--text-muted)' }}>
+              Mẫu in: <strong style={{ color: '#38bdf8' }}>
+                {currentConfig?.features.print_format === 'A4_FULL' ? 'A4 Khổ Lớn' : 'Bill K80'}
+              </strong>
+            </span>
+          </div>
+        </div>
+
+        {/* Banner Thông Báo Đơn Hàng Thành Công */}
+        {successOrder && (
+          <div style={{
+            background: 'rgba(16, 185, 129, 0.15)',
+            border: '1px solid rgba(16, 185, 129, 0.4)',
+            borderRadius: 'var(--radius-md)',
+            padding: '12px 20px',
+            marginBottom: 20,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <CheckCircle2 size={20} color="#34d399" />
+              <div>
+                <span style={{ fontWeight: 700, color: '#34d399' }}>Thanh toán thành công! </span>
+                <span style={{ color: 'var(--text-main)', fontSize: 13 }}>
+                  Mã hóa đơn: <strong style={{ color: '#38bdf8' }}>{successOrder.order_code}</strong> • 
+                  Tổng tiền: <strong style={{ color: '#f8fafc' }}>{Number(successOrder.total_amount).toLocaleString('vi-VN')}đ</strong>
+                  {Number(successOrder.debt_amount) > 0 && ` • Ghi nợ: ${Number(successOrder.debt_amount).toLocaleString('vi-VN')}đ`}
+                </span>
+              </div>
+            </div>
+            <button 
+              onClick={() => setSuccessOrder(null)} 
+              className="btn-action" 
+              style={{ fontSize: 11, padding: '3px 10px' }}
+            >
+              Đóng
+            </button>
+          </div>
+        )}
+
+        {/* 3. NỘI DUNG TỪNG TAB */}
+        {activeTab === 'hq' && (
+          <HQDashboardTab 
+            onSwitchBranchToPos={(_branchId) => {
+              setActiveTab('pos');
             }}
-            onCreateBranch={handleCreateBranch}
-            onDeleteBranch={handleDeleteBranch}
-            onCreateEntity={handleCreateEntity}
-            onDeleteEntity={handleDeleteEntity}
-            onCreateConversion={handleCreateConversion}
-            onDeleteConversion={handleDeleteConversion}
-            isLoading={isLoading}
+            onOpenCreateBranchModal={() => {
+              const btn = document.querySelector('header button[title*="Thêm chi nhánh"]') as HTMLButtonElement;
+              if (btn) btn.click();
+            }}
           />
         )}
 
-        {activeTab === 'BENTO_GRID' && (
-          <BranchBentoGrid
-            activeBranch={currentActiveBranch}
-            onOpenStudio={() => setActiveTab('STUDIO')}
-            onOpenPos={() => setActiveTab('POS')}
+        {activeTab === 'pos' && (
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: 20, height: 'calc(100vh - 140px)' }}>
+            {/* Cột Trái: Danh Mục Hàng Hóa & Quét Barcode */}
+            <div className="glass-panel" style={{ padding: 20, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+                <h3 style={{ fontSize: 16, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <ShoppingCart size={18} color="var(--primary)" />
+                  Danh Mục Hàng Hóa & Tồn Kho Chi Nhánh
+                </h3>
+                <span style={{ fontSize: 12, color: 'var(--text-dim)' }}>
+                  Phím tắt: [F2] Tìm kiếm • [Enter] Chọn món
+                </span>
+              </div>
+              <div style={{ flex: 1, overflow: 'hidden' }}>
+                <ProductCatalog 
+                  barcodeEnabled={currentConfig?.features.pos_barcode ?? true}
+                  onSelectProduct={handleAddToCart}
+                />
+              </div>
+            </div>
+
+            {/* Cột Phải: Giỏ Hàng Đa Đơn Vị Tính, Sổ Nợ Khách Hàng & Nút Thanh Toán F9 */}
+            <div className="glass-panel" style={{ padding: 20, overflow: 'hidden' }}>
+              <CartPanel 
+                items={activeDraft.items}
+                onUpdateQty={handleUpdateQty}
+                onSetQty={handleSetQty}
+                onUpdatePrice={handleUpdatePrice}
+                onRemoveItem={handleRemoveItem}
+                onClearCart={handleClearCart}
+                onCheckoutSuccess={handleCheckoutSuccess}
+                currentConfig={currentConfig}
+                currentShift={currentShift}
+                drafts={drafts}
+                activeDraftId={activeDraft.id}
+                onSelectDraft={handleSelectDraft}
+                onAddDraft={handleAddDraft}
+                onCloseDraft={handleCloseDraft}
+                selectedPartnerId={activeDraft.selectedPartnerId || ''}
+                onSelectPartner={handleSetPartnerIdForActiveDraft}
+              />
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'inbound' && (
+          <PurchaseInboundTab />
+        )}
+
+        {activeTab === 'transfers' && (
+          <StockTransferTab currentBranch={currentBranch} />
+        )}
+
+        {activeTab === 'debts' && (
+          <CustomerDebtTab currentShift={currentShift} />
+        )}
+
+        {activeTab === 'cashbook' && (
+          <CashbookTab 
+            currentShift={currentShift}
+            onRefreshShift={async () => {
+              try {
+                const res = await api.getCurrentShift();
+                setCurrentShift(res.data);
+              } catch {}
+            }}
           />
         )}
 
-        {activeTab === 'POS' && currentActiveBranch && (
-          <PosScreen
-            activeBranch={currentActiveBranch}
-            entities={entities}
-            conversions={conversions}
-            inventory={inventory}
-            onBackToBento={() => setActiveTab('BENTO_GRID')}
-            onRefreshData={fetchAllData}
+        {activeTab === 'audit' && (
+          <StockAuditTab />
+        )}
+
+        {activeTab === 'studio' && (
+          <StudioTab 
+            currentBranch={currentBranch}
+            onConfigUpdated={async () => {
+              try {
+                const cfg = await api.getRuntimeConfig();
+                if (cfg.success) setCurrentConfig(cfg.data);
+              } catch (e) {
+                console.error('Failed to reload runtime config', e);
+              }
+            }}
           />
         )}
       </main>
+
+      {/* 3. MODAL QUẢN LÝ CA BÁN HÀNG & CHỐT KÉT F8 */}
+      <ShiftModal
+        isOpen={isShiftModalOpen}
+        onClose={() => setIsShiftModalOpen(false)}
+        currentShift={currentShift}
+        onShiftUpdated={(updatedShift) => setCurrentShift(updatedShift)}
+      />
+
+      {/* 4. MODAL ĐỔI TRẢ HÀNG & CẤN TRỪ NỢ INV-07 */}
+      <ReturnModal
+        isOpen={isReturnModalOpen}
+        onClose={() => setIsReturnModalOpen(false)}
+        onSuccess={(orderRes) => setSuccessOrder(orderRes)}
+      />
+
+      {/* 5. MODAL IN HÓA ĐƠN K80 / A4 CHO GIAO DỊCH */}
+      <PrintInvoiceModal
+        isOpen={isPrintModalOpen}
+        onClose={() => setIsPrintModalOpen(false)}
+        invoice={printInvoiceData}
+        currentBranch={currentBranch}
+      />
+
+      {/* 6. MODAL TRỢ GIÚP PHÍM TẮT QUẦY THU NGÂN F1 */}
+      <PosHelpModal
+        isOpen={isHelpModalOpen}
+        onClose={() => setIsHelpModalOpen(false)}
+      />
+
+      {/* 7. THANH PHÍM TẮT TRỰC QUAN CHÂN MÀN HÌNH (POS HOTKEYS FOOTER) */}
+      {activeTab === 'pos' && (
+        <div style={{
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          background: 'rgba(10, 15, 25, 0.95)',
+          backdropFilter: 'blur(10px)',
+          borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+          padding: '6px 20px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 16,
+          fontSize: 11,
+          color: '#94a3b8',
+          zIndex: 100,
+          flexWrap: 'wrap'
+        }}>
+          <span style={{ cursor: 'pointer', color: '#38bdf8' }} onClick={() => setIsHelpModalOpen(true)}>
+            <strong style={{ background: '#0369a1', color: '#fff', padding: '1px 5px', borderRadius: 4, marginRight: 4 }}>F1</strong>Trợ giúp
+          </span>
+          <span style={{ cursor: 'pointer' }} onClick={() => document.getElementById('pos-search-input')?.focus()}>
+            <strong style={{ background: '#334155', color: '#f8fafc', padding: '1px 5px', borderRadius: 4, marginRight: 4 }}>F2</strong>Tìm món
+          </span>
+          <span style={{ cursor: 'pointer' }} onClick={() => setActiveTab('debts')}>
+            <strong style={{ background: '#334155', color: '#f8fafc', padding: '1px 5px', borderRadius: 4, marginRight: 4 }}>F3</strong>Sổ nợ
+          </span>
+          <span style={{ cursor: 'pointer' }} onClick={handleAddDraft}>
+            <strong style={{ background: '#334155', color: '#f8fafc', padding: '1px 5px', borderRadius: 4, marginRight: 4 }}>F4</strong>Thêm đơn
+          </span>
+          <span style={{ cursor: 'pointer' }}>
+            <strong style={{ background: '#334155', color: '#f8fafc', padding: '1px 5px', borderRadius: 4, marginRight: 4 }}>F6</strong>Đổi đơn
+          </span>
+          <span style={{ cursor: 'pointer' }} onClick={() => setIsShiftModalOpen(true)}>
+            <strong style={{ background: '#334155', color: '#f8fafc', padding: '1px 5px', borderRadius: 4, marginRight: 4 }}>F8</strong>Ca bán
+          </span>
+          <span style={{ cursor: 'pointer', color: '#34d399' }} onClick={() => document.getElementById('pos-checkout-btn')?.click()}>
+            <strong style={{ background: '#059669', color: '#fff', padding: '1px 5px', borderRadius: 4, marginRight: 4 }}>F9</strong>Thanh toán
+          </span>
+          <span style={{ cursor: 'pointer' }} onClick={() => setIsReturnModalOpen(true)}>
+            <strong style={{ background: '#334155', color: '#f8fafc', padding: '1px 5px', borderRadius: 4, marginRight: 4 }}>F10</strong>Trả hàng
+          </span>
+        </div>
+      )}
     </div>
   );
 }
+
 export default App;

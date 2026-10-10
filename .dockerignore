@@ -1,0 +1,9 @@
+node_modules
+client/node_modules
+client/dist
+.git
+.agents
+artifacts_ui
+pb_engine/pb_data
+.env.local
+*.log
