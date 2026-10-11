@@ -516,12 +516,12 @@ export const CartPanel: React.FC<CartPanelProps> = ({
                   style={{
                     display: 'inline-flex',
                     alignItems: 'center',
-                    gap: 4,
-                    padding: '3px 8px',
+                    gap: 6,
+                    padding: '6px 12px',
                     borderRadius: 6,
                     background: isActive ? '#0284c7' : 'rgba(255, 255, 255, 0.06)',
                     color: isActive ? '#ffffff' : 'var(--text-muted)',
-                    fontSize: 11,
+                    fontSize: 12.5,
                     fontWeight: 700,
                     cursor: 'pointer',
                     whiteSpace: 'nowrap'
@@ -535,15 +535,15 @@ export const CartPanel: React.FC<CartPanelProps> = ({
                       style={{ background: 'transparent', border: 'none', color: isActive ? '#ffffff' : '#94a3b8', cursor: 'pointer', padding: 0 }}
                       title="Đóng đơn"
                     >
-                      <X size={11} />
+                      <X size={13} />
                     </button>
                   )}
                 </div>
               );
             })
           ) : (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 13, fontWeight: 700 }}>
-              <Receipt size={15} color="var(--primary)" />
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 14, fontWeight: 700 }}>
+              <Receipt size={16} color="var(--primary)" />
               <span>Đơn Hàng ({items.length})</span>
             </div>
           )}
@@ -555,25 +555,25 @@ export const CartPanel: React.FC<CartPanelProps> = ({
               style={{
                 background: 'var(--bg-subtle)',
                 border: '1px solid var(--border-subtle)',
-                borderRadius: 5,
+                borderRadius: 6,
                 color: 'var(--text-main)',
-                padding: '2px 8px',
-                fontSize: 11,
+                padding: '5px 10px',
+                fontSize: 12,
                 fontWeight: 600,
                 cursor: 'pointer',
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: 3
+                gap: 4
               }}
               title="Thêm đơn mới"
             >
-              <Plus size={11} /> Đơn
+              <Plus size={13} /> Đơn
             </button>
           )}
         </div>
 
         {/* Nút Khách Xem & Xóa Hết */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
           <button
             type="button"
             onClick={() => {
@@ -582,10 +582,10 @@ export const CartPanel: React.FC<CartPanelProps> = ({
             style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: 3,
-              fontSize: 11,
-              padding: '3px 8px',
-              borderRadius: 5,
+              gap: 5,
+              fontSize: 12,
+              padding: '5px 10px',
+              borderRadius: 6,
               background: 'var(--bg-subtle)',
               border: '1px solid var(--border-subtle)',
               color: 'var(--text-muted)',
@@ -594,7 +594,7 @@ export const CartPanel: React.FC<CartPanelProps> = ({
             }}
             title="Mở màn hình phụ Khách Xem"
           >
-            <Tv size={11} /> Khách Xem
+            <Tv size={13} /> Khách Xem
           </button>
           {items.length > 0 && (
             <button 
@@ -602,10 +602,10 @@ export const CartPanel: React.FC<CartPanelProps> = ({
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: 3,
-                fontSize: 11,
-                padding: '3px 8px',
-                borderRadius: 5,
+                gap: 4,
+                fontSize: 12,
+                padding: '5px 10px',
+                borderRadius: 6,
                 background: 'rgba(239, 68, 68, 0.1)',
                 border: '1px solid rgba(239, 68, 68, 0.25)',
                 color: '#ef4444',
@@ -614,29 +614,29 @@ export const CartPanel: React.FC<CartPanelProps> = ({
               }}
               title="Xóa toàn bộ giỏ hàng"
             >
-              <Trash2 size={11} /> Xóa
+              <Trash2 size={13} /> Xóa
             </button>
           )}
         </div>
       </div>
 
       {/* 2. CHỌN KHÁCH HÀNG */}
-      <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border-subtle)', borderRadius: 8, padding: '6px 8px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <User size={14} color="var(--primary)" style={{ flexShrink: 0 }} />
+      <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border-subtle)', borderRadius: 8, padding: '8px 10px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <User size={16} color="var(--primary)" style={{ flexShrink: 0 }} />
           <select
             value={selectedPartnerId}
             onChange={(e) => setSelectedPartnerId(e.target.value)}
             style={{
               flex: 1,
-              height: 30,
+              height: 36,
               background: 'var(--bg-subtle)',
               border: '1px solid var(--border-subtle)',
               borderRadius: 6,
               color: 'var(--text-main)',
-              fontSize: 12,
+              fontSize: 13,
               fontWeight: 500,
-              padding: '0 8px',
+              padding: '0 10px',
               outline: 'none'
             }}
           >
@@ -652,22 +652,22 @@ export const CartPanel: React.FC<CartPanelProps> = ({
             onClick={() => setIsQuickCustomerOpen(true)}
             className="btn-action"
             style={{
-              height: 30,
-              fontSize: 11,
-              padding: '0 8px',
+              height: 36,
+              fontSize: 12.5,
+              padding: '0 12px',
               background: 'var(--bg-subtle)',
               color: 'var(--primary)',
               border: '1px solid var(--border-subtle)',
               borderRadius: 6,
               display: 'flex',
               alignItems: 'center',
-              gap: 4,
+              gap: 5,
               fontWeight: 600,
               whiteSpace: 'nowrap'
             }}
             title="Thêm nhanh khách hàng mới"
           >
-            <UserPlus size={12} /> + Khách
+            <UserPlus size={14} /> + Khách
           </button>
         </div>
 
@@ -780,8 +780,8 @@ export const CartPanel: React.FC<CartPanelProps> = ({
               >
                 {/* Ảnh Thumbnail Sản Phẩm Trong Giỏ */}
                 <div style={{
-                  width: 42,
-                  height: 42,
+                  width: 48,
+                  height: 48,
                   borderRadius: 6,
                   overflow: 'hidden',
                   background: 'var(--bg-main)',
@@ -800,9 +800,9 @@ export const CartPanel: React.FC<CartPanelProps> = ({
                 </div>
 
                 {/* Chi Tiết Tên, Đơn Giá & Số Lượng */}
-                <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 3 }}>
+                <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 4 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                    <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-main)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-main)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                       {it.name}
                     </div>
                     <button 
@@ -810,13 +810,13 @@ export const CartPanel: React.FC<CartPanelProps> = ({
                       style={{ background: 'transparent', border: 'none', color: 'var(--text-dim)', cursor: 'pointer', padding: '0 2px' }}
                       title="Xóa món"
                     >
-                      <Trash2 size={13} />
+                      <Trash2 size={15} />
                     </button>
                   </div>
 
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     {/* ĐVT và Đơn Giá Có Thể Bấm Để Sửa */}
-                    <div style={{ fontSize: 11, color: 'var(--text-dim)', display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <div style={{ fontSize: 12.5, color: 'var(--text-dim)', display: 'flex', alignItems: 'center', gap: 5 }}>
                       <span style={{ color: '#0284c7', fontWeight: 700 }}>{it.uom}</span>
                       <span>•</span>
                       <span>@{it.unit_price.toLocaleString('vi-VN')}đ</span>
@@ -842,35 +842,35 @@ export const CartPanel: React.FC<CartPanelProps> = ({
                           }}
                           title="Bấm để sửa đơn giá"
                         >
-                          <Edit3 size={11} />
+                          <Edit3 size={12} />
                         </button>
                       )}
                     </div>
 
                     {/* Bộ nút tăng/giảm số lượng và Thành tiền */}
                     <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                      <div style={{ display: 'flex', alignItems: 'center', background: 'var(--bg-main)', border: '1px solid var(--border-subtle)', borderRadius: 5, padding: '1px 3px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', background: 'var(--bg-main)', border: '1px solid var(--border-subtle)', borderRadius: 6, padding: '2px 4px' }}>
                         <button 
                           onClick={() => onUpdateQty(it.product_id, -1)}
-                          style={{ background: 'transparent', border: 'none', color: 'var(--text-main)', cursor: 'pointer', padding: '1px 3px' }}
+                          style={{ background: 'transparent', border: 'none', color: 'var(--text-main)', cursor: 'pointer', padding: '2px 5px' }}
                         >
-                          <Minus size={11} />
+                          <Minus size={13} />
                         </button>
                         <input 
                           type="number"
                           value={it.quantity}
                           onChange={(e) => onSetQty(it.product_id, Math.max(1, parseInt(e.target.value, 10) || 1))}
-                          style={{ width: 28, textAlign: 'center', background: 'transparent', border: 'none', color: 'var(--text-main)', fontSize: 12, fontWeight: 700, outline: 'none' }}
+                          style={{ width: 34, height: 26, textAlign: 'center', background: 'transparent', border: 'none', color: 'var(--text-main)', fontSize: 13.5, fontWeight: 700, outline: 'none' }}
                         />
                         <button 
                           onClick={() => onUpdateQty(it.product_id, 1)}
-                          style={{ background: 'transparent', border: 'none', color: 'var(--text-main)', cursor: 'pointer', padding: '1px 3px' }}
+                          style={{ background: 'transparent', border: 'none', color: 'var(--text-main)', cursor: 'pointer', padding: '2px 5px' }}
                         >
-                          <Plus size={11} />
+                          <Plus size={13} />
                         </button>
                       </div>
 
-                      <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--accent-retail, #059669)', minWidth: 62, textAlign: 'right' }}>
+                      <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--accent-retail, #059669)', minWidth: 68, textAlign: 'right' }}>
                         {(it.quantity * it.unit_price).toLocaleString('vi-VN')}đ
                       </div>
                     </div>
@@ -891,64 +891,64 @@ export const CartPanel: React.FC<CartPanelProps> = ({
       </div>
 
       {/* 4. PHƯƠNG THỨC THANH TOÁN (TIỀN MẶT / CHUYỂN KHOẢN / BÁN NỢ / CHIA TIỀN) */}
-      <div style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: 8 }}>
-        <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', marginBottom: 6 }}>
+      <div style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: 10 }}>
+        <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-muted)', marginBottom: 6 }}>
           Phương Thức Thanh Toán:
         </div>
         <div style={{
           display: 'grid',
           gridTemplateColumns: allowDebt ? 'repeat(4, 1fr)' : 'repeat(3, 1fr)',
-          gap: 4,
-          padding: 3,
+          gap: 6,
+          padding: 4,
           background: 'var(--bg-subtle)',
           borderRadius: 8,
           border: '1px solid var(--border-subtle)',
-          marginBottom: 8
+          marginBottom: 10
         }}>
           <button
             type="button"
             onClick={() => setPaymentMode('CASH')}
             style={{
-              padding: '6px 4px',
+              padding: '9px 6px',
               borderRadius: 6,
               border: 'none',
               background: paymentMode === 'CASH' ? 'var(--bg-card)' : 'transparent',
               color: paymentMode === 'CASH' ? 'var(--text-main)' : 'var(--text-muted)',
-              boxShadow: paymentMode === 'CASH' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
-              fontSize: 11,
-              fontWeight: paymentMode === 'CASH' ? 700 : 500,
+              boxShadow: paymentMode === 'CASH' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
+              fontSize: 12.5,
+              fontWeight: paymentMode === 'CASH' ? 700 : 600,
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: 4,
+              gap: 5,
               transition: 'all 0.15s ease'
             }}
           >
-            <Banknote size={13} color={paymentMode === 'CASH' ? '#10b981' : 'inherit'} /> Tiền Mặt
+            <Banknote size={15} color={paymentMode === 'CASH' ? '#10b981' : 'inherit'} /> Tiền Mặt
           </button>
 
           <button
             type="button"
             onClick={() => setPaymentMode('BANK_TRANSFER')}
             style={{
-              padding: '6px 4px',
+              padding: '9px 6px',
               borderRadius: 6,
               border: 'none',
               background: paymentMode === 'BANK_TRANSFER' ? 'var(--bg-card)' : 'transparent',
               color: paymentMode === 'BANK_TRANSFER' ? 'var(--text-main)' : 'var(--text-muted)',
-              boxShadow: paymentMode === 'BANK_TRANSFER' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
-              fontSize: 11,
-              fontWeight: paymentMode === 'BANK_TRANSFER' ? 700 : 500,
+              boxShadow: paymentMode === 'BANK_TRANSFER' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
+              fontSize: 12.5,
+              fontWeight: paymentMode === 'BANK_TRANSFER' ? 700 : 600,
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: 4,
+              gap: 5,
               transition: 'all 0.15s ease'
             }}
           >
-            <Building size={13} color={paymentMode === 'BANK_TRANSFER' ? 'var(--primary)' : 'inherit'} /> Chuyển Khoản
+            <Building size={15} color={paymentMode === 'BANK_TRANSFER' ? 'var(--primary)' : 'inherit'} /> Chuyển Khoản
           </button>
 
           {allowDebt && (
@@ -956,23 +956,23 @@ export const CartPanel: React.FC<CartPanelProps> = ({
               type="button"
               onClick={() => setPaymentMode('DEBT')}
               style={{
-                padding: '6px 4px',
+                padding: '9px 6px',
                 borderRadius: 6,
                 border: 'none',
                 background: paymentMode === 'DEBT' ? 'var(--bg-card)' : 'transparent',
                 color: paymentMode === 'DEBT' ? 'var(--text-main)' : 'var(--text-muted)',
-                boxShadow: paymentMode === 'DEBT' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
-                fontSize: 11,
-                fontWeight: paymentMode === 'DEBT' ? 700 : 500,
+                boxShadow: paymentMode === 'DEBT' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
+                fontSize: 12.5,
+                fontWeight: paymentMode === 'DEBT' ? 700 : 600,
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: 4,
+                gap: 5,
                 transition: 'all 0.15s ease'
               }}
             >
-              <CreditCard size={13} color={paymentMode === 'DEBT' ? '#d97706' : 'inherit'} /> Ghi Nợ
+              <CreditCard size={15} color={paymentMode === 'DEBT' ? '#d97706' : 'inherit'} /> Ghi Nợ
             </button>
           )}
 
@@ -980,82 +980,82 @@ export const CartPanel: React.FC<CartPanelProps> = ({
             type="button"
             onClick={() => setPaymentMode('SPLIT')}
             style={{
-              padding: '6px 4px',
+              padding: '9px 6px',
               borderRadius: 6,
               border: 'none',
               background: paymentMode === 'SPLIT' ? 'var(--bg-card)' : 'transparent',
               color: paymentMode === 'SPLIT' ? 'var(--text-main)' : 'var(--text-muted)',
-              boxShadow: paymentMode === 'SPLIT' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
-              fontSize: 11,
-              fontWeight: paymentMode === 'SPLIT' ? 700 : 500,
+              boxShadow: paymentMode === 'SPLIT' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
+              fontSize: 12.5,
+              fontWeight: paymentMode === 'SPLIT' ? 700 : 600,
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: 4,
+              gap: 5,
               transition: 'all 0.15s ease'
             }}
           >
-            <Layers size={13} color={paymentMode === 'SPLIT' ? 'var(--primary)' : 'inherit'} /> Chia Tiền
+            <Layers size={15} color={paymentMode === 'SPLIT' ? 'var(--primary)' : 'inherit'} /> Chia Tiền
           </button>
         </div>
 
         {/* NẾU LÀ BANK_TRANSFER HOẶC SPLIT -> CÓ NÚT XEM VIETQR */}
         {(paymentMode === 'BANK_TRANSFER' || (paymentMode === 'SPLIT' && (parseFloat(splitBankInput) || 0) > 0)) && (
-          <div style={{ marginBottom: 8 }}>
+          <div style={{ marginBottom: 10 }}>
             <button
               type="button"
               onClick={() => setIsVietQrOpen(true)}
               style={{
                 width: '100%',
-                padding: '6px 10px',
+                padding: '8px 12px',
                 borderRadius: 6,
                 background: 'rgba(56, 189, 248, 0.12)',
                 border: '1px solid rgba(56, 189, 248, 0.35)',
                 color: '#38bdf8',
-                fontSize: 11,
+                fontSize: 12.5,
                 fontWeight: 700,
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: 6
+                gap: 7
               }}
             >
-              <QrCode size={14} />
+              <QrCode size={15} />
               <span>📱 Xem Mã VietQR Cho Khách Quét ({((paymentMode === 'BANK_TRANSFER' ? totalAmount : parseFloat(splitBankInput) || 0)).toLocaleString('vi-VN')}đ)</span>
             </button>
           </div>
         )}
 
         {/* BẢNG CHIA TIỀN (SPLIT MATRIX HOẶC TÍNH TIỀN THỪA) */}
-        {/* BẢNG CHIA TIỀN (SPLIT MATRIX HOẶC TÍNH TIỀN THỪA) */}
         {paymentMode === 'SPLIT' && (
           <div style={{
             background: 'var(--bg-subtle)',
             border: '1px solid var(--border-subtle)',
             borderRadius: 8,
-            padding: 8,
-            marginBottom: 8,
+            padding: 10,
+            marginBottom: 10,
             display: 'flex',
             flexDirection: 'column',
-            gap: 6
+            gap: 8
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6 }}>
-              <span style={{ fontSize: 11, color: 'var(--text-main)', fontWeight: 600 }}>💵 Tiền mặt:</span>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
+              <span style={{ fontSize: 12.5, color: 'var(--text-main)', fontWeight: 600 }}>💵 Tiền mặt:</span>
               <input
                 type="number"
                 value={splitCashInput}
                 onChange={(e) => setSplitCashInput(e.target.value)}
                 placeholder="Nhập tiền mặt..."
                 style={{
-                  width: 140,
-                  padding: '4px 8px',
+                  width: 150,
+                  height: 32,
+                  padding: '4px 10px',
                   borderRadius: 6,
                   background: 'var(--bg-card)',
                   border: '1px solid var(--border-subtle)',
                   color: 'var(--text-main)',
-                  fontSize: 12,
+                  fontSize: 13,
                   fontWeight: 700,
                   textAlign: 'right',
                   outline: 'none'
@@ -1063,21 +1063,22 @@ export const CartPanel: React.FC<CartPanelProps> = ({
               />
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6 }}>
-              <span style={{ fontSize: 11, color: 'var(--text-main)', fontWeight: 600 }}>💳 Chuyển khoản QR:</span>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
+              <span style={{ fontSize: 12.5, color: 'var(--text-main)', fontWeight: 600 }}>💳 Chuyển khoản QR:</span>
               <input
                 type="number"
                 value={splitBankInput}
                 onChange={(e) => setSplitBankInput(e.target.value)}
                 placeholder="Nhập CK ngân hàng..."
                 style={{
-                  width: 140,
-                  padding: '4px 8px',
+                  width: 150,
+                  height: 32,
+                  padding: '4px 10px',
                   borderRadius: 6,
                   background: 'var(--bg-card)',
                   border: '1px solid var(--border-subtle)',
                   color: 'var(--text-main)',
-                  fontSize: 12,
+                  fontSize: 13,
                   fontWeight: 700,
                   textAlign: 'right',
                   outline: 'none'
@@ -1086,32 +1087,32 @@ export const CartPanel: React.FC<CartPanelProps> = ({
             </div>
 
             {/* CÁC NÚT ĐỀ XUẤT TIỀN MẶT NHANH */}
-            <div style={{ display: 'flex', gap: 4, marginTop: 2 }}>
+            <div style={{ display: 'flex', gap: 5, marginTop: 2 }}>
               <button
                 type="button"
                 onClick={() => setSplitCashInput(String(totalAmount))}
-                style={{ flex: 1, padding: '4px', borderRadius: 4, background: 'var(--bg-card)', border: '1px solid var(--border-subtle)', color: 'var(--text-muted)', fontSize: 10, cursor: 'pointer', fontWeight: 600 }}
+                style={{ flex: 1, padding: '6px 4px', borderRadius: 5, background: 'var(--bg-card)', border: '1px solid var(--border-subtle)', color: 'var(--text-muted)', fontSize: 11.5, cursor: 'pointer', fontWeight: 600 }}
               >
                 Đủ tiền
               </button>
               <button
                 type="button"
                 onClick={() => setSplitCashInput(String(Math.ceil(totalAmount / 50000) * 50000))}
-                style={{ flex: 1, padding: '4px', borderRadius: 4, background: 'var(--bg-card)', border: '1px solid var(--border-subtle)', color: 'var(--text-muted)', fontSize: 10, cursor: 'pointer', fontWeight: 600 }}
+                style={{ flex: 1, padding: '6px 4px', borderRadius: 5, background: 'var(--bg-card)', border: '1px solid var(--border-subtle)', color: 'var(--text-muted)', fontSize: 11.5, cursor: 'pointer', fontWeight: 600 }}
               >
                 Tròn 50k
               </button>
               <button
                 type="button"
                 onClick={() => setSplitCashInput(String(Math.ceil(totalAmount / 100000) * 100000))}
-                style={{ flex: 1, padding: '4px', borderRadius: 4, background: 'var(--bg-card)', border: '1px solid var(--border-subtle)', color: 'var(--text-muted)', fontSize: 10, cursor: 'pointer', fontWeight: 600 }}
+                style={{ flex: 1, padding: '6px 4px', borderRadius: 5, background: 'var(--bg-card)', border: '1px solid var(--border-subtle)', color: 'var(--text-muted)', fontSize: 11.5, cursor: 'pointer', fontWeight: 600 }}
               >
                 Tròn 100k
               </button>
               <button
                 type="button"
                 onClick={() => setSplitCashInput(String(Math.ceil(totalAmount / 500000) * 500000))}
-                style={{ flex: 1, padding: '4px', borderRadius: 4, background: 'var(--bg-card)', border: '1px solid var(--border-subtle)', color: 'var(--text-muted)', fontSize: 10, cursor: 'pointer', fontWeight: 600 }}
+                style={{ flex: 1, padding: '6px 4px', borderRadius: 5, background: 'var(--bg-card)', border: '1px solid var(--border-subtle)', color: 'var(--text-muted)', fontSize: 11.5, cursor: 'pointer', fontWeight: 600 }}
               >
                 Tròn 500k
               </button>
@@ -1123,14 +1124,14 @@ export const CartPanel: React.FC<CartPanelProps> = ({
         <div style={{
           display: 'flex',
           flexDirection: 'column',
-          gap: 6,
+          gap: 7,
           background: 'var(--bg-subtle)',
           border: '1px solid var(--border-subtle)',
-          padding: '10px 12px',
+          padding: '12px 14px',
           borderRadius: 8,
-          marginBottom: 8
+          marginBottom: 10
         }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: 'var(--text-muted)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--text-muted)' }}>
             <span>Tiền hàng (chưa giảm):</span>
             <strong style={{ color: 'var(--text-main)', fontWeight: 600 }}>{subtotalAmount.toLocaleString('vi-VN')}đ</strong>
           </div>
@@ -1140,16 +1141,16 @@ export const CartPanel: React.FC<CartPanelProps> = ({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            gap: 6,
-            padding: '4px 6px',
+            gap: 8,
+            padding: '5px 8px',
             background: 'var(--bg-card)',
             borderRadius: 6,
             border: '1px solid var(--border-subtle)'
           }}>
-            <span style={{ fontSize: 11, color: 'var(--text-main)', fontWeight: 600 }}>
+            <span style={{ fontSize: 12.5, color: 'var(--text-main)', fontWeight: 600 }}>
               🎁 Chiết khấu đơn:
             </span>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
               <input
                 type="number"
                 min="0"
@@ -1158,14 +1159,15 @@ export const CartPanel: React.FC<CartPanelProps> = ({
                 placeholder="0"
                 title="Thu ngân nhập % hoặc số tiền giảm giá trực tiếp (A4)"
                 style={{
-                  width: 75,
-                  padding: '2px 6px',
-                  fontSize: 11,
+                  width: 85,
+                  height: 30,
+                  padding: '2px 8px',
+                  fontSize: 12.5,
                   fontWeight: 700,
                   color: 'var(--text-main)',
                   background: 'var(--bg-input)',
                   border: '1px solid var(--border-subtle)',
-                  borderRadius: 4,
+                  borderRadius: 5,
                   textAlign: 'right',
                   outline: 'none'
                 }}
@@ -1174,10 +1176,11 @@ export const CartPanel: React.FC<CartPanelProps> = ({
                 type="button"
                 onClick={() => setDiscountType(prev => prev === 'PERCENT' ? 'FIXED' : 'PERCENT')}
                 style={{
-                  padding: '2px 6px',
-                  fontSize: 11,
+                  height: 30,
+                  padding: '0 10px',
+                  fontSize: 12.5,
                   fontWeight: 700,
-                  borderRadius: 4,
+                  borderRadius: 5,
                   border: '1px solid var(--border-subtle)',
                   background: discountType === 'PERCENT' ? 'var(--primary)' : 'var(--bg-subtle)',
                   color: discountType === 'PERCENT' ? '#ffffff' : 'var(--text-main)',
@@ -1191,36 +1194,36 @@ export const CartPanel: React.FC<CartPanelProps> = ({
           </div>
 
           {discountAmount > 0 && (
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, color: '#d97706' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#d97706' }}>
               <span>Tiền giảm trừ chiết khấu:</span>
               <strong>-{discountAmount.toLocaleString('vi-VN')}đ</strong>
             </div>
           )}
 
           {loyaltyDiscountAmount > 0 && (
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, color: '#7c3aed' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#7c3aed' }}>
               <span>Giảm trừ điểm thưởng ({maxPointsCanUse} điểm):</span>
               <strong>-{loyaltyDiscountAmount.toLocaleString('vi-VN')}đ</strong>
             </div>
           )}
 
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--text-main)', borderTop: '1px solid var(--border-subtle)', paddingTop: 6, marginTop: 2 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 14, color: 'var(--text-main)', borderTop: '1px solid var(--border-subtle)', paddingTop: 8, marginTop: 4 }}>
             <span style={{ fontWeight: 700 }}>Tổng cần thanh toán:</span>
-            <strong style={{ color: 'var(--text-main)', fontSize: 15, fontWeight: 800 }}>{totalAmount.toLocaleString('vi-VN')}đ</strong>
+            <strong style={{ color: 'var(--text-main)', fontSize: 18, fontWeight: 800 }}>{totalAmount.toLocaleString('vi-VN')}đ</strong>
           </div>
 
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: 'var(--text-muted)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--text-muted)' }}>
             <span>Khách thanh toán:</span>
-            <strong style={{ color: '#059669', fontWeight: 700 }}>{paidAmount.toLocaleString('vi-VN')}đ</strong>
+            <strong style={{ color: '#059669', fontSize: 15, fontWeight: 700 }}>{paidAmount.toLocaleString('vi-VN')}đ</strong>
           </div>
           {changeAmount > 0 && (
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#059669', background: 'rgba(16, 185, 129, 0.1)', padding: '3px 6px', borderRadius: 4 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: '#059669', background: 'rgba(16, 185, 129, 0.1)', padding: '4px 8px', borderRadius: 5 }}>
               <span>Tiền thối lại khách:</span>
               <strong>{changeAmount.toLocaleString('vi-VN')}đ</strong>
             </div>
           )}
           {debtAmount > 0 && (
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#d97706', background: 'rgba(245, 158, 11, 0.1)', padding: '3px 6px', borderRadius: 4 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: '#d97706', background: 'rgba(245, 158, 11, 0.1)', padding: '4px 8px', borderRadius: 5 }}>
               <span>Ghi nợ vào sổ:</span>
               <strong>+{debtAmount.toLocaleString('vi-VN')}đ</strong>
             </div>
@@ -1233,15 +1236,15 @@ export const CartPanel: React.FC<CartPanelProps> = ({
             background: 'rgba(244, 63, 94, 0.15)',
             border: '1px solid rgba(244, 63, 94, 0.3)',
             color: '#fb7185',
-            padding: '6px 8px',
+            padding: '8px 10px',
             borderRadius: 6,
-            fontSize: 11,
+            fontSize: 12,
             marginBottom: 8,
             display: 'flex',
             alignItems: 'center',
             gap: 6
           }}>
-            <AlertTriangle size={14} style={{ flexShrink: 0 }} />
+            <AlertTriangle size={15} style={{ flexShrink: 0 }} />
             <span>{errorMessage}</span>
           </div>
         )}
@@ -1254,9 +1257,10 @@ export const CartPanel: React.FC<CartPanelProps> = ({
           className="btn-primary"
           style={{
             width: '100%',
-            height: 42,
-            fontSize: 14,
+            height: 48,
+            fontSize: 15,
             fontWeight: 700,
+            borderRadius: 8,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -1264,7 +1268,7 @@ export const CartPanel: React.FC<CartPanelProps> = ({
             opacity: items.length === 0 ? 0.6 : 1
           }}
         >
-          <CheckCircle2 size={16} />
+          <CheckCircle2 size={18} />
           <span>
             {isSubmitting 
               ? 'Đang ghi nhận đơn...' 

@@ -149,8 +149,8 @@ select option {
   z-index: 100;
   background: var(--header-bg);
   border-bottom: 1px solid var(--header-border);
-  padding: 0 16px;
-  height: 52px;
+  padding: 0 20px;
+  height: 56px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -162,26 +162,26 @@ select option {
 .meb-brand {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   cursor: pointer;
   user-select: none;
 }
 
 .meb-logo-badge {
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   border-radius: var(--radius-md);
   background: #1877f2;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 800;
-  font-size: 16px;
+  font-size: 17px;
   color: #ffffff;
 }
 
 .meb-brand-text h1 {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--text-main);
   line-height: 1.1;
@@ -193,11 +193,11 @@ select option {
 .branch-select-box {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   background: var(--bg-subtle);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
-  padding: 3px 8px;
+  padding: 5px 10px;
   transition: all 0.15s ease;
 }
 
@@ -209,7 +209,7 @@ select option {
   background: transparent !important;
   border: none !important;
   color: var(--text-main) !important;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   outline: none;
   cursor: pointer;
@@ -225,29 +225,29 @@ select option {
 .nav-tabs {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
   background: var(--bg-subtle);
-  padding: 3px;
+  padding: 4px;
   border-radius: var(--radius-md);
   border: 1px solid var(--border-subtle);
   flex-shrink: 0;
 }
 
 .nav-tab-btn {
-  padding: 6px 14px;
+  padding: 6px 16px;
   border-radius: var(--radius-sm);
   border: none;
   background: transparent;
   color: var(--text-muted);
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.15s ease;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
   white-space: nowrap;
-  height: 32px;
+  height: 36px;
 }
 
 .nav-tab-btn:hover {
@@ -268,19 +268,19 @@ select option {
 
 /* Nút tác vụ thông thường */
 .btn-action {
-  padding: 6px 12px;
+  padding: 6px 14px;
   border-radius: var(--radius-md);
   border: 1px solid var(--border-subtle);
   background: var(--bg-card);
   color: var(--text-main);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
   transition: all 0.15s ease;
-  height: 32px;
+  height: 36px;
 }
 
 .btn-action:hover {

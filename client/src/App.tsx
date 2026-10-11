@@ -399,15 +399,15 @@ function MainApp() {
         )}
 
         {activeTab === 'pos' && (
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 390px', gap: 12, height: '100%', minHeight: 0 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 450px', gap: 14, height: '100%', minHeight: 0 }}>
             {/* Cột Trái: Danh Mục Hàng Hóa & Quét Barcode */}
-            <div className="glass-panel" style={{ padding: 12, overflow: 'hidden', display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8, flexShrink: 0 }}>
-                <h3 style={{ fontSize: 15, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 6, margin: 0 }}>
-                  <ShoppingCart size={16} color="var(--primary)" />
+            <div className="glass-panel" style={{ padding: 14, overflow: 'hidden', display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10, flexShrink: 0 }}>
+                <h3 style={{ fontSize: 16, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 8, margin: 0 }}>
+                  <ShoppingCart size={18} color="var(--primary)" />
                   Danh Mục Hàng Hóa & Tồn Kho Chi Nhánh
                 </h3>
-                <span style={{ fontSize: 11, color: 'var(--text-dim)' }}>
+                <span style={{ fontSize: 12, color: 'var(--text-dim)' }}>
                   Phím tắt: [F2] Tìm kiếm • [Enter] Chọn món
                 </span>
               </div>
@@ -420,7 +420,7 @@ function MainApp() {
             </div>
 
             {/* Cột Phải: Giỏ Hàng Đa Đơn Vị Tính, Sổ Nợ Khách Hàng & Nút Thanh Toán F9 */}
-            <div className="glass-panel" style={{ padding: 12, overflow: 'hidden', display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0 }}>
+            <div className="glass-panel" style={{ padding: 14, overflow: 'hidden', display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0 }}>
               <CartPanel 
                 items={activeDraft.items}
                 onUpdateQty={handleUpdateQty}
@@ -519,42 +519,42 @@ function MainApp() {
       {/* 7. THANH PHÍM TẮT TRỰC QUAN CHÂN MÀN HÌNH (POS HOTKEYS FOOTER) */}
       {activeTab === 'pos' && (
         <footer style={{
-          height: 30,
+          height: 36,
           flexShrink: 0,
           background: 'var(--bg-card)',
           borderTop: '1px solid var(--border-subtle)',
-          padding: '0 16px',
+          padding: '0 20px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: 16,
-          fontSize: 11,
+          gap: 18,
+          fontSize: 12,
           color: 'var(--text-muted)',
           boxSizing: 'border-box'
         }}>
-          <span style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 4 }} onClick={() => setIsHelpModalOpen(true)}>
-            <kbd style={{ background: 'var(--bg-subtle)', color: 'var(--text-main)', border: '1px solid var(--border-subtle)', padding: '1px 5px', borderRadius: 4, fontFamily: 'inherit', fontWeight: 600 }}>F1</kbd>Trợ giúp
+          <span style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 5 }} onClick={() => setIsHelpModalOpen(true)}>
+            <kbd style={{ background: 'var(--bg-subtle)', color: 'var(--text-main)', border: '1px solid var(--border-subtle)', padding: '2px 7px', borderRadius: 4, fontFamily: 'inherit', fontWeight: 700, fontSize: 11 }}>F1</kbd>Trợ giúp
           </span>
-          <span style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 4 }} onClick={() => document.getElementById('pos-search-input')?.focus()}>
-            <kbd style={{ background: 'var(--bg-subtle)', color: 'var(--text-main)', border: '1px solid var(--border-subtle)', padding: '1px 5px', borderRadius: 4, fontFamily: 'inherit', fontWeight: 600 }}>F2</kbd>Tìm món
+          <span style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 5 }} onClick={() => document.getElementById('pos-search-input')?.focus()}>
+            <kbd style={{ background: 'var(--bg-subtle)', color: 'var(--text-main)', border: '1px solid var(--border-subtle)', padding: '2px 7px', borderRadius: 4, fontFamily: 'inherit', fontWeight: 700, fontSize: 11 }}>F2</kbd>Tìm món
           </span>
-          <span style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 4 }} onClick={() => setActiveTab('debts')}>
-            <kbd style={{ background: 'var(--bg-subtle)', color: 'var(--text-main)', border: '1px solid var(--border-subtle)', padding: '1px 5px', borderRadius: 4, fontFamily: 'inherit', fontWeight: 600 }}>F3</kbd>Sổ nợ
+          <span style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 5 }} onClick={() => setActiveTab('debts')}>
+            <kbd style={{ background: 'var(--bg-subtle)', color: 'var(--text-main)', border: '1px solid var(--border-subtle)', padding: '2px 7px', borderRadius: 4, fontFamily: 'inherit', fontWeight: 700, fontSize: 11 }}>F3</kbd>Sổ nợ
           </span>
-          <span style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 4 }} onClick={handleAddDraft}>
-            <kbd style={{ background: 'var(--bg-subtle)', color: 'var(--text-main)', border: '1px solid var(--border-subtle)', padding: '1px 5px', borderRadius: 4, fontFamily: 'inherit', fontWeight: 600 }}>F4</kbd>Thêm đơn
+          <span style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 5 }} onClick={handleAddDraft}>
+            <kbd style={{ background: 'var(--bg-subtle)', color: 'var(--text-main)', border: '1px solid var(--border-subtle)', padding: '2px 7px', borderRadius: 4, fontFamily: 'inherit', fontWeight: 700, fontSize: 11 }}>F4</kbd>Thêm đơn
           </span>
-          <span style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-            <kbd style={{ background: 'var(--bg-subtle)', color: 'var(--text-main)', border: '1px solid var(--border-subtle)', padding: '1px 5px', borderRadius: 4, fontFamily: 'inherit', fontWeight: 600 }}>F6</kbd>Đổi đơn
+          <span style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+            <kbd style={{ background: 'var(--bg-subtle)', color: 'var(--text-main)', border: '1px solid var(--border-subtle)', padding: '2px 7px', borderRadius: 4, fontFamily: 'inherit', fontWeight: 700, fontSize: 11 }}>F6</kbd>Đổi đơn
           </span>
-          <span style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 4 }} onClick={() => setIsShiftModalOpen(true)}>
-            <kbd style={{ background: 'var(--bg-subtle)', color: 'var(--text-main)', border: '1px solid var(--border-subtle)', padding: '1px 5px', borderRadius: 4, fontFamily: 'inherit', fontWeight: 600 }}>F8</kbd>Ca bán
+          <span style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 5 }} onClick={() => setIsShiftModalOpen(true)}>
+            <kbd style={{ background: 'var(--bg-subtle)', color: 'var(--text-main)', border: '1px solid var(--border-subtle)', padding: '2px 7px', borderRadius: 4, fontFamily: 'inherit', fontWeight: 700, fontSize: 11 }}>F8</kbd>Ca bán
           </span>
-          <span style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 4, color: '#059669', fontWeight: 600 }} onClick={() => document.getElementById('pos-checkout-btn')?.click()}>
-            <kbd style={{ background: '#10b981', color: '#fff', border: 'none', padding: '1px 5px', borderRadius: 4, fontFamily: 'inherit', fontWeight: 700 }}>F9</kbd>Thanh toán
+          <span style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 5, color: '#059669', fontWeight: 700 }} onClick={() => document.getElementById('pos-checkout-btn')?.click()}>
+            <kbd style={{ background: '#10b981', color: '#fff', border: 'none', padding: '2px 7px', borderRadius: 4, fontFamily: 'inherit', fontWeight: 800, fontSize: 11 }}>F9</kbd>Thanh toán
           </span>
-          <span style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 4 }} onClick={() => setIsReturnModalOpen(true)}>
-            <kbd style={{ background: 'var(--bg-subtle)', color: 'var(--text-main)', border: '1px solid var(--border-subtle)', padding: '1px 5px', borderRadius: 4, fontFamily: 'inherit', fontWeight: 600 }}>F10</kbd>Trả hàng
+          <span style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 5 }} onClick={() => setIsReturnModalOpen(true)}>
+            <kbd style={{ background: 'var(--bg-subtle)', color: 'var(--text-main)', border: '1px solid var(--border-subtle)', padding: '2px 7px', borderRadius: 4, fontFamily: 'inherit', fontWeight: 700, fontSize: 11 }}>F10</kbd>Trả hàng
           </span>
         </footer>
       )}
