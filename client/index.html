@@ -18,32 +18,22 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    <!-- PWA Service Worker & Cache Cleanup for Development -->
+    <!-- Triệt tiêu toàn bộ Service Worker & Dọn sạch Cache để chống lỗi màn hình trắng -->
     <script>
-      const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
       if ('serviceWorker' in navigator) {
-        if (isLocalhost) {
-          // Gỡ bỏ toàn bộ Service Worker và xóa Cache cũ trên localhost để chống dính màn hình trắng
-          navigator.serviceWorker.getRegistrations().then((registrations) => {
-            for (const reg of registrations) {
-              reg.unregister();
-              console.log('🧹 [MEB Dev]: Đã gỡ Service Worker cũ:', reg.scope);
-            }
-          });
-          if (window.caches) {
-            caches.keys().then((names) => {
-              for (const name of names) {
-                caches.delete(name);
-              }
-            });
+        navigator.serviceWorker.getRegistrations().then((registrations) => {
+          for (const reg of registrations) {
+            reg.unregister();
+            console.log('🧹 [MEB]: Đã gỡ Service Worker thành công:', reg.scope);
           }
-        } else {
-          window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/sw.js').catch((err) => {
-              console.warn('[SW Registration Failed]:', err);
-            });
-          });
-        }
+        });
+      }
+      if (window.caches) {
+        caches.keys().then((names) => {
+          for (const name of names) {
+            caches.delete(name);
+          }
+        });
       }
     </script>
   </body>

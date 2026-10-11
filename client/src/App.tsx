@@ -56,7 +56,15 @@ function MainApp() {
         const saved = localStorage.getItem('meb_pos_order_drafts');
         if (saved) {
           const parsed = JSON.parse(saved);
-          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            return parsed.map((d: any, idx: number) => ({
+              id: d?.id || `order-${idx + 1}`,
+              name: d?.name || `Đơn ${idx + 1}`,
+              items: Array.isArray(d?.items) ? d.items : [],
+              selectedPartnerId: d?.selectedPartnerId || null,
+              note: d?.note || ''
+            }));
+          }
         }
       } catch (e) {
         console.error('Lỗi đọc draft orders:', e);
@@ -89,6 +97,7 @@ function MainApp() {
     selectedPartnerId: null,
     note: ''
   };
+  const activeDraftItems = Array.isArray(activeDraft?.items) ? activeDraft.items : [];
 
   const handleSelectDraft = (draftId: string) => {
     setActiveDraftId(draftId);
@@ -422,7 +431,7 @@ function MainApp() {
             {/* Cột Phải: Giỏ Hàng Đa Đơn Vị Tính, Sổ Nợ Khách Hàng & Nút Thanh Toán F9 */}
             <div className="glass-panel" style={{ padding: '10px 12px', overflowY: 'auto', overflowX: 'hidden', display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0 }}>
               <CartPanel 
-                items={activeDraft.items}
+                items={activeDraftItems}
                 onUpdateQty={handleUpdateQty}
                 onSetQty={handleSetQty}
                 onUpdatePrice={handleUpdatePrice}
