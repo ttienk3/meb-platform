@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { api, type ProductInventory } from '../../services/api';
 import { branchStore } from '../../services/branchContext';
-import { Search, Barcode, AlertCircle, RefreshCw, X, LayoutGrid, Table, AlertTriangle, Clock } from 'lucide-react';
+import { Search, Barcode, AlertCircle, RefreshCw, X, LayoutGrid, Table, AlertTriangle, Clock, Plus } from 'lucide-react';
 import { PosDynamicActionsBar } from './PosDynamicActionsBar';
 import { getProductImageUrl } from '../../utils/productImages';
 
@@ -315,13 +315,13 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
           <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: 13 }}>
             <thead style={{ position: 'sticky', top: 0, zIndex: 2, background: 'var(--table-header-bg)' }}>
               <tr style={{ borderBottom: '1px solid var(--border-subtle)', color: 'var(--text-dim)', fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                <th style={{ padding: '10px 10px', width: 60, textAlign: 'center' }}>Ảnh</th>
-                <th style={{ padding: '10px 12px' }}>Mã SP</th>
-                <th style={{ padding: '10px 14px' }}>Tên Sản Phẩm</th>
-                <th style={{ padding: '10px 12px' }}>ĐVT</th>
-                <th style={{ padding: '10px 14px', textAlign: 'right' }}>Tồn Khả Dụng</th>
-                <th style={{ padding: '10px 14px', textAlign: 'right' }}>Giá Bán</th>
-                <th style={{ padding: '10px 14px', textAlign: 'center' }}>Thao Tác</th>
+                <th style={{ padding: '10px 10px', width: 65, minWidth: 65, textAlign: 'center', whiteSpace: 'nowrap' }}>Ảnh</th>
+                <th style={{ padding: '10px 12px', width: 110, minWidth: 110, whiteSpace: 'nowrap' }}>Mã SP</th>
+                <th style={{ padding: '10px 14px', minWidth: 180 }}>Tên Sản Phẩm</th>
+                <th style={{ padding: '10px 12px', width: 80, minWidth: 80, whiteSpace: 'nowrap' }}>ĐVT</th>
+                <th style={{ padding: '10px 14px', width: 130, minWidth: 130, textAlign: 'right', whiteSpace: 'nowrap' }}>Tồn Khả Dụng</th>
+                <th style={{ padding: '10px 14px', width: 120, minWidth: 120, textAlign: 'right', whiteSpace: 'nowrap' }}>Giá Bán</th>
+                <th style={{ padding: '10px 14px', width: 110, minWidth: 110, textAlign: 'center', whiteSpace: 'nowrap' }}>Thao Tác</th>
               </tr>
             </thead>
             <tbody>
@@ -351,7 +351,7 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
                       }}
                       className="product-table-row"
                     >
-                      <td style={{ padding: '6px 8px', width: 60, textAlign: 'center' }}>
+                      <td style={{ padding: '6px 8px', width: 65, minWidth: 65, textAlign: 'center' }}>
                         <div style={{
                           width: 48,
                           height: 48,
@@ -372,7 +372,7 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
                           />
                         </div>
                       </td>
-                      <td style={{ padding: '8px 12px', fontFamily: 'monospace', color: 'var(--text-muted)', fontWeight: 600, fontSize: 13 }}>
+                      <td style={{ padding: '8px 12px', width: 110, minWidth: 110, fontFamily: 'monospace', color: 'var(--text-muted)', fontWeight: 600, fontSize: 13, whiteSpace: 'nowrap' }}>
                         {p.code}
                       </td>
                       <td style={{ padding: '8px 14px' }}>
@@ -415,10 +415,10 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
                           )}
                         </div>
                       </td>
-                      <td style={{ padding: '8px 12px', color: 'var(--text-muted)', fontSize: 13 }}>
+                      <td style={{ padding: '8px 12px', width: 80, minWidth: 80, color: 'var(--text-muted)', fontSize: 13, whiteSpace: 'nowrap' }}>
                         {p.base_uom}
                       </td>
-                      <td style={{ padding: '8px 14px', textAlign: 'right' }}>
+                      <td style={{ padding: '8px 14px', width: 130, minWidth: 130, textAlign: 'right', whiteSpace: 'nowrap' }}>
                         <span style={{
                           fontWeight: 700,
                           fontSize: 13,
@@ -426,15 +426,16 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
                           background: isOutOfStock ? '#fef2f2' : '#ecfdf5',
                           border: isOutOfStock ? '1px solid #fecaca' : '1px solid #a7f3d0',
                           padding: '3px 10px',
-                          borderRadius: 6
+                          borderRadius: 6,
+                          display: 'inline-block'
                         }}>
                           {Number(p.available_qty).toLocaleString('vi-VN')} {p.base_uom}
                         </span>
                       </td>
-                      <td style={{ padding: '8px 14px', textAlign: 'right', fontWeight: 700, color: 'var(--text-main)', fontSize: 15 }}>
+                      <td style={{ padding: '8px 14px', width: 120, minWidth: 120, textAlign: 'right', fontWeight: 700, color: 'var(--text-main)', fontSize: 15, whiteSpace: 'nowrap' }}>
                         {Number(p.default_selling_price).toLocaleString('vi-VN')}đ
                       </td>
-                      <td style={{ padding: '8px 14px', textAlign: 'center' }}>
+                      <td style={{ padding: '8px 14px', width: 110, minWidth: 110, textAlign: 'center', whiteSpace: 'nowrap' }}>
                         <button
                           type="button"
                           onClick={(e) => { e.stopPropagation(); onSelectProduct(p); }}
@@ -447,10 +448,15 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
                             fontSize: 13,
                             fontWeight: 700,
                             cursor: 'pointer',
-                            height: 34
+                            height: 34,
+                            whiteSpace: 'nowrap',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: 4
                           }}
                         >
-                          + Chọn
+                          <Plus size={14} /> Chọn
                         </button>
                       </td>
                     </tr>
