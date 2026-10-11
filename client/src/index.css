@@ -1,63 +1,67 @@
 :root {
   --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
   --radius-full: 9999px;
-  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 
-  /* Bảng màu bán hàng thương mại tiêu chuẩn (Commercial Retail POS) */
-  --primary: #0284c7;
-  --primary-hover: #0369a1;
-  --primary-glow: rgba(2, 132, 199, 0.2);
+  /* CHUẨN THIẾT KẾ ĐẠI CHÚNG (FACEBOOK / SHOPEE / YOUTUBE) */
+  --primary: #1877f2;          /* Facebook Royal Blue */
+  --primary-hover: #166fe5;
+  --primary-subtle: #e7f3ff;
 
-  --accent-retail: #10b981;
+  --accent-retail: #10b981;    /* Shopee/Store Emerald Checkout Green */
   --accent-retail-hover: #059669;
-  --accent-retail-glow: rgba(16, 185, 129, 0.25);
+  --accent-retail-subtle: #ecfdf5;
 
-  --accent-trade: #f59e0b;
-  --accent-alert: #f43f5e;
+  --accent-alert: #ef4444;
+  --accent-warning: #f59e0b;
 }
 
-/* CHẾ ĐỘ BÁN HÀNG TIÊU CHUẨN (LIGHT THEME - SIÊU THỊ, BÁCH HÓA, RETAIL STORE) */
+/* CHẾ ĐỘ SÁNG CHUẨN (LIGHT THEME - FACEBOOK / SHOPEE / YOUTUBE GRADE) */
 :root, [data-theme="light"] {
-  --bg-main: #f1f5f9;
-  --bg-card: #ffffff;
-  --bg-card-hover: #f8fafc;
+  --bg-main: #f0f2f5;          /* Nền chính êm dịu, chuẩn Facebook / YouTube */
+  --bg-card: #ffffff;          /* Thẻ trắng tinh khiết */
+  --bg-card-hover: #f8f9fa;
+  --bg-subtle: #f0f2f5;        /* Khối phụ / input nền nhẹ */
   --bg-input: #ffffff;
-  --border-subtle: #cbd5e1;
-  --border-focus: #0284c7;
+  
+  --border-subtle: #e4e6eb;    /* Đường kẻ viền mờ tinh tế */
+  --border-focus: #1877f2;
 
-  --text-main: #0f172a;
-  --text-muted: #475569;
-  --text-dim: #64748b;
+  --text-main: #050505;        /* Chữ đen sắc nét, độ tương phản cao */
+  --text-muted: #65676b;       /* Chữ xám thông tin phụ */
+  --text-dim: #8a8d91;         /* Chữ mờ chú thích */
 
-  --header-bg: rgba(255, 255, 255, 0.96);
-  --header-border: #cbd5e1;
-  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
-  --table-header-bg: #f8fafc;
-  --table-row-hover: #f1f5f9;
+  --header-bg: #ffffff;
+  --header-border: #e4e6eb;
+  --card-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --table-header-bg: #f8f9fa;
+  --table-row-hover: #f0f2f5;
   --dropdown-bg: #ffffff;
 }
 
-/* CHẾ ĐỘ BÁN HÀNG ĐÊM (DARK THEME - CA ĐÊM, QUÁN BAR, SLATE OBSIDIAN) */
+/* CHẾ ĐỘ TỐI CHUẨN (DARK THEME - FACEBOOK DARK / YOUTUBE DARK) */
 [data-theme="dark"] {
-  --bg-main: #0b1120;
-  --bg-card: #162032;
-  --bg-card-hover: #1e2c44;
-  --bg-input: rgba(15, 23, 42, 0.85);
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-focus: #38bdf8;
+  --bg-main: #18191a;          /* Nền tối sâu chuẩn Facebook Dark */
+  --bg-card: #242526;          /* Thẻ xám đen */
+  --bg-card-hover: #3a3b3c;
+  --bg-subtle: #3a3b3c;
+  --bg-input: #242526;
 
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
-  --text-dim: #64748b;
+  --border-subtle: #393a3b;
+  --border-focus: #2d88ff;
 
-  --header-bg: rgba(11, 17, 32, 0.96);
-  --header-border: rgba(255, 255, 255, 0.08);
-  --card-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
-  --table-header-bg: #0f172a;
-  --table-row-hover: rgba(255, 255, 255, 0.04);
-  --dropdown-bg: #162032;
+  --text-main: #e4e6eb;
+  --text-muted: #b0b3b8;
+  --text-dim: #8a8d91;
+
+  --header-bg: #242526;
+  --header-border: #393a3b;
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  --table-header-bg: #18191a;
+  --table-row-hover: #3a3b3c;
+  --dropdown-bg: #242526;
 }
 
 * {
@@ -76,11 +80,10 @@ html, body, #root {
   overflow-x: hidden;
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
-  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 /* ==========================================================================
-   GLOBAL FORM CONTROLS & MODERN SEARCH BAR STYLING
+   FORM CONTROLS (CHUẨN TỐI GIẢN FACEBOOK / GOOGLE SEARCH)
    ========================================================================== */
 input, select, textarea {
   background-color: var(--bg-input) !important;
@@ -89,14 +92,14 @@ input, select, textarea {
   border-radius: var(--radius-sm);
   font-family: inherit;
   font-size: 13px;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
   outline: none;
   box-sizing: border-box;
 }
 
 input:focus, select:focus, textarea:focus {
-  border-color: var(--border-focus) !important;
-  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.2) !important;
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 2px var(--primary-subtle) !important;
 }
 
 input::placeholder, textarea::placeholder {
@@ -109,54 +112,49 @@ select option {
   padding: 8px 12px;
 }
 
-/* Modern Search Bar & Input Utilities */
+/* Search input style */
 .search-input {
-  height: 40px;
+  height: 38px;
   padding: 0 14px;
-  background-color: var(--bg-input) !important;
+  background-color: var(--bg-subtle) !important;
   border: 1px solid var(--border-subtle) !important;
-  border-radius: var(--radius-md) !important;
+  border-radius: var(--radius-full) !important;
   color: var(--text-main) !important;
   font-size: 13px !important;
   display: flex;
   align-items: center;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   box-sizing: border-box;
 }
 
-.search-input:hover {
-  border-color: var(--border-focus) !important;
-}
-
 .search-input:focus {
-  border-color: var(--border-focus) !important;
-  box-shadow: 0 0 0 3px var(--primary-glow) !important;
+  background-color: var(--bg-card) !important;
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 2px var(--primary-subtle) !important;
 }
 
-/* Glassmorphism / Panel utility */
+/* Glass panel / Card utility */
 .glass-panel {
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
   box-shadow: var(--card-shadow);
-  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
-/* Header styling */
+/* ==========================================================================
+   HEADER ĐIỀU HƯỚNG CHUẨN FACEBOOK / YOUTUBE (GỌN GÀNG, KHÔNG CHỒNG LẤN)
+   ========================================================================== */
 .meb-header {
   position: sticky;
   top: 0;
   z-index: 100;
   background: var(--header-bg);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--header-border);
   padding: 0 16px;
   height: 52px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 16px;
   width: 100%;
   box-sizing: border-box;
 }
@@ -166,50 +164,41 @@ select option {
   align-items: center;
   gap: 8px;
   cursor: pointer;
+  user-select: none;
 }
 
 .meb-logo-badge {
-  width: 28px;
-  height: 28px;
-  border-radius: var(--radius-sm);
-  background: linear-gradient(135deg, #0284c7, #38bdf8);
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
+  background: #1877f2;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 800;
-  font-size: 14px;
+  font-size: 16px;
   color: #ffffff;
-  box-shadow: 0 2px 8px var(--primary-glow);
 }
 
 .meb-brand-text h1 {
-  font-size: 14px;
-  font-weight: 800;
-  letter-spacing: -0.01em;
+  font-size: 15px;
+  font-weight: 700;
   color: var(--text-main);
   line-height: 1.1;
   margin: 0;
+  letter-spacing: -0.01em;
 }
 
-.meb-brand-text p {
-  font-size: 10px;
-  color: var(--text-dim);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  margin: 0;
-  line-height: 1;
-}
-
-/* Branch Switcher Dropdown */
+/* Bộ chọn chi nhánh tinh gọn */
 .branch-select-box {
   display: flex;
   align-items: center;
   gap: 6px;
-  background: var(--bg-input);
+  background: var(--bg-subtle);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
   padding: 3px 8px;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
 }
 
 .branch-select-box:hover, .branch-select-box:focus-within {
@@ -227,87 +216,57 @@ select option {
   box-shadow: none !important;
 }
 
-/* Navigation Tabs */
+/* User profile dropdown item hover */
+.profile-menu-container button:hover {
+  background: var(--bg-subtle) !important;
+}
+
+/* Thanh Tabs điều hướng trung tâm */
 .nav-tabs {
   display: flex;
   align-items: center;
-  gap: 5px;
-  background: var(--bg-card);
+  gap: 4px;
+  background: var(--bg-subtle);
   padding: 3px;
   border-radius: var(--radius-md);
   border: 1px solid var(--border-subtle);
-  overflow: visible;
-  flex-wrap: nowrap;
+  flex-shrink: 0;
 }
 
 .nav-tab-btn {
-  padding: 4px 10px;
+  padding: 6px 14px;
   border-radius: var(--radius-sm);
-  border: 1px solid transparent;
+  border: none;
   background: transparent;
   color: var(--text-muted);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.15s ease;
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
   white-space: nowrap;
-  height: 30px;
+  height: 32px;
 }
 
 .nav-tab-btn:hover {
   color: var(--text-main);
-  background: var(--table-row-hover);
+  background: rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="dark"] .nav-tab-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .nav-tab-btn.active {
-  background: rgba(2, 132, 199, 0.12);
-  color: #0284c7;
-  border-color: rgba(2, 132, 199, 0.35);
+  background: var(--bg-card);
+  color: var(--primary);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
   font-weight: 700;
 }
 
-/* Shift Indicator */
-.shift-status-pill {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 10px;
-  border-radius: var(--radius-full);
-  font-size: 11px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.shift-open {
-  background: rgba(16, 185, 129, 0.12);
-  border: 1px solid rgba(16, 185, 129, 0.35);
-  color: #059669;
-}
-
-[data-theme="dark"] .shift-open {
-  color: #34d399;
-}
-
-.shift-closed {
-  background: rgba(244, 63, 94, 0.12);
-  border: 1px solid rgba(244, 63, 94, 0.35);
-  color: #e11d48;
-}
-
-[data-theme="dark"] .shift-closed {
-  color: #fb7185;
-}
-
-.shift-status-pill:hover {
-  filter: brightness(1.1);
-  transform: translateY(-1px);
-}
-
-/* Action button styles */
+/* Nút tác vụ thông thường */
 .btn-action {
   padding: 6px 12px;
   border-radius: var(--radius-md);
@@ -321,34 +280,30 @@ select option {
   align-items: center;
   gap: 5px;
   transition: all 0.15s ease;
+  height: 32px;
 }
 
 .btn-action:hover {
-  background: var(--table-row-hover);
-  border-color: var(--border-focus);
+  background: var(--bg-subtle);
+  border-color: #cbd5e1;
 }
 
-/* NÚT THANH TOÁN BÁN HÀNG POS (COMMERCIAL RETAIL GREEN) */
+/* NÚT THANH TOÁN SHOPEE / POS CHECKOUT (ĐƠN GIẢN, NỔI BẬT) */
 .btn-primary, #pos-checkout-btn {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  background: #10b981 !important;
   color: #ffffff !important;
   border: none !important;
   border-radius: var(--radius-md);
-  font-weight: 800 !important;
-  font-size: 14px;
+  font-weight: 700 !important;
+  font-size: 15px;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+  transition: all 0.15s ease;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.35);
 }
 
 .btn-primary:hover:not(:disabled), #pos-checkout-btn:hover:not(:disabled) {
-  background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5) !important;
-}
-
-.btn-primary:active:not(:disabled), #pos-checkout-btn:active:not(:disabled) {
-  transform: translateY(0);
+  background: #059669 !important;
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.45) !important;
 }
 
 /* Product Card Bento Styling */
@@ -357,21 +312,13 @@ select option {
   border: 1px solid var(--border-subtle) !important;
   border-radius: var(--radius-md);
   box-shadow: var(--card-shadow);
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
 }
 
 .product-card:hover {
-  border-color: var(--primary) !important;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(2, 132, 199, 0.18), var(--card-shadow) !important;
-}
-
-.product-card img {
-  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.product-card:hover img {
-  transform: scale(1.06);
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+  transform: translateY(-1px);
 }
 
 /* Animation utilities */
@@ -388,9 +335,9 @@ select option {
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -403,15 +350,15 @@ select option {
   color: var(--text-main);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
-  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
   max-height: 90vh;
   overflow-y: auto;
 }
 
-/* Elegant slim scrollbars across the application */
+/* Thanh cuộn tinh tế */
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -419,10 +366,14 @@ select option {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(148, 163, 184, 0.35);
+  background: rgba(0, 0, 0, 0.15);
   border-radius: 4px;
 }
 
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+}
+
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--primary);
+  background: rgba(0, 0, 0, 0.25);
 }

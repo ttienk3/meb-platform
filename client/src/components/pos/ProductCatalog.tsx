@@ -166,17 +166,17 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
               <div style={{ 
                 display: 'flex', 
                 alignItems: 'center', 
-                gap: 3, 
-                fontSize: 10, 
-                color: '#38bdf8', 
-                background: 'rgba(56, 189, 248, 0.12)', 
-                border: '1px solid rgba(56, 189, 248, 0.25)',
-                padding: '2px 6px', 
-                borderRadius: 5,
+                gap: 4, 
+                fontSize: 11, 
+                color: '#059669', 
+                background: 'rgba(16, 185, 129, 0.1)', 
+                border: '1px solid rgba(16, 185, 129, 0.25)',
+                padding: '3px 8px', 
+                borderRadius: 6,
                 fontWeight: 600
               }}>
-                <Barcode size={12} />
-                <span>Máy quét ON</span>
+                <Barcode size={13} />
+                <span>Máy quét</span>
               </div>
             )}
           </div>
@@ -194,38 +194,39 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
             height: 38,
             borderRadius: 8,
             border: onlyFefoAlert ? '1px solid #f59e0b' : '1px solid var(--border-subtle)',
-            background: onlyFefoAlert ? 'rgba(245, 158, 11, 0.2)' : 'rgba(15, 23, 42, 0.6)',
-            color: onlyFefoAlert ? '#fbbf24' : 'var(--text-muted)',
+            background: onlyFefoAlert ? 'rgba(245, 158, 11, 0.15)' : 'var(--bg-subtle)',
+            color: onlyFefoAlert ? '#d97706' : 'var(--text-muted)',
             fontSize: 12,
-            fontWeight: 700,
+            fontWeight: 600,
             cursor: 'pointer',
             whiteSpace: 'nowrap',
             transition: 'all 0.15s ease'
           }}
           title="Lọc các sản phẩm có Lô/Hạn dùng hoặc Hàng tồn kho lâu cần ưu tiên xuất FEFO"
         >
-          <AlertTriangle size={14} color={onlyFefoAlert ? '#fbbf24' : 'var(--text-dim)'} />
+          <AlertTriangle size={14} color={onlyFefoAlert ? '#d97706' : 'var(--text-muted)'} />
           <span>FEFO</span>
         </button>
 
         {/* Chuyển đổi chế độ Thẻ Bán Lẻ vs Bảng Kẻ Bán Sỉ */}
-        <div style={{ display: 'flex', background: 'rgba(255, 255, 255, 0.05)', borderRadius: 8, padding: 2, border: '1px solid var(--border-subtle)', height: 38, alignItems: 'center' }}>
+        <div style={{ display: 'flex', background: 'var(--bg-subtle)', borderRadius: 8, padding: 3, border: '1px solid var(--border-subtle)', height: 38, alignItems: 'center', gap: 2 }}>
           <button
             type="button"
             onClick={() => { setViewMode('grid'); localStorage.setItem('pos_catalog_view', 'grid'); }}
             style={{
-              background: viewMode === 'grid' ? 'var(--primary)' : 'transparent',
-              color: viewMode === 'grid' ? '#000' : 'var(--text-muted)',
+              background: viewMode === 'grid' ? 'var(--bg-card)' : 'transparent',
+              color: viewMode === 'grid' ? 'var(--text-main)' : 'var(--text-muted)',
+              boxShadow: viewMode === 'grid' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
               border: 'none',
               borderRadius: 6,
               height: 32,
-              padding: '0 8px',
+              padding: '0 10px',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
-              gap: 4,
+              gap: 5,
               fontSize: 12,
-              fontWeight: 600,
+              fontWeight: viewMode === 'grid' ? 700 : 500,
               transition: 'all 0.15s ease'
             }}
             title="Giao diện Thẻ Sản Phẩm (Bán lẻ)"
@@ -237,18 +238,19 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
             type="button"
             onClick={() => { setViewMode('table'); localStorage.setItem('pos_catalog_view', 'table'); }}
             style={{
-              background: viewMode === 'table' ? 'var(--primary)' : 'transparent',
-              color: viewMode === 'table' ? '#000' : 'var(--text-muted)',
+              background: viewMode === 'table' ? 'var(--bg-card)' : 'transparent',
+              color: viewMode === 'table' ? 'var(--text-main)' : 'var(--text-muted)',
+              boxShadow: viewMode === 'table' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
               border: 'none',
               borderRadius: 6,
               height: 32,
-              padding: '0 8px',
+              padding: '0 10px',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
-              gap: 4,
+              gap: 5,
               fontSize: 12,
-              fontWeight: 600,
+              fontWeight: viewMode === 'table' ? 700 : 500,
               transition: 'all 0.15s ease'
             }}
             title="Bảng Kẻ Excel Siêu Tốc (Bán buôn / Gõ phím nhanh)"
@@ -271,28 +273,32 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
         </button>
       </div>
 
-      {/* 2. THANH CHỌN DANH MỤC HÀNG HÓA */}
+      {/* 2. THANH CHỌN DANH MỤC HÀNG HÓA (CHUẨN YOUTUBE FILTER PILLS) */}
       {categories.length > 2 && (
         <div style={{ display: 'flex', gap: 6, overflowX: 'auto', paddingBottom: 2 }}>
-          {categories.map(cat => (
-            <button
-              key={cat}
-              onClick={() => setSelectedCategory(cat!)}
-              style={{
-                padding: '3px 10px',
-                borderRadius: 'var(--radius-full)',
-                border: selectedCategory === cat ? '1px solid var(--primary)' : '1px solid var(--border-subtle)',
-                background: selectedCategory === cat ? 'rgba(56, 189, 248, 0.15)' : 'rgba(255, 255, 255, 0.04)',
-                color: selectedCategory === cat ? 'var(--primary)' : 'var(--text-muted)',
-                fontSize: 11,
-                cursor: 'pointer',
-                whiteSpace: 'nowrap',
-                transition: 'all 0.15s ease'
-              }}
-            >
-              {cat === 'ALL' ? 'Tất cả' : cat}
-            </button>
-          ))}
+          {categories.map(cat => {
+            const isSelected = selectedCategory === cat;
+            return (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(cat!)}
+                style={{
+                  padding: '5px 12px',
+                  borderRadius: 20,
+                  border: isSelected ? '1px solid var(--text-main)' : '1px solid var(--border-subtle)',
+                  background: isSelected ? 'var(--text-main)' : 'var(--bg-subtle)',
+                  color: isSelected ? 'var(--bg-card)' : 'var(--text-muted)',
+                  fontSize: 12,
+                  fontWeight: isSelected ? 700 : 500,
+                  cursor: 'pointer',
+                  whiteSpace: 'nowrap',
+                  transition: 'all 0.15s ease'
+                }}
+              >
+                {cat === 'ALL' ? 'Tất cả' : cat}
+              </button>
+            );
+          })}
         </div>
       )}
 
@@ -359,7 +365,7 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
                           />
                         </div>
                       </td>
-                      <td style={{ padding: '6px 10px', fontFamily: 'monospace', color: 'var(--primary)', fontWeight: 600, fontSize: 12 }}>
+                      <td style={{ padding: '6px 10px', fontFamily: 'monospace', color: 'var(--text-muted)', fontWeight: 600, fontSize: 12 }}>
                         {p.code}
                       </td>
                       <td style={{ padding: '6px 10px' }}>
@@ -371,7 +377,7 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
                               padding: '1px 5px', 
                               borderRadius: 4, 
                               background: 'rgba(245, 158, 11, 0.15)', 
-                              color: '#f59e0b', 
+                              color: '#d97706', 
                               border: '1px solid rgba(245, 158, 11, 0.3)',
                               display: 'inline-flex',
                               alignItems: 'center',
@@ -388,7 +394,7 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
                               padding: '1px 5px', 
                               borderRadius: 4, 
                               background: 'rgba(239, 68, 68, 0.15)', 
-                              color: '#f87171', 
+                              color: '#ef4444', 
                               border: '1px solid rgba(239, 68, 68, 0.3)',
                               fontWeight: 700
                             }}>
@@ -396,7 +402,7 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
                             </span>
                           )}
                           {p.is_combo && (
-                            <span style={{ fontSize: 10, padding: '1px 5px', borderRadius: 4, background: 'rgba(168, 85, 247, 0.15)', color: '#c084fc', border: '1px solid rgba(168, 85, 247, 0.3)' }}>
+                            <span style={{ fontSize: 10, padding: '1px 5px', borderRadius: 4, background: 'rgba(168, 85, 247, 0.15)', color: '#9333ea', border: '1px solid rgba(168, 85, 247, 0.3)', fontWeight: 600 }}>
                               Combo
                             </span>
                           )}
@@ -409,9 +415,10 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
                         <span style={{
                           fontWeight: 700,
                           fontSize: 12,
-                          color: isOutOfStock ? '#ef4444' : '#059669',
-                          background: isOutOfStock ? 'rgba(239, 68, 68, 0.12)' : 'rgba(16, 185, 129, 0.12)',
-                          padding: '1px 6px',
+                          color: isOutOfStock ? '#dc2626' : '#059669',
+                          background: isOutOfStock ? '#fef2f2' : '#ecfdf5',
+                          border: isOutOfStock ? '1px solid #fecaca' : '1px solid #a7f3d0',
+                          padding: '2px 8px',
                           borderRadius: 4
                         }}>
                           {Number(p.available_qty).toLocaleString('vi-VN')} {p.base_uom}
@@ -425,13 +432,13 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
                           type="button"
                           onClick={(e) => { e.stopPropagation(); onSelectProduct(p); }}
                           style={{
-                            background: 'rgba(2, 132, 199, 0.12)',
-                            border: '1px solid rgba(2, 132, 199, 0.3)',
-                            color: '#0284c7',
-                            borderRadius: 5,
-                            padding: '3px 8px',
+                            background: 'var(--bg-subtle)',
+                            border: '1px solid var(--border-subtle)',
+                            color: 'var(--primary)',
+                            borderRadius: 6,
+                            padding: '4px 10px',
                             fontSize: 11,
-                            fontWeight: 600,
+                            fontWeight: 700,
                             cursor: 'pointer'
                           }}
                         >

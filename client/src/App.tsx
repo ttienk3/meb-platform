@@ -329,7 +329,7 @@ function MainApp() {
   };
 
   return (
-    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'hidden', background: '#090d16' }}>
+    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'hidden', background: 'var(--bg-main)' }}>
       {/* 1. THANH HEADER ĐIỀU HƯỚNG & ĐỔI CHI NHÁNH */}
       <Header 
         activeTab={activeTab} 
@@ -516,44 +516,45 @@ function MainApp() {
       />
 
       {/* 7. THANH PHÍM TẮT TRỰC QUAN CHÂN MÀN HÌNH (POS HOTKEYS FOOTER) */}
+      {/* 7. THANH PHÍM TẮT TRỰC QUAN CHÂN MÀN HÌNH (POS HOTKEYS FOOTER) */}
       {activeTab === 'pos' && (
         <footer style={{
-          height: 28,
+          height: 30,
           flexShrink: 0,
-          background: 'rgba(9, 13, 22, 0.98)',
-          borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+          background: 'var(--bg-card)',
+          borderTop: '1px solid var(--border-subtle)',
           padding: '0 16px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           gap: 16,
           fontSize: 11,
-          color: '#94a3b8',
+          color: 'var(--text-muted)',
           boxSizing: 'border-box'
         }}>
-          <span style={{ cursor: 'pointer', color: '#38bdf8' }} onClick={() => setIsHelpModalOpen(true)}>
-            <strong style={{ background: '#0369a1', color: '#fff', padding: '1px 5px', borderRadius: 4, marginRight: 4 }}>F1</strong>Trợ giúp
+          <span style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 4 }} onClick={() => setIsHelpModalOpen(true)}>
+            <kbd style={{ background: 'var(--bg-subtle)', color: 'var(--text-main)', border: '1px solid var(--border-subtle)', padding: '1px 5px', borderRadius: 4, fontFamily: 'inherit', fontWeight: 600 }}>F1</kbd>Trợ giúp
           </span>
-          <span style={{ cursor: 'pointer' }} onClick={() => document.getElementById('pos-search-input')?.focus()}>
-            <strong style={{ background: '#334155', color: '#f8fafc', padding: '1px 5px', borderRadius: 4, marginRight: 4 }}>F2</strong>Tìm món
+          <span style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 4 }} onClick={() => document.getElementById('pos-search-input')?.focus()}>
+            <kbd style={{ background: 'var(--bg-subtle)', color: 'var(--text-main)', border: '1px solid var(--border-subtle)', padding: '1px 5px', borderRadius: 4, fontFamily: 'inherit', fontWeight: 600 }}>F2</kbd>Tìm món
           </span>
-          <span style={{ cursor: 'pointer' }} onClick={() => setActiveTab('debts')}>
-            <strong style={{ background: '#334155', color: '#f8fafc', padding: '1px 5px', borderRadius: 4, marginRight: 4 }}>F3</strong>Sổ nợ
+          <span style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 4 }} onClick={() => setActiveTab('debts')}>
+            <kbd style={{ background: 'var(--bg-subtle)', color: 'var(--text-main)', border: '1px solid var(--border-subtle)', padding: '1px 5px', borderRadius: 4, fontFamily: 'inherit', fontWeight: 600 }}>F3</kbd>Sổ nợ
           </span>
-          <span style={{ cursor: 'pointer' }} onClick={handleAddDraft}>
-            <strong style={{ background: '#334155', color: '#f8fafc', padding: '1px 5px', borderRadius: 4, marginRight: 4 }}>F4</strong>Thêm đơn
+          <span style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 4 }} onClick={handleAddDraft}>
+            <kbd style={{ background: 'var(--bg-subtle)', color: 'var(--text-main)', border: '1px solid var(--border-subtle)', padding: '1px 5px', borderRadius: 4, fontFamily: 'inherit', fontWeight: 600 }}>F4</kbd>Thêm đơn
           </span>
-          <span style={{ cursor: 'pointer' }}>
-            <strong style={{ background: '#334155', color: '#f8fafc', padding: '1px 5px', borderRadius: 4, marginRight: 4 }}>F6</strong>Đổi đơn
+          <span style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+            <kbd style={{ background: 'var(--bg-subtle)', color: 'var(--text-main)', border: '1px solid var(--border-subtle)', padding: '1px 5px', borderRadius: 4, fontFamily: 'inherit', fontWeight: 600 }}>F6</kbd>Đổi đơn
           </span>
-          <span style={{ cursor: 'pointer' }} onClick={() => setIsShiftModalOpen(true)}>
-            <strong style={{ background: '#334155', color: '#f8fafc', padding: '1px 5px', borderRadius: 4, marginRight: 4 }}>F8</strong>Ca bán
+          <span style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 4 }} onClick={() => setIsShiftModalOpen(true)}>
+            <kbd style={{ background: 'var(--bg-subtle)', color: 'var(--text-main)', border: '1px solid var(--border-subtle)', padding: '1px 5px', borderRadius: 4, fontFamily: 'inherit', fontWeight: 600 }}>F8</kbd>Ca bán
           </span>
-          <span style={{ cursor: 'pointer', color: '#34d399' }} onClick={() => document.getElementById('pos-checkout-btn')?.click()}>
-            <strong style={{ background: '#059669', color: '#fff', padding: '1px 5px', borderRadius: 4, marginRight: 4 }}>F9</strong>Thanh toán
+          <span style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 4, color: '#059669', fontWeight: 600 }} onClick={() => document.getElementById('pos-checkout-btn')?.click()}>
+            <kbd style={{ background: '#10b981', color: '#fff', border: 'none', padding: '1px 5px', borderRadius: 4, fontFamily: 'inherit', fontWeight: 700 }}>F9</kbd>Thanh toán
           </span>
-          <span style={{ cursor: 'pointer' }} onClick={() => setIsReturnModalOpen(true)}>
-            <strong style={{ background: '#334155', color: '#f8fafc', padding: '1px 5px', borderRadius: 4, marginRight: 4 }}>F10</strong>Trả hàng
+          <span style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 4 }} onClick={() => setIsReturnModalOpen(true)}>
+            <kbd style={{ background: 'var(--bg-subtle)', color: 'var(--text-main)', border: '1px solid var(--border-subtle)', padding: '1px 5px', borderRadius: 4, fontFamily: 'inherit', fontWeight: 600 }}>F10</kbd>Trả hàng
           </span>
         </footer>
       )}
