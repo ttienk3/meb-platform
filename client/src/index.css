@@ -119,66 +119,69 @@ select option:checked, select option:hover {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(9, 13, 22, 0.94);
+  background: rgba(9, 13, 22, 0.96);
   backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border-subtle);
-  padding: 10px 20px;
+  padding: 0 16px;
+  height: 52px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 10px;
   width: 100%;
-  max-width: 100vw;
   box-sizing: border-box;
-  overflow-x: hidden;
 }
 
 .meb-brand {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   cursor: pointer;
 }
 
 .meb-logo-badge {
-  width: 38px;
-  height: 38px;
-  border-radius: var(--radius-md);
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-sm);
   background: linear-gradient(135deg, #0284c7, #38bdf8);
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 800;
-  font-size: 16px;
+  font-size: 14px;
   color: #ffffff;
-  box-shadow: 0 0 16px var(--primary-glow);
+  box-shadow: 0 0 12px var(--primary-glow);
 }
 
 .meb-brand-text h1 {
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
   background: linear-gradient(to right, #ffffff, #94a3b8);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  line-height: 1.1;
+  margin: 0;
 }
 
 .meb-brand-text p {
-  font-size: 11px;
+  font-size: 10px;
   color: var(--text-dim);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
+  margin: 0;
+  line-height: 1;
 }
 
 /* Branch Switcher Dropdown */
 .branch-select-box {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
   background: rgba(18, 24, 38, 0.9);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  padding: 4px 8px;
   transition: all 0.2s ease;
 }
 
@@ -191,7 +194,7 @@ select option:checked, select option:hover {
   background: transparent;
   border: none;
   color: var(--text-main);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   outline: none;
   cursor: pointer;
@@ -207,9 +210,9 @@ select option:checked, select option:hover {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 4px 10px;
+  padding: 3px 8px;
   border-radius: var(--radius-full);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.02em;
 }
@@ -230,38 +233,46 @@ select option:checked, select option:hover {
 .nav-tabs {
   display: flex;
   align-items: center;
-  gap: 6px;
-  background: rgba(15, 23, 42, 0.8);
-  padding: 4px;
+  gap: 4px;
+  background: rgba(15, 23, 42, 0.7);
+  padding: 3px;
   border-radius: var(--radius-md);
   border: 1px solid var(--border-subtle);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.nav-tabs::-webkit-scrollbar {
+  display: none;
 }
 
 .nav-tab-btn {
-  padding: 6px 14px;
+  padding: 4px 8px;
   border-radius: var(--radius-sm);
   border: none;
   background: transparent;
   color: var(--text-muted);
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 12px;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.15s ease;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
+  white-space: nowrap;
+  height: 28px;
 }
 
 .nav-tab-btn:hover {
   color: var(--text-main);
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .nav-tab-btn.active {
-  background: rgba(56, 189, 248, 0.15);
+  background: rgba(56, 189, 248, 0.18);
   color: var(--primary);
-  font-weight: 600;
-  box-shadow: inset 0 0 8px rgba(56, 189, 248, 0.1);
+  font-weight: 700;
+  box-shadow: inset 0 0 8px rgba(56, 189, 248, 0.15);
 }
 
 /* Shift Indicator */
@@ -379,4 +390,23 @@ select option:checked, select option:hover {
   box-shadow: 0 20px 48px rgba(0, 0, 0, 0.6), 0 0 24px rgba(56, 189, 248, 0.1);
   max-height: 90vh;
   overflow-y: auto;
+}
+
+/* Elegant slim scrollbars across the application */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.4);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.25);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(56, 189, 248, 0.5);
 }

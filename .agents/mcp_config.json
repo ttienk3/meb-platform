@@ -16,6 +16,14 @@
         "@modelcontextprotocol/server-filesystem",
         "/home/ttien82/Data/TranTien/meb"
       ]
+    },
+    "postgres": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres",
+        "postgresql://postgres.eigxzplbupjmnzqwzsur:Thuthuy64%40%40@aws-0-ap-south-1.pooler.supabase.com:5432/postgres"
+      ]
     }
   }
 }

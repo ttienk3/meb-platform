@@ -109,17 +109,14 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
   });
 
   return (
-    <div className="product-catalog-panel" style={{ display: 'flex', flexDirection: 'column', height: '100%', gap: 16 }}>
-      {/* 0. THANH TIỆN ÍCH NO-CODE DYNAMIC EXTENSIONS */}
-      <PosDynamicActionsBar onRecordCreated={() => loadProducts(searchTerm)} />
-
-      {/* 1. THANH TÌM KIẾM & BỘ LỌC BARCODE (CHUẨN HIỆN ĐẠI 44PX) */}
-      <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+    <div className="product-catalog-panel" style={{ display: 'flex', flexDirection: 'column', height: '100%', gap: 10 }}>
+      {/* 1. THANH TÌM KIẾM, BỘ LỌC BARCODE & TIỆN ÍCH */}
+      <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
         <div style={{ position: 'relative', flex: 1, display: 'flex', alignItems: 'center' }}>
           <Search 
-            size={18} 
+            size={16} 
             color="var(--text-muted)" 
-            style={{ position: 'absolute', left: 14, pointerEvents: 'none' }} 
+            style={{ position: 'absolute', left: 12, pointerEvents: 'none' }} 
           />
           <input
             id="pos-search-input"
@@ -132,19 +129,19 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
             onKeyDown={handleSearchKeyDown}
             style={{
               width: '100%',
-              height: 44,
-              paddingLeft: 44,
-              paddingRight: barcodeEnabled ? (searchTerm ? 140 : 110) : (searchTerm ? 38 : 14),
-              fontSize: 14,
-              borderRadius: 10
+              height: 38,
+              paddingLeft: 38,
+              paddingRight: barcodeEnabled ? (searchTerm ? 135 : 105) : (searchTerm ? 36 : 12),
+              fontSize: 13,
+              borderRadius: 8
             }}
           />
           <div style={{ 
             position: 'absolute', 
-            right: 12, 
+            right: 8, 
             display: 'flex', 
             alignItems: 'center', 
-            gap: 6 
+            gap: 4 
           }}>
             {searchTerm && (
               <button
@@ -157,44 +154,44 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
                   cursor: 'pointer',
                   display: 'flex',
                   alignItems: 'center',
-                  padding: 4
+                  padding: 2
                 }}
                 title="Xóa từ khóa"
               >
-                <X size={15} />
+                <X size={14} />
               </button>
             )}
             {barcodeEnabled && (
               <div style={{ 
                 display: 'flex', 
                 alignItems: 'center', 
-                gap: 4, 
-                fontSize: 11, 
+                gap: 3, 
+                fontSize: 10, 
                 color: '#38bdf8', 
                 background: 'rgba(56, 189, 248, 0.12)', 
                 border: '1px solid rgba(56, 189, 248, 0.25)',
-                padding: '3px 8px', 
-                borderRadius: 6,
+                padding: '2px 6px', 
+                borderRadius: 5,
                 fontWeight: 600
               }}>
-                <Barcode size={13} />
+                <Barcode size={12} />
                 <span>Máy quét ON</span>
               </div>
             )}
           </div>
         </div>
 
-        {/* Nút lọc nhanh FEFO / Cảnh báo hàng tồn lâu (Trụ cột 3) */}
+        {/* Nút lọc nhanh FEFO / Cảnh báo hàng tồn lâu */}
         <button
           type="button"
           onClick={() => setOnlyFefoAlert(prev => !prev)}
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: 6,
-            padding: '0 12px',
-            height: 44,
-            borderRadius: 10,
+            gap: 5,
+            padding: '0 10px',
+            height: 38,
+            borderRadius: 8,
             border: onlyFefoAlert ? '1px solid #f59e0b' : '1px solid var(--border-subtle)',
             background: onlyFefoAlert ? 'rgba(245, 158, 11, 0.2)' : 'rgba(15, 23, 42, 0.6)',
             color: onlyFefoAlert ? '#fbbf24' : 'var(--text-muted)',
@@ -206,12 +203,12 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
           }}
           title="Lọc các sản phẩm có Lô/Hạn dùng hoặc Hàng tồn kho lâu cần ưu tiên xuất FEFO"
         >
-          <AlertTriangle size={15} color={onlyFefoAlert ? '#fbbf24' : 'var(--text-dim)'} />
-          <span>Ưu tiên FEFO</span>
+          <AlertTriangle size={14} color={onlyFefoAlert ? '#fbbf24' : 'var(--text-dim)'} />
+          <span>FEFO</span>
         </button>
 
-        {/* Chuyển đổi chế độ Thẻ Bán Lẻ vs Bảng Kẻ Bán Sỉ (Q4) */}
-        <div style={{ display: 'flex', background: 'rgba(255, 255, 255, 0.05)', borderRadius: 10, padding: 3, border: '1px solid var(--border-subtle)', height: 44, alignItems: 'center' }}>
+        {/* Chuyển đổi chế độ Thẻ Bán Lẻ vs Bảng Kẻ Bán Sỉ */}
+        <div style={{ display: 'flex', background: 'rgba(255, 255, 255, 0.05)', borderRadius: 8, padding: 2, border: '1px solid var(--border-subtle)', height: 38, alignItems: 'center' }}>
           <button
             type="button"
             onClick={() => { setViewMode('grid'); localStorage.setItem('pos_catalog_view', 'grid'); }}
@@ -219,20 +216,20 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
               background: viewMode === 'grid' ? 'var(--primary)' : 'transparent',
               color: viewMode === 'grid' ? '#000' : 'var(--text-muted)',
               border: 'none',
-              borderRadius: 7,
-              height: 36,
-              padding: '0 10px',
+              borderRadius: 6,
+              height: 32,
+              padding: '0 8px',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
-              gap: 5,
+              gap: 4,
               fontSize: 12,
               fontWeight: 600,
               transition: 'all 0.15s ease'
             }}
             title="Giao diện Thẻ Sản Phẩm (Bán lẻ)"
           >
-            <LayoutGrid size={15} />
+            <LayoutGrid size={14} />
             <span>Thẻ</span>
           </button>
           <button
@@ -242,48 +239,51 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
               background: viewMode === 'table' ? 'var(--primary)' : 'transparent',
               color: viewMode === 'table' ? '#000' : 'var(--text-muted)',
               border: 'none',
-              borderRadius: 7,
-              height: 36,
-              padding: '0 10px',
+              borderRadius: 6,
+              height: 32,
+              padding: '0 8px',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
-              gap: 5,
+              gap: 4,
               fontSize: 12,
               fontWeight: 600,
               transition: 'all 0.15s ease'
             }}
             title="Bảng Kẻ Excel Siêu Tốc (Bán buôn / Gõ phím nhanh)"
           >
-            <Table size={15} />
+            <Table size={14} />
             <span>Bảng</span>
           </button>
         </div>
 
+        {/* TIỆN ÍCH NO-CODE DYNAMIC EXTENSIONS */}
+        <PosDynamicActionsBar onRecordCreated={() => loadProducts(searchTerm)} />
+
         <button 
           className="btn-action" 
           onClick={() => loadProducts(searchTerm)} 
-          style={{ height: 44, padding: '0 14px', borderRadius: 10 }}
+          style={{ height: 38, padding: '0 10px', borderRadius: 8 }}
           title="Tải lại danh mục & tồn kho"
         >
-          <RefreshCw size={16} className={loading ? 'spin' : ''} />
+          <RefreshCw size={14} className={loading ? 'spin' : ''} />
         </button>
       </div>
 
       {/* 2. THANH CHỌN DANH MỤC HÀNG HÓA */}
       {categories.length > 2 && (
-        <div style={{ display: 'flex', gap: 8, overflowX: 'auto', paddingBottom: 4 }}>
+        <div style={{ display: 'flex', gap: 6, overflowX: 'auto', paddingBottom: 2 }}>
           {categories.map(cat => (
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat!)}
               style={{
-                padding: '5px 12px',
+                padding: '3px 10px',
                 borderRadius: 'var(--radius-full)',
                 border: selectedCategory === cat ? '1px solid var(--primary)' : '1px solid var(--border-subtle)',
                 background: selectedCategory === cat ? 'rgba(56, 189, 248, 0.15)' : 'rgba(255, 255, 255, 0.04)',
                 color: selectedCategory === cat ? 'var(--primary)' : 'var(--text-muted)',
-                fontSize: 12,
+                fontSize: 11,
                 cursor: 'pointer',
                 whiteSpace: 'nowrap',
                 transition: 'all 0.15s ease'
@@ -297,16 +297,16 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
 
       {/* 3. HIỂN THỊ HÀNG HÓA: DẠNG BẢNG EXCEL SIÊU TỐC HOẶC LƯỚI THẺ BENTO */}
       {viewMode === 'table' ? (
-        <div style={{ flex: 1, overflowY: 'auto', background: 'rgba(15, 23, 42, 0.6)', borderRadius: 12, border: '1px solid var(--border-subtle)' }}>
+        <div style={{ flex: 1, minHeight: 0, overflowY: 'auto', background: 'rgba(15, 23, 42, 0.6)', borderRadius: 10, border: '1px solid var(--border-subtle)' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: 13 }}>
             <thead style={{ position: 'sticky', top: 0, zIndex: 2, background: '#0f172a' }}>
               <tr style={{ borderBottom: '1px solid var(--border-subtle)', color: 'var(--text-dim)', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                <th style={{ padding: '10px 14px' }}>Mã SP</th>
-                <th style={{ padding: '10px 14px' }}>Tên Sản Phẩm</th>
-                <th style={{ padding: '10px 14px' }}>ĐVT</th>
-                <th style={{ padding: '10px 14px', textAlign: 'right' }}>Tồn Khả Dụng</th>
-                <th style={{ padding: '10px 14px', textAlign: 'right' }}>Giá Bán</th>
-                <th style={{ padding: '10px 14px', textAlign: 'center' }}>Thao Tác</th>
+                <th style={{ padding: '8px 12px' }}>Mã SP</th>
+                <th style={{ padding: '8px 12px' }}>Tên Sản Phẩm</th>
+                <th style={{ padding: '8px 12px' }}>ĐVT</th>
+                <th style={{ padding: '8px 12px', textAlign: 'right' }}>Tồn Khả Dụng</th>
+                <th style={{ padding: '8px 12px', textAlign: 'right' }}>Giá Bán</th>
+                <th style={{ padding: '8px 12px', textAlign: 'center' }}>Thao Tác</th>
               </tr>
             </thead>
             <tbody>
@@ -335,16 +335,16 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
                         transition: 'background 0.15s ease'
                       }}
                     >
-                      <td style={{ padding: '10px 14px', fontFamily: 'monospace', color: 'var(--primary)', fontWeight: 600 }}>
+                      <td style={{ padding: '6px 10px', fontFamily: 'monospace', color: 'var(--primary)', fontWeight: 600, fontSize: 12 }}>
                         {p.code}
                       </td>
-                      <td style={{ padding: '10px 14px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-                          <span style={{ fontWeight: 600, color: 'var(--text-main)' }}>{p.name}</span>
+                      <td style={{ padding: '6px 10px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+                          <span style={{ fontWeight: 600, color: 'var(--text-main)', fontSize: 13 }}>{p.name}</span>
                           {(p.track_expiry || p.has_expiry || p.expiry_date) && (
                             <span style={{ 
                               fontSize: 10, 
-                              padding: '2px 6px', 
+                              padding: '1px 5px', 
                               borderRadius: 4, 
                               background: 'rgba(245, 158, 11, 0.15)', 
                               color: '#f59e0b', 
@@ -361,7 +361,7 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
                           {(p.is_aging_stock || Number(p.days_in_inventory || 0) >= 90) && (
                             <span style={{ 
                               fontSize: 10, 
-                              padding: '2px 6px', 
+                              padding: '1px 5px', 
                               borderRadius: 4, 
                               background: 'rgba(239, 68, 68, 0.15)', 
                               color: '#f87171', 
@@ -372,30 +372,31 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
                             </span>
                           )}
                           {p.is_combo && (
-                            <span style={{ fontSize: 10, padding: '2px 6px', borderRadius: 4, background: 'rgba(168, 85, 247, 0.15)', color: '#c084fc', border: '1px solid rgba(168, 85, 247, 0.3)' }}>
+                            <span style={{ fontSize: 10, padding: '1px 5px', borderRadius: 4, background: 'rgba(168, 85, 247, 0.15)', color: '#c084fc', border: '1px solid rgba(168, 85, 247, 0.3)' }}>
                               Combo
                             </span>
                           )}
                         </div>
                       </td>
-                      <td style={{ padding: '10px 14px', color: 'var(--text-muted)' }}>
+                      <td style={{ padding: '6px 10px', color: 'var(--text-muted)', fontSize: 12 }}>
                         {p.base_uom}
                       </td>
-                      <td style={{ padding: '10px 14px', textAlign: 'right' }}>
+                      <td style={{ padding: '6px 10px', textAlign: 'right' }}>
                         <span style={{
                           fontWeight: 700,
+                          fontSize: 12,
                           color: isOutOfStock ? '#ef4444' : '#10b981',
                           background: isOutOfStock ? 'rgba(239, 68, 68, 0.12)' : 'rgba(16, 185, 129, 0.12)',
-                          padding: '2px 8px',
-                          borderRadius: 6
+                          padding: '1px 6px',
+                          borderRadius: 4
                         }}>
                           {Number(p.available_qty).toLocaleString('vi-VN')} {p.base_uom}
                         </span>
                       </td>
-                      <td style={{ padding: '10px 14px', textAlign: 'right', fontWeight: 700, color: 'var(--text-main)' }}>
+                      <td style={{ padding: '6px 10px', textAlign: 'right', fontWeight: 700, color: 'var(--text-main)', fontSize: 13 }}>
                         {Number(p.default_selling_price).toLocaleString('vi-VN')}đ
                       </td>
-                      <td style={{ padding: '10px 14px', textAlign: 'center' }}>
+                      <td style={{ padding: '6px 10px', textAlign: 'center' }}>
                         <button
                           type="button"
                           onClick={(e) => { e.stopPropagation(); onSelectProduct(p); }}
@@ -403,9 +404,9 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
                             background: 'rgba(56, 189, 248, 0.15)',
                             border: '1px solid rgba(56, 189, 248, 0.3)',
                             color: 'var(--primary)',
-                            borderRadius: 6,
-                            padding: '4px 10px',
-                            fontSize: 12,
+                            borderRadius: 5,
+                            padding: '3px 8px',
+                            fontSize: 11,
                             fontWeight: 600,
                             cursor: 'pointer'
                           }}

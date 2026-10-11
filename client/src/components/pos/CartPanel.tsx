@@ -498,21 +498,12 @@ export const CartPanel: React.FC<CartPanelProps> = ({
         </div>
       )}
 
-      {/* 0. THANH QUẢN LÝ ĐA GIỎ HÀNG (MULTI-TAB ORDER DRAFTS) */}
-      {drafts.length > 0 && onSelectDraft && (
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 6,
-          background: 'rgba(15, 23, 42, 0.7)',
-          padding: '4px 6px',
-          borderRadius: 8,
-          border: '1px solid rgba(255, 255, 255, 0.08)',
-          overflowX: 'auto'
-        }}>
-          <Layers size={13} color="var(--primary)" style={{ flexShrink: 0, marginLeft: 2 }} />
-          <div style={{ display: 'flex', gap: 6, flex: 1, overflowX: 'auto' }}>
-            {drafts.map((d) => {
+      {/* 1. THANH TÁC VỤ & TAB ĐƠN HÀNG */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6, borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: 6 }}>
+        {/* Các Tab Đơn hàng */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 4, flex: 1, overflowX: 'auto', scrollbarWidth: 'none' }}>
+          {drafts.length > 0 && onSelectDraft ? (
+            drafts.map((d) => {
               const isActive = d.id === activeDraftId;
               const itCount = d.items.length;
               return (
@@ -522,44 +513,38 @@ export const CartPanel: React.FC<CartPanelProps> = ({
                   style={{
                     display: 'inline-flex',
                     alignItems: 'center',
-                    gap: 6,
-                    padding: '4px 8px',
+                    gap: 4,
+                    padding: '3px 8px',
                     borderRadius: 6,
-                    background: isActive ? '#0284c7' : 'rgba(255, 255, 255, 0.05)',
+                    background: isActive ? '#0284c7' : 'rgba(255, 255, 255, 0.06)',
                     color: isActive ? '#ffffff' : 'var(--text-muted)',
                     fontSize: 11,
                     fontWeight: 700,
                     cursor: 'pointer',
-                    whiteSpace: 'nowrap',
-                    transition: 'all 0.15s ease'
+                    whiteSpace: 'nowrap'
                   }}
                 >
                   <span>{d.name} ({itCount})</span>
                   {onCloseDraft && drafts.length > 1 && (
                     <button
                       type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onCloseDraft(d.id);
-                      }}
-                      style={{
-                        background: 'transparent',
-                        border: 'none',
-                        color: isActive ? '#ffffff' : '#94a3b8',
-                        cursor: 'pointer',
-                        padding: 0,
-                        display: 'flex',
-                        alignItems: 'center'
-                      }}
-                      title="Đóng đơn này"
+                      onClick={(e) => { e.stopPropagation(); onCloseDraft(d.id); }}
+                      style={{ background: 'transparent', border: 'none', color: isActive ? '#ffffff' : '#94a3b8', cursor: 'pointer', padding: 0 }}
+                      title="Đóng đơn"
                     >
                       <X size={11} />
                     </button>
                   )}
                 </div>
               );
-            })}
-          </div>
+            })
+          ) : (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 13, fontWeight: 700 }}>
+              <Receipt size={15} color="var(--primary)" />
+              <span>Đơn Hàng ({items.length})</span>
+            </div>
+          )}
+
           {onAddDraft && drafts.length < 5 && (
             <button
               type="button"
@@ -567,36 +552,25 @@ export const CartPanel: React.FC<CartPanelProps> = ({
               style={{
                 background: 'rgba(56, 189, 248, 0.12)',
                 border: '1px solid rgba(56, 189, 248, 0.3)',
-                borderRadius: 6,
+                borderRadius: 5,
                 color: '#38bdf8',
-                padding: '3px 8px',
+                padding: '2px 6px',
                 fontSize: 11,
                 fontWeight: 700,
                 cursor: 'pointer',
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: 2,
-                whiteSpace: 'nowrap'
+                gap: 2
               }}
-              title="Mở thêm giỏ hàng mới (khách chờ)"
+              title="Thêm đơn mới"
             >
-              <Plus size={12} /> Đơn
+              <Plus size={11} /> Đơn
             </button>
           )}
         </div>
-      )}
 
-      {/* 1. TIÊU ĐỀ GIỎ HÀNG */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-subtle)', paddingBottom: 6 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <Receipt size={17} color="var(--primary)" />
-          <h3 style={{ fontSize: 15, fontWeight: 700, margin: 0 }}>Đơn Hàng Hiện Tại</h3>
-          <span style={{ fontSize: 11, background: 'rgba(56,189,248,0.1)', color: '#38bdf8', padding: '1px 6px', borderRadius: 8, fontWeight: 600 }}>
-            {items.length} món
-          </span>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          {/* Q5: Nút mở Màn hình phụ cho khách hàng */}
+        {/* Nút Khách Xem & Xóa Hết */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
           <button
             type="button"
             onClick={() => {
@@ -605,50 +579,60 @@ export const CartPanel: React.FC<CartPanelProps> = ({
             style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: 4,
+              gap: 3,
               fontSize: 11,
-              padding: '3px 8px',
-              borderRadius: 6,
+              padding: '3px 6px',
+              borderRadius: 5,
               background: 'rgba(56, 189, 248, 0.1)',
               border: '1px solid rgba(56, 189, 248, 0.25)',
               color: '#38bdf8',
               cursor: 'pointer',
               fontWeight: 600
             }}
-            title="Mở màn hình phụ hướng về Khách Hàng (Customer Display)"
+            title="Mở màn hình phụ Khách Xem"
           >
-            <Tv size={12} /> Khách Xem
+            <Tv size={11} /> Khách Xem
           </button>
           {items.length > 0 && (
             <button 
               onClick={onClearCart} 
-              className="btn-action" 
-              style={{ fontSize: 11, padding: '3px 8px', color: '#fb7185' }}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 3,
+                fontSize: 11,
+                padding: '3px 6px',
+                borderRadius: 5,
+                background: 'rgba(244, 63, 94, 0.12)',
+                border: '1px solid rgba(244, 63, 94, 0.25)',
+                color: '#fb7185',
+                cursor: 'pointer',
+                fontWeight: 600
+              }}
               title="Xóa toàn bộ giỏ hàng"
             >
-              <Trash2 size={12} /> Xóa hết
+              <Trash2 size={11} /> Xóa
             </button>
           )}
         </div>
       </div>
 
-      {/* 2. CHỌN KHÁCH HÀNG & THÔNG TIN CÔNG NỢ */}
-      <div style={{ background: 'rgba(18, 24, 38, 0.8)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-md)', padding: 8 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
-          <User size={14} color="var(--primary)" />
-          <span style={{ fontSize: 12, fontWeight: 700, color: '#f8fafc' }}>Khách:</span>
+      {/* 2. CHỌN KHÁCH HÀNG */}
+      <div style={{ background: 'rgba(18, 24, 38, 0.8)', border: '1px solid var(--border-subtle)', borderRadius: 8, padding: '4px 6px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <User size={13} color="var(--primary)" style={{ flexShrink: 0 }} />
           <select
             value={selectedPartnerId}
             onChange={(e) => setSelectedPartnerId(e.target.value)}
             style={{
               flex: 1,
-              height: 34,
+              height: 28,
               background: 'rgba(15, 23, 42, 0.85)',
               border: '1px solid rgba(255, 255, 255, 0.12)',
-              borderRadius: 6,
+              borderRadius: 5,
               color: '#f8fafc',
               fontSize: 12,
-              padding: '0 8px',
+              padding: '0 6px',
               outline: 'none'
             }}
           >
@@ -664,22 +648,22 @@ export const CartPanel: React.FC<CartPanelProps> = ({
             onClick={() => setIsQuickCustomerOpen(true)}
             className="btn-action"
             style={{
-              height: 34,
+              height: 28,
               fontSize: 11,
-              padding: '0 8px',
+              padding: '0 6px',
               background: 'rgba(56, 189, 248, 0.12)',
               color: '#38bdf8',
               border: '1px solid rgba(56, 189, 248, 0.3)',
-              borderRadius: 6,
+              borderRadius: 5,
               display: 'flex',
               alignItems: 'center',
-              gap: 4,
+              gap: 3,
               fontWeight: 600,
               whiteSpace: 'nowrap'
             }}
             title="Thêm nhanh khách hàng mới"
           >
-            <UserPlus size={13} /> + Khách
+            <UserPlus size={11} /> + Khách
           </button>
         </div>
 
@@ -767,10 +751,10 @@ export const CartPanel: React.FC<CartPanelProps> = ({
       </div>
 
       {/* 3. DANH SÁCH MÓN TRONG GIỎ HÀNG */}
-      <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 6, paddingRight: 2 }}>
+      <div style={{ flex: 1, minHeight: 140, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 5, paddingRight: 2 }}>
         {items.length === 0 ? (
-          <div style={{ margin: 'auto', textAlign: 'center', color: 'var(--text-dim)', padding: 24 }}>
-            <p style={{ fontSize: 13 }}>Chưa có sản phẩm nào trong giỏ.</p>
+          <div style={{ margin: 'auto', textAlign: 'center', color: 'var(--text-dim)', padding: 16 }}>
+            <p style={{ fontSize: 13, color: '#94a3b8' }}>Giỏ hàng đang trống.</p>
             <p style={{ fontSize: 11, marginTop: 4 }}>Bấm vào sản phẩm bên trái để thêm vào đơn</p>
           </div>
         ) : (
@@ -781,18 +765,17 @@ export const CartPanel: React.FC<CartPanelProps> = ({
                 key={it.product_id}
                 style={{
                   background: 'rgba(18, 24, 38, 0.9)',
-                  border: isExceeded ? '1px solid #f43f5e' : '1px solid var(--border-subtle)',
-                  borderRadius: 8,
-                  padding: 8,
+                  border: isExceeded ? '1px solid #f43f5e' : '1px solid rgba(255, 255, 255, 0.08)',
+                  borderRadius: 6,
+                  padding: '6px 8px',
                   display: 'flex',
                   flexDirection: 'column',
                   gap: 4
                 }}
               >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-main)' }}>{it.name}</div>
-                    <div style={{ fontSize: 11, color: 'var(--text-dim)' }}>{it.code} • ĐVT: {it.uom}</div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-main)', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {it.name}
                   </div>
                   <button 
                     onClick={() => onRemoveItem(it.product_id)} 
@@ -804,55 +787,59 @@ export const CartPanel: React.FC<CartPanelProps> = ({
                 </div>
 
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  {/* Bộ nút tăng/giảm số lượng */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 4, background: '#090d16', border: '1px solid var(--border-subtle)', borderRadius: 6, padding: '2px 4px' }}>
-                    <button 
-                      onClick={() => onUpdateQty(it.product_id, -1)}
-                      style={{ background: 'transparent', border: 'none', color: 'var(--text-main)', cursor: 'pointer', padding: 2 }}
-                    >
-                      <Minus size={11} />
-                    </button>
-                    <input 
-                      type="number"
-                      value={it.quantity}
-                      onChange={(e) => onSetQty(it.product_id, Math.max(1, parseInt(e.target.value, 10) || 1))}
-                      style={{ width: 32, textAlign: 'center', background: 'transparent', border: 'none', color: 'var(--text-main)', fontSize: 12, fontWeight: 700, outline: 'none' }}
-                    />
-                    <button 
-                      onClick={() => onUpdateQty(it.product_id, 1)}
-                      style={{ background: 'transparent', border: 'none', color: 'var(--text-main)', cursor: 'pointer', padding: 2 }}
-                    >
-                      <Plus size={11} />
-                    </button>
+                  <div style={{ fontSize: 11, color: 'var(--text-dim)' }}>
+                    <span style={{ color: '#38bdf8', fontWeight: 600 }}>{it.uom}</span> • {it.code}
                   </div>
 
-                  <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 2 }}>
-                    <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--primary)' }}>
-                      {(it.quantity * it.unit_price).toLocaleString('vi-VN')}đ
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                      <span style={{ fontSize: 10, color: 'var(--text-dim)' }}>@</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    {/* Bộ nút tăng/giảm số lượng */}
+                    <div style={{ display: 'flex', alignItems: 'center', background: '#090d16', border: '1px solid rgba(255, 255, 255, 0.12)', borderRadius: 5, padding: '1px 3px' }}>
+                      <button 
+                        onClick={() => onUpdateQty(it.product_id, -1)}
+                        style={{ background: 'transparent', border: 'none', color: 'var(--text-main)', cursor: 'pointer', padding: '1px 3px' }}
+                      >
+                        <Minus size={11} />
+                      </button>
                       <input 
                         type="number"
-                        min="0"
-                        step="1000"
-                        value={it.unit_price}
-                        onChange={(e) => onUpdatePrice && onUpdatePrice(it.product_id, Math.max(0, parseInt(e.target.value, 10) || 0))}
-                        title="Thu ngân có quyền sửa đơn giá trực tiếp (A4)"
-                        style={{
-                          width: 72,
-                          padding: '1px 4px',
-                          fontSize: 10,
-                          fontWeight: 600,
-                          color: '#38bdf8',
-                          background: 'rgba(56, 189, 248, 0.08)',
-                          border: '1px solid rgba(56, 189, 248, 0.25)',
-                          borderRadius: 4,
-                          textAlign: 'right',
-                          outline: 'none'
-                        }}
+                        value={it.quantity}
+                        onChange={(e) => onSetQty(it.product_id, Math.max(1, parseInt(e.target.value, 10) || 1))}
+                        style={{ width: 28, textAlign: 'center', background: 'transparent', border: 'none', color: 'var(--text-main)', fontSize: 12, fontWeight: 700, outline: 'none' }}
                       />
-                      <span style={{ fontSize: 10, color: 'var(--text-dim)' }}>đ</span>
+                      <button 
+                        onClick={() => onUpdateQty(it.product_id, 1)}
+                        style={{ background: 'transparent', border: 'none', color: 'var(--text-main)', cursor: 'pointer', padding: '1px 3px' }}
+                      >
+                        <Plus size={11} />
+                      </button>
+                    </div>
+
+                    <div style={{ textAlign: 'right', display: 'flex', alignItems: 'center', gap: 3 }}>
+                      <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--primary)' }}>
+                        {(it.quantity * it.unit_price).toLocaleString('vi-VN')}đ
+                      </div>
+                      {onUpdatePrice && (
+                        <input 
+                          type="number"
+                          min="0"
+                          step="1000"
+                          value={it.unit_price}
+                          onChange={(e) => onUpdatePrice(it.product_id, Math.max(0, parseInt(e.target.value, 10) || 0))}
+                          title="Sửa đơn giá"
+                          style={{
+                            width: 58,
+                            padding: '1px 2px',
+                            fontSize: 10,
+                            fontWeight: 600,
+                            color: '#38bdf8',
+                            background: 'rgba(56, 189, 248, 0.08)',
+                            border: '1px solid rgba(56, 189, 248, 0.25)',
+                            borderRadius: 3,
+                            textAlign: 'right',
+                            outline: 'none'
+                          }}
+                        />
+                      )}
                     </div>
                   </div>
                 </div>
@@ -1224,16 +1211,6 @@ export const CartPanel: React.FC<CartPanelProps> = ({
               : `Thanh Toán F9 (${paidAmount.toLocaleString('vi-VN')}đ${debtAmount > 0 ? ` + Nợ ${debtAmount.toLocaleString('vi-VN')}đ` : ''})`}
           </span>
         </button>
-
-        <div style={{ display: 'flex', justifyContent: 'center', gap: 12, fontSize: 10, color: 'var(--text-dim)', marginTop: 4 }}>
-          <span>[F2] Tìm món</span>
-          <span>•</span>
-          <span>[F3] Chọn khách</span>
-          <span>•</span>
-          <span>[F8] Quản lý ca</span>
-          <span>•</span>
-          <span>[F9] Thanh toán</span>
-        </div>
       </div>
 
       {/* MODAL THÊM KHÁCH HÀNG NHANH */}

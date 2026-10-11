@@ -90,62 +90,95 @@ export const PosDynamicActionsBar: React.FC<PosDynamicActionsBarProps> = ({ onRe
     }
   };
 
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
   if (tables.length === 0) return null;
 
   return (
-    <>
-      {/* THANH TIỆN ÍCH NO-CODE TRÊN MÀN HÌNH BÁN HÀNG */}
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: 8,
-        padding: '6px 12px',
-        borderRadius: 8,
-        background: 'rgba(15, 23, 42, 0.65)',
-        border: '1px solid rgba(56, 189, 248, 0.2)',
-        marginBottom: 10,
-        overflowX: 'auto'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#38bdf8', fontSize: 11, fontWeight: 800, flexShrink: 0 }}>
-          <Zap size={13} />
-          <span>TIỆN ÍCH NO-CODE:</span>
-        </div>
+    <div style={{ position: 'relative' }}>
+      <button
+        type="button"
+        onClick={() => setIsDropdownOpen(prev => !prev)}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 5,
+          padding: '0 10px',
+          height: 38,
+          borderRadius: 8,
+          border: '1px solid rgba(56, 189, 248, 0.3)',
+          background: isDropdownOpen ? 'rgba(56, 189, 248, 0.2)' : 'rgba(15, 23, 42, 0.7)',
+          color: '#38bdf8',
+          fontSize: 12,
+          fontWeight: 600,
+          cursor: 'pointer',
+          whiteSpace: 'nowrap',
+          transition: 'all 0.15s ease'
+        }}
+        title="Tiện ích No-Code động"
+      >
+        <Zap size={13} />
+        <span>Tiện ích ({tables.length})</span>
+      </button>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
-          {tables.map(table => (
-            <button
-              key={table.id}
-              type="button"
-              onClick={() => handleOpenTableForm(table)}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 5,
-                padding: '4px 10px',
-                borderRadius: 6,
-                background: 'rgba(56, 189, 248, 0.1)',
-                border: '1px solid rgba(56, 189, 248, 0.3)',
-                color: '#e0f2fe',
-                fontSize: 11,
-                fontWeight: 600,
-                cursor: 'pointer',
-                transition: 'all 0.15s ease'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(56, 189, 248, 0.2)';
-                e.currentTarget.style.borderColor = '#38bdf8';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'rgba(56, 189, 248, 0.1)';
-                e.currentTarget.style.borderColor = 'rgba(56, 189, 248, 0.3)';
-              }}
-            >
-              <Plus size={11} color="#38bdf8" />
-              <span>{table.name}</span>
-            </button>
-          ))}
-        </div>
-      </div>
+      {isDropdownOpen && (
+        <>
+          <div 
+            onClick={() => setIsDropdownOpen(false)}
+            style={{ position: 'fixed', inset: 0, zIndex: 110 }}
+          />
+          <div style={{
+            position: 'absolute',
+            top: '100%',
+            right: 0,
+            marginTop: 4,
+            zIndex: 120,
+            background: '#0f172a',
+            border: '1px solid rgba(56, 189, 248, 0.35)',
+            borderRadius: 8,
+            boxShadow: '0 12px 28px rgba(0,0,0,0.6)',
+            padding: 6,
+            minWidth: 220,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 4
+          }}>
+            <div style={{ fontSize: 10, color: 'var(--text-dim)', textTransform: 'uppercase', padding: '4px 8px', fontWeight: 700 }}>
+              Tiện Ích Mở Rộng No-Code
+            </div>
+            {tables.map(table => (
+              <button
+                key={table.id}
+                type="button"
+                onClick={() => {
+                  setIsDropdownOpen(false);
+                  handleOpenTableForm(table);
+                }}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 6,
+                  padding: '6px 10px',
+                  borderRadius: 6,
+                  background: 'transparent',
+                  border: 'none',
+                  color: '#e0f2fe',
+                  fontSize: 12,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  textAlign: 'left',
+                  transition: 'background 0.12s ease'
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(56, 189, 248, 0.15)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
+              >
+                <Plus size={12} color="#38bdf8" />
+                <span>{table.name}</span>
+              </button>
+            ))}
+          </div>
+        </>
+      )}
 
       {/* MODAL NHẬP LIỆU BẢNG ĐỘNG TẠI QUẦY POS */}
       {isModalOpen && activeTable && (
@@ -315,6 +348,6 @@ export const PosDynamicActionsBar: React.FC<PosDynamicActionsBarProps> = ({ onRe
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };

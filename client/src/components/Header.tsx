@@ -15,7 +15,6 @@ import {
   SlidersHorizontal, 
   Clock, 
   MonitorDown,
-  Monitor,
   Plus,
   PackagePlus,
   ClipboardCheck,
@@ -157,18 +156,17 @@ export const Header: React.FC<HeaderProps> = ({
     <>
       <header className="meb-header">
         {/* 1. THƯƠNG HIỆU, BỘ CHỌN & NÚT TẠO CHI NHÁNH MỚI */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
           <div className="meb-brand" onClick={() => onTabChange('pos')}>
             <div className="meb-logo-badge">M</div>
             <div className="meb-brand-text">
-              <h1>MEB PLATFORM</h1>
-              <p>Smart Multi-Branch POS</p>
+              <h1>MEB POS</h1>
             </div>
           </div>
 
           {/* BỘ CHỌN CHI NHÁNH */}
-          <div className="branch-select-box" style={{ maxWidth: 240 }}>
-            <Building2 size={15} color="var(--primary)" style={{ flexShrink: 0 }} />
+          <div className="branch-select-box" style={{ maxWidth: 170 }}>
+            <Building2 size={13} color="var(--primary)" style={{ flexShrink: 0 }} />
             <select 
               value={currentBranch?.id || ''} 
               onChange={handleBranchChange}
@@ -179,9 +177,9 @@ export const Header: React.FC<HeaderProps> = ({
                 color: 'var(--text-main)',
                 border: 'none',
                 outline: 'none',
-                fontSize: 13,
+                fontSize: 12,
                 fontWeight: 600,
-                maxWidth: 200,
+                maxWidth: 135,
                 cursor: 'pointer'
               }}
             >
@@ -199,28 +197,28 @@ export const Header: React.FC<HeaderProps> = ({
             onClick={handleOpenCreateModal}
             className="btn-action"
             style={{
-              padding: '6px 10px',
-              fontSize: 12,
+              padding: '4px 8px',
+              fontSize: 11,
               fontWeight: 600,
               background: 'rgba(56, 189, 248, 0.12)',
               border: '1px solid rgba(56, 189, 248, 0.3)',
               color: '#38bdf8',
-              borderRadius: 8,
+              borderRadius: 6,
               display: 'inline-flex',
               alignItems: 'center',
-              gap: 4,
+              gap: 3,
               whiteSpace: 'nowrap',
               cursor: 'pointer'
             }}
             title="Thêm chi nhánh mới độc lập vào chuỗi"
           >
-            <Plus size={14} />
-            <span>+ Chi Nhánh</span>
+            <Plus size={13} />
+            <span>Chi Nhánh</span>
           </button>
         </div>
 
         {/* 2. THANH ĐIỀU HƯỚNG TÁCH BIỆT BENTO TABS */}
-        <nav className="nav-tabs" style={{ flexShrink: 0, display: 'flex', gap: 4, overflowX: 'auto' }}>
+        <nav className="nav-tabs" style={{ flex: 1, minWidth: 0, justifyContent: 'center' }}>
           {!isCashierOnly && (
             <button 
               className={`nav-tab-btn ${activeTab === 'hq' ? 'active' : ''}`}
@@ -231,8 +229,8 @@ export const Header: React.FC<HeaderProps> = ({
                 color: activeTab === 'hq' ? '#38bdf8' : undefined
               }}
             >
-              <Building2 size={15} />
-              <span>🏢 Tổng Bộ Chuỗi</span>
+              <Building2 size={14} />
+              <span>Tổng Bộ</span>
             </button>
           )}
 
@@ -240,7 +238,7 @@ export const Header: React.FC<HeaderProps> = ({
             className={`nav-tab-btn ${activeTab === 'pos' ? 'active' : ''}`}
             onClick={() => onTabChange('pos')}
           >
-            <ShoppingCart size={15} />
+            <ShoppingCart size={14} />
             <span>Quầy Bán Hàng</span>
           </button>
 
@@ -248,16 +246,16 @@ export const Header: React.FC<HeaderProps> = ({
             className={`nav-tab-btn ${activeTab === 'cashbook' ? 'active' : ''}`}
             onClick={() => onTabChange('cashbook')}
           >
-            <Wallet size={15} />
-            <span>Sổ Quỹ Tiền Mặt</span>
+            <Wallet size={14} />
+            <span>Sổ Quỹ</span>
           </button>
 
           <button 
             className={`nav-tab-btn ${activeTab === 'debts' ? 'active' : ''}`}
             onClick={() => onTabChange('debts')}
           >
-            <BookOpen size={15} />
-            <span>Sổ Nợ Khách Hàng</span>
+            <BookOpen size={14} />
+            <span>Công Nợ</span>
           </button>
 
           {!isCashierOnly && (
@@ -266,39 +264,39 @@ export const Header: React.FC<HeaderProps> = ({
                 className={`nav-tab-btn ${activeTab === 'inbound' ? 'active' : ''}`}
                 onClick={() => onTabChange('inbound')}
               >
-                <PackagePlus size={15} />
-                <span>Nhập Hàng NCC</span>
+                <PackagePlus size={14} />
+                <span>Nhập Hàng</span>
               </button>
 
               <button 
                 className={`nav-tab-btn ${activeTab === 'transfers' ? 'active' : ''}`}
                 onClick={() => onTabChange('transfers')}
               >
-                <Truck size={15} />
-                <span>Điều Chuyển Kho</span>
+                <Truck size={14} />
+                <span>Điều Chuyển</span>
               </button>
 
               <button 
                 className={`nav-tab-btn ${activeTab === 'audit' ? 'active' : ''}`}
                 onClick={() => onTabChange('audit')}
               >
-                <ClipboardCheck size={15} />
-                <span>Kiểm Kê Kho</span>
+                <ClipboardCheck size={14} />
+                <span>Kiểm Kê</span>
               </button>
 
               <button 
                 className={`nav-tab-btn ${activeTab === 'studio' ? 'active' : ''}`}
                 onClick={() => onTabChange('studio')}
               >
-                <SlidersHorizontal size={15} />
-                <span>No-Code Studio</span>
+                <SlidersHorizontal size={14} />
+                <span>No-Code</span>
               </button>
             </>
           )}
         </nav>
 
         {/* 3. TRẠNG THÁI CA TRỰC, SWITCH VAI TRÒ & PWA DESKTOP APP */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
           {/* Nút chuyển đổi vai trò: Chủ Chuỗi vs Thu Ngân Bán Hàng */}
           <button
             type="button"
@@ -312,80 +310,21 @@ export const Header: React.FC<HeaderProps> = ({
             style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: 6,
-              padding: '6px 12px',
-              borderRadius: 8,
+              gap: 4,
+              padding: '4px 8px',
+              borderRadius: 6,
               background: isCashierOnly ? 'rgba(16, 185, 129, 0.15)' : 'rgba(56, 189, 248, 0.12)',
               border: isCashierOnly ? '1px solid rgba(16, 185, 129, 0.4)' : '1px solid rgba(56, 189, 248, 0.3)',
               color: isCashierOnly ? '#34d399' : '#38bdf8',
               fontSize: 11,
-              fontWeight: 800,
+              fontWeight: 700,
               cursor: 'pointer',
-              transition: 'all 0.15s ease'
+              height: 28
             }}
-            title="Bấm để chuyển nhanh giữa Chế độ Chủ Chuỗi (Tất cả tab) và Chế độ Thu Ngân Bán Hàng"
+            title="Chuyển chế độ: Chủ Chuỗi (Tất cả tab) vs Thu Ngân (Gọn gàng)"
           >
-            {isCashierOnly ? (
-              <>
-                <span>🛒 Chế Độ Thu Ngân</span>
-                <span style={{ fontSize: 9, background: '#059669', color: '#fff', padding: '1px 5px', borderRadius: 4 }}>
-                  FOCUS
-                </span>
-              </>
-            ) : (
-              <>
-                <span>👑 Chế Độ Chủ Chuỗi</span>
-                <span style={{ fontSize: 9, background: '#0284c7', color: '#fff', padding: '1px 5px', borderRadius: 4 }}>
-                  HQ
-                </span>
-              </>
-            )}
+            {isCashierOnly ? <span>🛒 Thu Ngân</span> : <span>👑 Quản Lý</span>}
           </button>
-          {/* Nút Cài đặt Desktop PWA hoặc Huy hiệu Desktop App */}
-          {isStandalone ? (
-            <div 
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 5,
-                padding: '5px 10px',
-                borderRadius: 8,
-                background: 'rgba(52, 211, 153, 0.12)',
-                border: '1px solid rgba(52, 211, 153, 0.3)',
-                color: '#34d399',
-                fontSize: 12,
-                fontWeight: 700,
-                whiteSpace: 'nowrap'
-              }}
-              title="Đang chạy ở chế độ Desktop App độc lập"
-            >
-              <Monitor size={14} />
-              <span>Desktop App</span>
-            </div>
-          ) : installPrompt ? (
-            <button
-              onClick={handleInstallApp}
-              className="btn-action"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 5,
-                padding: '5px 10px',
-                borderRadius: 8,
-                background: 'linear-gradient(135deg, rgba(56, 189, 248, 0.2) 0%, rgba(134, 59, 255, 0.2) 100%)',
-                borderColor: 'rgba(56, 189, 248, 0.4)',
-                color: '#38bdf8',
-                fontSize: 12,
-                fontWeight: 700,
-                cursor: 'pointer',
-                whiteSpace: 'nowrap'
-              }}
-              title="Cài đặt thành ứng dụng máy tính Desktop độc lập"
-            >
-              <MonitorDown size={14} />
-              <span>Cài App</span>
-            </button>
-          ) : null}
 
           {/* Nút Đổi Trả Hàng RMA (INV-07) */}
           {onOpenReturnModal && (
@@ -395,21 +334,22 @@ export const Header: React.FC<HeaderProps> = ({
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: 5,
-                padding: '5px 10px',
-                borderRadius: 8,
+                gap: 4,
+                padding: '4px 8px',
+                borderRadius: 6,
                 background: 'rgba(245, 158, 11, 0.12)',
                 border: '1px solid rgba(245, 158, 11, 0.3)',
                 color: '#fbbf24',
-                fontSize: 12,
+                fontSize: 11,
                 fontWeight: 600,
                 cursor: 'pointer',
-                whiteSpace: 'nowrap'
+                whiteSpace: 'nowrap',
+                height: 28
               }}
               title="Khách trả lại hàng & Cấn trừ công nợ (INV-07)"
             >
-              <RotateCcw size={14} />
-              <span>Trả Hàng (RMA)</span>
+              <RotateCcw size={13} />
+              <span>Trả Hàng</span>
             </button>
           )}
 
@@ -417,24 +357,49 @@ export const Header: React.FC<HeaderProps> = ({
             <div 
               className="shift-status-pill shift-open"
               onClick={onOpenShiftModal}
-              title="Bấm để xem tóm tắt hoặc Chốt ca (F8)"
-              style={{ whiteSpace: 'nowrap', cursor: 'pointer' }}
+              title={`Ca bán đang mở: ${currentShift.staff_name} • Bấm để chốt ca (F8)`}
+              style={{ whiteSpace: 'nowrap', cursor: 'pointer', padding: '3px 8px', fontSize: 11, height: 28, boxSizing: 'border-box' }}
             >
-              <Clock size={14} />
-              <span>
-                {currentShift.staff_name} • {Number(currentShift.initial_amount).toLocaleString('vi-VN')}đ
-              </span>
+              <Clock size={12} />
+              <span>{currentShift.staff_name || 'Ca Mở'}</span>
             </div>
           ) : (
             <div 
               className="shift-status-pill shift-closed"
               onClick={onOpenShiftModal}
               title="Chi nhánh chưa mở ca. Bấm để mở ca bán hàng mới"
-              style={{ whiteSpace: 'nowrap', cursor: 'pointer' }}
+              style={{ whiteSpace: 'nowrap', cursor: 'pointer', padding: '3px 8px', fontSize: 11, height: 28, boxSizing: 'border-box' }}
             >
-              <Clock size={14} />
+              <Clock size={12} />
               <span>Chưa Mở Ca</span>
             </div>
+          )}
+
+          {/* Nút Cài đặt Desktop PWA hoặc Huy hiệu Desktop App */}
+          {!isStandalone && installPrompt && (
+            <button
+              onClick={handleInstallApp}
+              className="btn-action"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 4,
+                padding: '4px 8px',
+                borderRadius: 6,
+                background: 'rgba(56, 189, 248, 0.12)',
+                border: '1px solid rgba(56, 189, 248, 0.3)',
+                color: '#38bdf8',
+                fontSize: 11,
+                fontWeight: 600,
+                cursor: 'pointer',
+                whiteSpace: 'nowrap',
+                height: 28
+              }}
+              title="Cài đặt thành ứng dụng máy tính Desktop"
+            >
+              <MonitorDown size={13} />
+              <span>Cài App</span>
+            </button>
           )}
 
           {/* BADGE TÀI KHOẢN NHÂN VIÊN & PHÂN QUYỀN (A3) */}
@@ -443,18 +408,20 @@ export const Header: React.FC<HeaderProps> = ({
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: 6,
-                padding: '4px 8px',
-                borderRadius: 8,
+                gap: 4,
+                padding: '3px 8px',
+                borderRadius: 6,
                 background: 'rgba(56, 189, 248, 0.1)',
-                border: '1px solid rgba(56, 189, 248, 0.3)',
+                border: '1px solid rgba(56, 189, 248, 0.25)',
                 color: '#38bdf8',
-                fontSize: 12,
-                fontWeight: 600
+                fontSize: 11,
+                fontWeight: 600,
+                height: 28,
+                boxSizing: 'border-box'
               }}
             >
-              <User size={13} />
-              <span style={{ maxWidth: 100, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              <User size={12} />
+              <span style={{ maxWidth: 85, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                 {currentUser.full_name}
               </span>
               <button
@@ -470,7 +437,7 @@ export const Header: React.FC<HeaderProps> = ({
                   border: 'none',
                   color: '#94a3b8',
                   cursor: 'pointer',
-                  padding: '2px 4px',
+                  padding: '1px 3px',
                   display: 'flex',
                   alignItems: 'center'
                 }}
@@ -486,18 +453,19 @@ export const Header: React.FC<HeaderProps> = ({
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: 5,
-                padding: '5px 10px',
-                borderRadius: 8,
+                gap: 4,
+                padding: '4px 8px',
+                borderRadius: 6,
                 background: 'rgba(56, 189, 248, 0.15)',
                 color: '#38bdf8',
-                fontSize: 12,
+                fontSize: 11,
                 fontWeight: 700,
                 cursor: 'pointer',
-                whiteSpace: 'nowrap'
+                whiteSpace: 'nowrap',
+                height: 28
               }}
             >
-              <Key size={13} />
+              <Key size={12} />
               <span>Đăng Nhập</span>
             </button>
           )}

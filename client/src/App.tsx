@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { Header, type NavTab } from './components/Header';
 import { branchStore } from './services/branchContext';
 import { api, type RuntimeConfig, type Branch, type ShiftInfo, type ProductInventory } from './services/api';
-import { Store, ShoppingCart, CheckCircle2 } from 'lucide-react';
+import { ShoppingCart, CheckCircle2 } from 'lucide-react';
 import { ProductCatalog } from './components/pos/ProductCatalog';
 import { CartPanel, type CartItem, type OrderDraft } from './components/pos/CartPanel';
 import { ShiftModal } from './components/pos/ShiftModal';
@@ -328,7 +328,7 @@ function MainApp() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'hidden', background: '#090d16' }}>
       {/* 1. THANH HEADER ĐIỀU HƯỚNG & ĐỔI CHI NHÁNH */}
       <Header 
         activeTab={activeTab} 
@@ -338,84 +338,33 @@ function MainApp() {
       />
 
       {/* 2. KHU VỰC THÂN GIAO DIỆN CHÍNH */}
-      <main style={{ flex: 1, padding: '16px 20px', maxWidth: 1600, width: '100%', margin: '0 auto', boxSizing: 'border-box' }}>
-        {/* Dải Ribbon Trạng Thái Persona Chi Nhánh Tinh Gọn (Tối Ưu Không Gian Làm Việc) */}
-        <div style={{ 
-          padding: '6px 14px', 
-          marginBottom: 14, 
-          borderRadius: 8, 
-          background: 'rgba(255,255,255,0.03)', 
-          border: '1px solid rgba(255,255,255,0.06)', 
-          display: 'flex', 
-          alignItems: 'center', 
-          justifyContent: 'space-between', 
-          flexWrap: 'wrap', 
-          gap: 10,
-          fontSize: 12
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div style={{ 
-              display: 'inline-flex', 
-              alignItems: 'center', 
-              gap: 6, 
-              fontWeight: 600, 
-              color: '#f8fafc' 
-            }}>
-              <Store size={14} color={currentConfig?.features.allow_debt ? '#fbbf24' : '#34d399'} />
-              <span>{currentBranch ? `${currentBranch.code} • ${currentBranch.name}` : 'Đang tải chi nhánh...'}</span>
-            </div>
-            <span style={{ color: 'var(--text-dim)' }}>|</span>
-            <span style={{ color: 'var(--text-muted)' }}>
-              Mô hình: <strong style={{ color: '#e2e8f0', fontWeight: 600 }}>
-                {currentConfig?.features.allow_debt ? 'Vật Liệu / Sơn / Sắt Thép (Bán gối đầu & Báo giá A4)' : 'Tạp Hóa / Đồ Uống (Barcode & Bill K80)'}
-              </strong>
-            </span>
-            <span style={{ 
-              fontSize: 11, 
-              padding: '1px 6px', 
-              borderRadius: 4, 
-              background: 'rgba(255,255,255,0.06)', 
-              color: 'var(--text-dim)' 
-            }}>
-              {currentBranch?.organization_name || 'Hệ thống MEB'}
-            </span>
-          </div>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, color: 'var(--text-muted)' }}>
-              Barcode: <strong style={{ color: currentConfig?.features.pos_barcode ? '#34d399' : '#64748b' }}>
-                {currentConfig?.features.pos_barcode ? 'BẬT' : 'TẮT'}
-              </strong>
-            </span>
-            <span style={{ color: 'rgba(255,255,255,0.1)' }}>•</span>
-            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, color: 'var(--text-muted)' }}>
-              Bán nợ: <strong style={{ color: currentConfig?.features.allow_debt ? '#fbbf24' : '#64748b' }}>
-                {currentConfig?.features.allow_debt ? 'CHO PHÉP' : 'CHẶN'}
-              </strong>
-            </span>
-            <span style={{ color: 'rgba(255,255,255,0.1)' }}>•</span>
-            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, color: 'var(--text-muted)' }}>
-              Mẫu in: <strong style={{ color: '#38bdf8' }}>
-                {currentConfig?.features.print_format === 'A4_FULL' ? 'A4 Khổ Lớn' : 'Bill K80'}
-              </strong>
-            </span>
-          </div>
-        </div>
-
+      <main style={{ 
+        flex: 1, 
+        minHeight: 0, 
+        overflow: activeTab === 'pos' ? 'hidden' : 'auto', 
+        display: 'flex', 
+        flexDirection: 'column', 
+        padding: activeTab === 'pos' ? '8px 12px' : '14px 20px', 
+        maxWidth: 1680, 
+        width: '100%', 
+        margin: '0 auto', 
+        boxSizing: 'border-box' 
+      }}>
         {/* Banner Thông Báo Đơn Hàng Thành Công */}
         {successOrder && (
           <div style={{
             background: 'rgba(16, 185, 129, 0.15)',
             border: '1px solid rgba(16, 185, 129, 0.4)',
             borderRadius: 'var(--radius-md)',
-            padding: '12px 20px',
-            marginBottom: 20,
+            padding: '10px 16px',
+            marginBottom: 10,
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'space-between'
+            justifyContent: 'space-between',
+            flexShrink: 0
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <CheckCircle2 size={20} color="#34d399" />
+              <CheckCircle2 size={18} color="#34d399" />
               <div>
                 <span style={{ fontWeight: 700, color: '#34d399' }}>Thanh toán thành công! </span>
                 <span style={{ color: 'var(--text-main)', fontSize: 13 }}>
@@ -449,19 +398,19 @@ function MainApp() {
         )}
 
         {activeTab === 'pos' && (
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: 20, height: 'calc(100vh - 140px)' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 390px', gap: 12, height: '100%', minHeight: 0 }}>
             {/* Cột Trái: Danh Mục Hàng Hóa & Quét Barcode */}
-            <div className="glass-panel" style={{ padding: 20, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
-                <h3 style={{ fontSize: 16, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <ShoppingCart size={18} color="var(--primary)" />
+            <div className="glass-panel" style={{ padding: 12, overflow: 'hidden', display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8, flexShrink: 0 }}>
+                <h3 style={{ fontSize: 15, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 6, margin: 0 }}>
+                  <ShoppingCart size={16} color="var(--primary)" />
                   Danh Mục Hàng Hóa & Tồn Kho Chi Nhánh
                 </h3>
-                <span style={{ fontSize: 12, color: 'var(--text-dim)' }}>
+                <span style={{ fontSize: 11, color: 'var(--text-dim)' }}>
                   Phím tắt: [F2] Tìm kiếm • [Enter] Chọn món
                 </span>
               </div>
-              <div style={{ flex: 1, overflow: 'hidden' }}>
+              <div style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
                 <ProductCatalog 
                   barcodeEnabled={currentConfig?.features.pos_barcode ?? true}
                   onSelectProduct={handleAddToCart}
@@ -470,7 +419,7 @@ function MainApp() {
             </div>
 
             {/* Cột Phải: Giỏ Hàng Đa Đơn Vị Tính, Sổ Nợ Khách Hàng & Nút Thanh Toán F9 */}
-            <div className="glass-panel" style={{ padding: 20, overflow: 'hidden' }}>
+            <div className="glass-panel" style={{ padding: 12, overflow: 'hidden', display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0 }}>
               <CartPanel 
                 items={activeDraft.items}
                 onUpdateQty={handleUpdateQty}
@@ -567,23 +516,19 @@ function MainApp() {
 
       {/* 7. THANH PHÍM TẮT TRỰC QUAN CHÂN MÀN HÌNH (POS HOTKEYS FOOTER) */}
       {activeTab === 'pos' && (
-        <div style={{
-          position: 'fixed',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          background: 'rgba(10, 15, 25, 0.95)',
-          backdropFilter: 'blur(10px)',
+        <footer style={{
+          height: 28,
+          flexShrink: 0,
+          background: 'rgba(9, 13, 22, 0.98)',
           borderTop: '1px solid rgba(255, 255, 255, 0.08)',
-          padding: '6px 20px',
+          padding: '0 16px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           gap: 16,
           fontSize: 11,
           color: '#94a3b8',
-          zIndex: 100,
-          flexWrap: 'wrap'
+          boxSizing: 'border-box'
         }}>
           <span style={{ cursor: 'pointer', color: '#38bdf8' }} onClick={() => setIsHelpModalOpen(true)}>
             <strong style={{ background: '#0369a1', color: '#fff', padding: '1px 5px', borderRadius: 4, marginRight: 4 }}>F1</strong>Trợ giúp
@@ -609,7 +554,7 @@ function MainApp() {
           <span style={{ cursor: 'pointer' }} onClick={() => setIsReturnModalOpen(true)}>
             <strong style={{ background: '#334155', color: '#f8fafc', padding: '1px 5px', borderRadius: 4, marginRight: 4 }}>F10</strong>Trả hàng
           </span>
-        </div>
+        </footer>
       )}
     </div>
   );
