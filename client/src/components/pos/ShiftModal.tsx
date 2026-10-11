@@ -256,8 +256,8 @@ export const ShiftModal: React.FC<ShiftModalProps> = ({
       left: 0,
       right: 0,
       bottom: 0,
-      background: 'rgba(0, 0, 0, 0.75)',
-      backdropFilter: 'blur(8px)',
+      background: 'rgba(0, 0, 0, 0.5)',
+      backdropFilter: 'blur(4px)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -269,9 +269,10 @@ export const ShiftModal: React.FC<ShiftModalProps> = ({
         style={{
           width: '100%',
           maxWidth: 620,
-          background: 'var(--surface)',
+          background: 'var(--bg-card)',
           borderRadius: 'var(--radius-lg)',
-          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.1)',
+          boxShadow: '0 20px 40px -12px rgba(0, 0, 0, 0.25)',
+          border: '1px solid var(--border-subtle)',
           overflow: 'hidden',
           display: 'flex',
           flexDirection: 'column'
@@ -279,20 +280,20 @@ export const ShiftModal: React.FC<ShiftModalProps> = ({
       >
         {/* Header Modal */}
         <div style={{
-          padding: '18px 24px',
+          padding: '16px 20px',
           borderBottom: '1px solid var(--border-subtle)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          background: 'rgba(255, 255, 255, 0.02)'
+          background: 'var(--bg-card)'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <div style={{
               width: 36,
               height: 36,
               borderRadius: 8,
-              background: 'rgba(56, 189, 248, 0.15)',
-              color: '#38bdf8',
+              background: 'var(--primary-subtle)',
+              color: 'var(--primary)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
@@ -300,7 +301,7 @@ export const ShiftModal: React.FC<ShiftModalProps> = ({
               <Clock size={20} />
             </div>
             <div>
-              <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0 }}>
+              <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, color: 'var(--text-main)' }}>
                 Quản Lý Ca Thu Ngân & Két Tiền (F8)
               </h3>
               <p style={{ fontSize: 12, color: 'var(--text-muted)', margin: 0 }}>
@@ -399,7 +400,7 @@ export const ShiftModal: React.FC<ShiftModalProps> = ({
                     style={{
                       width: '100%',
                       padding: '10px 12px 10px 38px',
-                      background: 'var(--surface-sunken)',
+                      background: 'var(--bg-input)',
                       border: '1px solid var(--border-subtle)',
                       borderRadius: 8,
                       color: 'var(--text-main)',
@@ -425,7 +426,7 @@ export const ShiftModal: React.FC<ShiftModalProps> = ({
                     style={{
                       width: '100%',
                       padding: '10px 12px 10px 38px',
-                      background: 'var(--surface-sunken)',
+                      background: 'var(--bg-input)',
                       border: '1px solid var(--border-subtle)',
                       borderRadius: 8,
                       color: 'var(--text-main)',
@@ -443,11 +444,12 @@ export const ShiftModal: React.FC<ShiftModalProps> = ({
                       onClick={() => setOpenInitialAmount(val)}
                       style={{
                         padding: '4px 10px',
-                        background: openInitialAmount === val ? 'rgba(56, 189, 248, 0.2)' : 'rgba(255, 255, 255, 0.05)',
-                        border: openInitialAmount === val ? '1px solid #38bdf8' : '1px solid var(--border-subtle)',
+                        background: openInitialAmount === val ? 'var(--primary-subtle)' : 'var(--bg-subtle)',
+                        border: openInitialAmount === val ? '1px solid var(--primary)' : '1px solid var(--border-subtle)',
                         borderRadius: 6,
-                        color: openInitialAmount === val ? '#38bdf8' : 'var(--text-muted)',
+                        color: openInitialAmount === val ? 'var(--primary)' : 'var(--text-muted)',
                         fontSize: 11,
+                        fontWeight: 600,
                         cursor: 'pointer'
                       }}
                     >
@@ -497,7 +499,7 @@ export const ShiftModal: React.FC<ShiftModalProps> = ({
                     fontWeight: 600,
                     border: 'none',
                     cursor: 'pointer',
-                    background: shiftTab === 'CLOSE' ? 'var(--primary)' : 'rgba(255, 255, 255, 0.05)',
+                    background: shiftTab === 'CLOSE' ? 'var(--primary)' : 'var(--bg-subtle)',
                     color: shiftTab === 'CLOSE' ? '#ffffff' : 'var(--text-muted)',
                     display: 'flex',
                     alignItems: 'center',
@@ -518,7 +520,7 @@ export const ShiftModal: React.FC<ShiftModalProps> = ({
                     fontWeight: 600,
                     border: 'none',
                     cursor: 'pointer',
-                    background: shiftTab === 'CASH_FLOW' ? '#0284c7' : 'rgba(255, 255, 255, 0.05)',
+                    background: shiftTab === 'CASH_FLOW' ? '#0284c7' : 'var(--bg-subtle)',
                     color: shiftTab === 'CASH_FLOW' ? '#ffffff' : 'var(--text-muted)',
                     display: 'flex',
                     alignItems: 'center',
@@ -539,7 +541,7 @@ export const ShiftModal: React.FC<ShiftModalProps> = ({
                     fontWeight: 600,
                     border: 'none',
                     cursor: 'pointer',
-                    background: shiftTab === 'CASH_DROP' ? '#f59e0b' : 'rgba(255, 255, 255, 0.05)',
+                    background: shiftTab === 'CASH_DROP' ? '#f59e0b' : 'var(--bg-subtle)',
                     color: shiftTab === 'CASH_DROP' ? '#000000' : 'var(--text-muted)',
                     display: 'flex',
                     alignItems: 'center',
@@ -553,28 +555,28 @@ export const ShiftModal: React.FC<ShiftModalProps> = ({
 
               {/* Tóm tắt ca hiện tại */}
               <div style={{
-                background: 'rgba(255, 255, 255, 0.03)',
+                background: 'var(--bg-subtle)',
                 border: '1px solid var(--border-subtle)',
                 borderRadius: 8,
-                padding: '14px 18px',
-                marginBottom: 20
+                padding: '12px 16px',
+                marginBottom: 16
               }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                     <span style={{
                       display: 'inline-block',
                       width: 8,
                       height: 8,
                       borderRadius: '50%',
-                      background: '#34d399',
-                      boxShadow: '0 0 8px #34d399'
+                      background: '#10b981',
+                      boxShadow: '0 0 6px #10b981'
                     }} />
-                    <strong style={{ fontSize: 14, color: '#f8fafc' }}>{currentShift.staff_name}</strong>
+                    <strong style={{ fontSize: 14, color: 'var(--text-main)' }}>{currentShift.staff_name}</strong>
                   </div>
                   <span style={{
                     fontSize: 11,
-                    background: 'rgba(16, 185, 129, 0.2)',
-                    color: '#34d399',
+                    background: 'rgba(16, 185, 129, 0.15)',
+                    color: '#059669',
                     padding: '2px 8px',
                     borderRadius: 12,
                     fontWeight: 600
@@ -597,41 +599,41 @@ export const ShiftModal: React.FC<ShiftModalProps> = ({
                 <div style={{
                   display: 'grid',
                   gridTemplateColumns: 'repeat(2, 1fr)',
-                  gap: 12,
-                  marginBottom: 20
+                  gap: 10,
+                  marginBottom: 16
                 }}>
-                  <div style={{ background: '#090d16', padding: 12, borderRadius: 8, border: '1px solid var(--border-subtle)' }}>
-                    <div style={{ fontSize: 11, color: 'var(--text-dim)', marginBottom: 4, display: 'flex', alignItems: 'center', gap: 6 }}>
-                      <Wallet size={13} color="#38bdf8" /> Tiền đầu ca:
+                  <div style={{ background: 'var(--bg-subtle)', padding: 12, borderRadius: 8, border: '1px solid var(--border-subtle)' }}>
+                    <div style={{ fontSize: 11.5, color: 'var(--text-muted)', marginBottom: 4, display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <Wallet size={13} color="#0284c7" /> Tiền đầu ca:
                     </div>
                     <div style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-main)' }}>
                       {Number(summary.initial_amount).toLocaleString('vi-VN')}đ
                     </div>
                   </div>
 
-                  <div style={{ background: '#090d16', padding: 12, borderRadius: 8, border: '1px solid var(--border-subtle)' }}>
-                    <div style={{ fontSize: 11, color: 'var(--text-dim)', marginBottom: 4, display: 'flex', alignItems: 'center', gap: 6 }}>
-                      <DollarSign size={13} color="#34d399" /> Doanh thu mặt:
+                  <div style={{ background: 'var(--bg-subtle)', padding: 12, borderRadius: 8, border: '1px solid var(--border-subtle)' }}>
+                    <div style={{ fontSize: 11.5, color: 'var(--text-muted)', marginBottom: 4, display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <DollarSign size={13} color="#059669" /> Doanh thu mặt:
                     </div>
-                    <div style={{ fontSize: 15, fontWeight: 700, color: '#34d399' }}>
+                    <div style={{ fontSize: 15, fontWeight: 700, color: '#059669' }}>
                       +{Number(summary.total_cash_sales).toLocaleString('vi-VN')}đ
                     </div>
                   </div>
 
-                  <div style={{ background: '#090d16', padding: 12, borderRadius: 8, border: '1px solid var(--border-subtle)' }}>
-                    <div style={{ fontSize: 11, color: 'var(--text-dim)', marginBottom: 4, display: 'flex', alignItems: 'center', gap: 6 }}>
-                      <ArrowDownCircle size={13} color="#fbbf24" /> Thu nợ mặt:
+                  <div style={{ background: 'var(--bg-subtle)', padding: 12, borderRadius: 8, border: '1px solid var(--border-subtle)' }}>
+                    <div style={{ fontSize: 11.5, color: 'var(--text-muted)', marginBottom: 4, display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <ArrowDownCircle size={13} color="#d97706" /> Thu nợ mặt:
                     </div>
-                    <div style={{ fontSize: 15, fontWeight: 700, color: '#fbbf24' }}>
+                    <div style={{ fontSize: 15, fontWeight: 700, color: '#d97706' }}>
                       +{Number(summary.total_debt_collected_cash).toLocaleString('vi-VN')}đ
                     </div>
                   </div>
 
-                  <div style={{ background: '#090d16', padding: 12, borderRadius: 8, border: '1px solid rgba(56, 189, 248, 0.3)' }}>
-                    <div style={{ fontSize: 11, color: '#38bdf8', marginBottom: 4, display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <div style={{ background: 'var(--bg-subtle)', padding: 12, borderRadius: 8, border: '1px solid rgba(2, 132, 199, 0.3)' }}>
+                    <div style={{ fontSize: 11.5, color: '#0284c7', marginBottom: 4, display: 'flex', alignItems: 'center', gap: 6 }}>
                       <CheckCircle2 size={13} /> Két lý thuyết:
                     </div>
-                    <div style={{ fontSize: 16, fontWeight: 800, color: '#38bdf8' }}>
+                    <div style={{ fontSize: 16, fontWeight: 800, color: '#0284c7' }}>
                       {Number(summary.system_cash_amount).toLocaleString('vi-VN')}đ
                     </div>
                   </div>
@@ -641,7 +643,7 @@ export const ShiftModal: React.FC<ShiftModalProps> = ({
               {/* FORM CHỐT CA HOẶC FORM THU CHI QUỸ */}
               {shiftTab === 'CLOSE' ? (
                 <form onSubmit={handleCloseShift}>
-                  <div style={{ marginBottom: 16 }}>
+                  <div style={{ marginBottom: 14 }}>
                     <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: 'var(--text-muted)', marginBottom: 6 }}>
                       Số tiền đếm thực tế trong két (VNĐ):
                     </label>
@@ -655,7 +657,7 @@ export const ShiftModal: React.FC<ShiftModalProps> = ({
                       style={{
                         width: '100%',
                         padding: '10px 14px',
-                        background: 'var(--surface-sunken)',
+                        background: 'var(--bg-input)',
                         border: '1px solid var(--border-subtle)',
                         borderRadius: 8,
                         color: 'var(--text-main)',
@@ -675,16 +677,16 @@ export const ShiftModal: React.FC<ShiftModalProps> = ({
                       alignItems: 'center',
                       justifyContent: 'space-between',
                       background: difference === 0 
-                        ? 'rgba(16, 185, 129, 0.1)' 
+                        ? 'rgba(16, 185, 129, 0.08)' 
                         : difference > 0 
-                        ? 'rgba(245, 158, 11, 0.1)' 
-                        : 'rgba(244, 63, 94, 0.1)',
+                        ? 'rgba(245, 158, 11, 0.08)' 
+                        : 'rgba(239, 68, 68, 0.08)',
                       border: difference === 0 
                         ? '1px solid rgba(16, 185, 129, 0.3)' 
                         : difference > 0 
                         ? '1px solid rgba(245, 158, 11, 0.3)' 
-                        : '1px solid rgba(244, 63, 94, 0.3)',
-                      color: difference === 0 ? '#34d399' : difference > 0 ? '#fbbf24' : '#fb7185'
+                        : '1px solid rgba(239, 68, 68, 0.3)',
+                      color: difference === 0 ? '#059669' : difference > 0 ? '#d97706' : '#ef4444'
                     }}>
                       <span>Chênh lệch đối soát:</span>
                       <span>
@@ -697,7 +699,7 @@ export const ShiftModal: React.FC<ShiftModalProps> = ({
                     </div>
                   </div>
 
-                  <div style={{ marginBottom: 20 }}>
+                  <div style={{ marginBottom: 16 }}>
                     <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: 'var(--text-muted)', marginBottom: 6 }}>
                       Ghi chú bàn giao:
                     </label>
@@ -709,7 +711,7 @@ export const ShiftModal: React.FC<ShiftModalProps> = ({
                       style={{
                         width: '100%',
                         padding: '8px 12px',
-                        background: 'var(--surface-sunken)',
+                        background: 'var(--bg-input)',
                         border: '1px solid var(--border-subtle)',
                         borderRadius: 8,
                         color: 'var(--text-main)',
@@ -725,11 +727,11 @@ export const ShiftModal: React.FC<ShiftModalProps> = ({
                       onClick={() => setIsZReportOpen(true)}
                       style={{
                         flex: 1,
-                        padding: '12px 14px',
-                        background: 'rgba(56, 189, 248, 0.15)',
-                        border: '1px solid rgba(56, 189, 248, 0.4)',
+                        padding: '11px 14px',
+                        background: 'var(--bg-subtle)',
+                        border: '1px solid var(--border-subtle)',
                         borderRadius: 8,
-                        color: '#38bdf8',
+                        color: 'var(--text-main)',
                         fontWeight: 700,
                         fontSize: 13,
                         cursor: 'pointer',
@@ -748,7 +750,7 @@ export const ShiftModal: React.FC<ShiftModalProps> = ({
                       disabled={isSubmitting}
                       style={{
                         flex: 1.4,
-                        padding: '12px 16px',
+                        padding: '11px 16px',
                         background: 'linear-gradient(135deg, #e11d48 0%, #be123c 100%)',
                         border: 'none',
                         borderRadius: 8,
@@ -792,8 +794,8 @@ export const ShiftModal: React.FC<ShiftModalProps> = ({
                         padding: '10px 14px',
                         borderRadius: 8,
                         border: cfType === 'IN' ? '2px solid #10b981' : '1px solid var(--border-subtle)',
-                        background: cfType === 'IN' ? 'rgba(16, 185, 129, 0.15)' : 'rgba(255, 255, 255, 0.03)',
-                        color: cfType === 'IN' ? '#34d399' : 'var(--text-muted)',
+                        background: cfType === 'IN' ? 'rgba(16, 185, 129, 0.15)' : 'var(--bg-subtle)',
+                        color: cfType === 'IN' ? '#059669' : 'var(--text-muted)',
                         fontWeight: 700,
                         cursor: 'pointer',
                         display: 'flex',
@@ -812,8 +814,8 @@ export const ShiftModal: React.FC<ShiftModalProps> = ({
                         padding: '10px 14px',
                         borderRadius: 8,
                         border: cfType === 'OUT' ? '2px solid #ef4444' : '1px solid var(--border-subtle)',
-                        background: cfType === 'OUT' ? 'rgba(239, 68, 68, 0.15)' : 'rgba(255, 255, 255, 0.03)',
-                        color: cfType === 'OUT' ? '#f87171' : 'var(--text-muted)',
+                        background: cfType === 'OUT' ? 'rgba(239, 68, 68, 0.15)' : 'var(--bg-subtle)',
+                        color: cfType === 'OUT' ? '#ef4444' : 'var(--text-muted)',
                         fontWeight: 700,
                         cursor: 'pointer',
                         display: 'flex',
@@ -840,10 +842,10 @@ export const ShiftModal: React.FC<ShiftModalProps> = ({
                       style={{
                         width: '100%',
                         padding: '10px 14px',
-                        background: 'var(--surface-sunken)',
+                        background: 'var(--bg-input)',
                         border: '1px solid var(--border-subtle)',
                         borderRadius: 8,
-                        color: cfType === 'IN' ? '#34d399' : '#f87171',
+                        color: cfType === 'IN' ? '#059669' : '#ef4444',
                         fontSize: 16,
                         fontWeight: 800
                       }}
@@ -860,7 +862,7 @@ export const ShiftModal: React.FC<ShiftModalProps> = ({
                       style={{
                         width: '100%',
                         padding: '10px 14px',
-                        background: 'var(--surface-sunken)',
+                        background: 'var(--bg-input)',
                         border: '1px solid var(--border-subtle)',
                         borderRadius: 8,
                         color: 'var(--text-main)',
@@ -897,7 +899,7 @@ export const ShiftModal: React.FC<ShiftModalProps> = ({
                       style={{
                         width: '100%',
                         padding: '10px 14px',
-                        background: 'var(--surface-sunken)',
+                        background: 'var(--bg-input)',
                         border: '1px solid var(--border-subtle)',
                         borderRadius: 8,
                         color: 'var(--text-main)',
@@ -941,7 +943,7 @@ export const ShiftModal: React.FC<ShiftModalProps> = ({
                     padding: '12px 16px',
                     marginBottom: 16,
                     fontSize: 13,
-                    color: '#fbbf24'
+                    color: '#d97706'
                   }}>
                     🛡️ <strong>Rút Két An Toàn (Cash Drop):</strong> Chuyển bớt tiền mặt từ ngăn kéo thu ngân nộp về két sắt tổng của công ty để đảm bảo an toàn quầy thu ngân.
                   </div>
@@ -962,7 +964,7 @@ export const ShiftModal: React.FC<ShiftModalProps> = ({
                         style={{
                           width: '100%',
                           padding: '10px 12px 10px 38px',
-                          background: 'var(--surface-sunken)',
+                          background: 'var(--bg-input)',
                           border: '1px solid var(--border-subtle)',
                           borderRadius: 8,
                           color: 'var(--text-main)',
@@ -986,7 +988,7 @@ export const ShiftModal: React.FC<ShiftModalProps> = ({
                       style={{
                         width: '100%',
                         padding: '10px 14px',
-                        background: 'var(--surface-sunken)',
+                        background: 'var(--bg-input)',
                         border: '1px solid var(--border-subtle)',
                         borderRadius: 8,
                         color: 'var(--text-main)',
@@ -1007,7 +1009,7 @@ export const ShiftModal: React.FC<ShiftModalProps> = ({
                       style={{
                         width: '100%',
                         padding: '10px 14px',
-                        background: 'var(--surface-sunken)',
+                        background: 'var(--bg-input)',
                         border: '1px solid var(--border-subtle)',
                         borderRadius: 8,
                         color: 'var(--text-main)',

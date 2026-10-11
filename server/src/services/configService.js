@@ -76,11 +76,17 @@ async function getBranchRuntimeConfig(branchId) {
     return cached.data;
   }
 
-  // 1. Lấy thông tin cơ bản của chi nhánh
-  const branchRes = await db.query(
-    'SELECT id, code, name, organization_id, is_active FROM public.branches WHERE id = $1::uuid;',
-    [branchId]
-  );
+  // 1. Lấy thông tin cơ bản của chi nhánh (hỗ trợ cả UUID lẫn Mã chi nhánh như CN-Q1)
+  const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(branchId);
+  const branchRes = isUuid
+    ? await db.query(
+        'SELECT id, code, name, organization_id, is_active FROM public.branches WHERE id = $1::uuid;',
+        [branchId]
+      )
+    : await db.query(
+        'SELECT id, code, name, organization_id, is_active FROM public.branches WHERE code = $1 OR name = $1 LIMIT 1;',
+        [branchId]
+      );
   if (branchRes.rows.length === 0) {
     throw new Error(`Chi nhánh không tồn tại: ${branchId}`);
   }
@@ -89,7 +95,7 @@ async function getBranchRuntimeConfig(branchId) {
   // 2. Gọi RPC get_effective_branch_config để giải quyết thừa kế 3 tầng
   const configRes = await db.query(
     'SELECT * FROM public.get_effective_branch_config($1::uuid);',
-    [branchId]
+    [branch.id]
   );
 
   const features = {};
@@ -144,9 +150,13 @@ async function resolveBranchContext(userId, branchId) {
     };
   }
 
-  // 1. Kiểm tra quyền truy cập nếu có userId
+  // 1. Tải cấu hình hữu hiệu thời gian thực & phân giải chi nhánh
+  const runtime = await getBranchRuntimeConfig(branchId);
+  const resolvedBranchId = runtime.branch.id;
+
+  // 2. Kiểm tra quyền truy cập nếu có userId
   if (userId) {
-    const hasAccess = await verifyBranchAccess(userId, branchId);
+    const hasAccess = await verifyBranchAccess(userId, resolvedBranchId);
     if (!hasAccess) {
       return {
         authorized: false,
@@ -155,9 +165,6 @@ async function resolveBranchContext(userId, branchId) {
       };
     }
   }
-
-  // 2. Tải cấu hình hữu hiệu thời gian thực
-  const runtime = await getBranchRuntimeConfig(branchId);
 
   return {
     authorized: true,

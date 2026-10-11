@@ -79,30 +79,30 @@ export const QuickDebtCollectionModal: React.FC<QuickDebtCollectionModalProps> =
         alignItems: 'center',
         justifyContent: 'center',
         padding: '16px',
-        backgroundColor: 'rgba(2, 6, 23, 0.85)',
-        backdropFilter: 'blur(10px)'
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        backdropFilter: 'blur(4px)'
       }}
     >
       <div 
-        className="modal-content"
+        className="glass-panel"
         style={{
           width: '100%',
           maxWidth: '520px',
           borderRadius: '16px',
-          background: 'linear-gradient(145deg, #0f172a 0%, #090d16 100%)',
-          border: '1px solid rgba(16, 185, 129, 0.3)',
-          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.85), 0 0 30px rgba(16, 185, 129, 0.15)',
+          background: 'var(--bg-card)',
+          border: '1px solid var(--border-subtle)',
+          boxShadow: '0 20px 40px -12px rgba(0, 0, 0, 0.25)',
           overflow: 'hidden'
         }}
       >
         {/* HEADER */}
         <div style={{
           padding: '16px 20px',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+          borderBottom: '1px solid var(--border-subtle)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          background: 'rgba(16, 185, 129, 0.08)'
+          background: 'var(--bg-card)'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <div style={{
@@ -118,10 +118,10 @@ export const QuickDebtCollectionModal: React.FC<QuickDebtCollectionModalProps> =
               <DollarSign size={20} />
             </div>
             <div>
-              <h3 style={{ margin: 0, fontSize: 16, fontWeight: 800, color: '#f8fafc' }}>
+              <h3 style={{ margin: 0, fontSize: 16, fontWeight: 800, color: 'var(--text-main)' }}>
                 Thu Nợ Khách Hàng Tại Quầy
               </h3>
-              <p style={{ margin: 0, fontSize: 11, color: '#94a3b8' }}>
+              <p style={{ margin: 0, fontSize: 11, color: 'var(--text-muted)' }}>
                 Tự động cấn trừ sổ nợ & cộng tiền vào két bán hàng
               </p>
             </div>
@@ -132,7 +132,7 @@ export const QuickDebtCollectionModal: React.FC<QuickDebtCollectionModalProps> =
             style={{
               background: 'transparent',
               border: 'none',
-              color: '#94a3b8',
+              color: 'var(--text-muted)',
               cursor: 'pointer',
               padding: 4
             }}
@@ -147,18 +147,18 @@ export const QuickDebtCollectionModal: React.FC<QuickDebtCollectionModalProps> =
           <div style={{
             padding: '12px 14px',
             borderRadius: 10,
-            background: 'rgba(15, 23, 42, 0.6)',
-            border: '1px solid rgba(255, 255, 255, 0.08)',
+            background: 'var(--bg-subtle)',
+            border: '1px solid var(--border-subtle)',
             marginBottom: 16
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div>
-                <div style={{ fontSize: 13, fontWeight: 800, color: '#f8fafc' }}>{partner.name}</div>
-                <div style={{ fontSize: 11, color: '#94a3b8' }}>{partner.phone || 'Không có SĐT'} • {partner.code}</div>
+                <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--text-main)' }}>{partner.name}</div>
+                <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>{partner.phone || 'Không có SĐT'} • {partner.code}</div>
               </div>
               <div style={{ textAlign: 'right' }}>
-                <div style={{ fontSize: 11, color: '#94a3b8' }}>Dư nợ hiện tại</div>
-                <div style={{ fontSize: 17, fontWeight: 900, color: '#fb7185' }}>
+                <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>Dư nợ hiện tại</div>
+                <div style={{ fontSize: 17, fontWeight: 900, color: '#e11d48' }}>
                   {currentDebt.toLocaleString('vi-VN')} đ
                 </div>
               </div>
@@ -167,7 +167,7 @@ export const QuickDebtCollectionModal: React.FC<QuickDebtCollectionModalProps> =
 
           {/* Nhập số tiền thu */}
           <div style={{ marginBottom: 14 }}>
-            <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#cbd5e1', marginBottom: 6 }}>
+            <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: 'var(--text-muted)', marginBottom: 6 }}>
               Số Tiền Thu Thực Tế (VNĐ) *
             </label>
             <input
@@ -181,9 +181,9 @@ export const QuickDebtCollectionModal: React.FC<QuickDebtCollectionModalProps> =
                 width: '100%',
                 padding: '10px 14px',
                 borderRadius: 8,
-                background: 'rgba(15, 23, 42, 0.8)',
-                border: '1px solid rgba(16, 185, 129, 0.4)',
-                color: '#34d399',
+                background: 'var(--bg-input)',
+                border: '1px solid var(--border-subtle)',
+                color: '#059669',
                 fontSize: 18,
                 fontWeight: 900,
                 outline: 'none',
@@ -202,7 +202,7 @@ export const QuickDebtCollectionModal: React.FC<QuickDebtCollectionModalProps> =
                   borderRadius: 6,
                   border: '1px solid rgba(16, 185, 129, 0.3)',
                   background: 'rgba(16, 185, 129, 0.1)',
-                  color: '#34d399',
+                  color: '#059669',
                   fontSize: 11,
                   fontWeight: 700,
                   cursor: 'pointer'
@@ -217,9 +217,9 @@ export const QuickDebtCollectionModal: React.FC<QuickDebtCollectionModalProps> =
                   flex: 1,
                   padding: '5px',
                   borderRadius: 6,
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  color: '#94a3b8',
+                  border: '1px solid var(--border-subtle)',
+                  background: 'var(--bg-subtle)',
+                  color: 'var(--text-muted)',
                   fontSize: 11,
                   fontWeight: 600,
                   cursor: 'pointer'
@@ -234,9 +234,9 @@ export const QuickDebtCollectionModal: React.FC<QuickDebtCollectionModalProps> =
                   flex: 1,
                   padding: '5px',
                   borderRadius: 6,
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  color: '#94a3b8',
+                  border: '1px solid var(--border-subtle)',
+                  background: 'var(--bg-subtle)',
+                  color: 'var(--text-muted)',
                   fontSize: 11,
                   fontWeight: 600,
                   cursor: 'pointer'
@@ -249,7 +249,7 @@ export const QuickDebtCollectionModal: React.FC<QuickDebtCollectionModalProps> =
 
           {/* Phương thức thanh toán */}
           <div style={{ marginBottom: 14 }}>
-            <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#cbd5e1', marginBottom: 6 }}>
+            <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: 'var(--text-muted)', marginBottom: 6 }}>
               Hình Thức Thanh Toán
             </label>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
@@ -259,9 +259,9 @@ export const QuickDebtCollectionModal: React.FC<QuickDebtCollectionModalProps> =
                 style={{
                   padding: '10px 12px',
                   borderRadius: 8,
-                  border: paymentMethod === 'CASH' ? '1.5px solid #10b981' : '1px solid rgba(255, 255, 255, 0.1)',
-                  background: paymentMethod === 'CASH' ? 'rgba(16, 185, 129, 0.15)' : 'rgba(15, 23, 42, 0.6)',
-                  color: paymentMethod === 'CASH' ? '#34d399' : '#94a3b8',
+                  border: paymentMethod === 'CASH' ? '1.5px solid #10b981' : '1px solid var(--border-subtle)',
+                  background: paymentMethod === 'CASH' ? 'rgba(16, 185, 129, 0.15)' : 'var(--bg-subtle)',
+                  color: paymentMethod === 'CASH' ? '#059669' : 'var(--text-muted)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -281,9 +281,9 @@ export const QuickDebtCollectionModal: React.FC<QuickDebtCollectionModalProps> =
                 style={{
                   padding: '10px 12px',
                   borderRadius: 8,
-                  border: paymentMethod === 'BANK_TRANSFER' ? '1.5px solid #06b6d4' : '1px solid rgba(255, 255, 255, 0.1)',
-                  background: paymentMethod === 'BANK_TRANSFER' ? 'rgba(6, 182, 212, 0.15)' : 'rgba(15, 23, 42, 0.6)',
-                  color: paymentMethod === 'BANK_TRANSFER' ? '#38bdf8' : '#94a3b8',
+                  border: paymentMethod === 'BANK_TRANSFER' ? '1.5px solid #0284c7' : '1px solid var(--border-subtle)',
+                  background: paymentMethod === 'BANK_TRANSFER' ? 'rgba(2, 132, 199, 0.15)' : 'var(--bg-subtle)',
+                  color: paymentMethod === 'BANK_TRANSFER' ? '#0284c7' : 'var(--text-muted)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -301,7 +301,7 @@ export const QuickDebtCollectionModal: React.FC<QuickDebtCollectionModalProps> =
 
           {/* Ghi chú */}
           <div style={{ marginBottom: 16 }}>
-            <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#cbd5e1', marginBottom: 4 }}>
+            <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: 'var(--text-muted)', marginBottom: 4 }}>
               Ghi Chú Thu Nợ
             </label>
             <input
@@ -313,9 +313,9 @@ export const QuickDebtCollectionModal: React.FC<QuickDebtCollectionModalProps> =
                 width: '100%',
                 padding: '8px 12px',
                 borderRadius: 8,
-                background: 'rgba(15, 23, 42, 0.8)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                color: '#f8fafc',
+                background: 'var(--bg-input)',
+                border: '1px solid var(--border-subtle)',
+                color: 'var(--text-main)',
                 fontSize: 12,
                 outline: 'none'
               }}
@@ -329,7 +329,7 @@ export const QuickDebtCollectionModal: React.FC<QuickDebtCollectionModalProps> =
               borderRadius: 8,
               background: 'rgba(239, 68, 68, 0.15)',
               border: '1px solid rgba(239, 68, 68, 0.4)',
-              color: '#f87171',
+              color: '#ef4444',
               fontSize: 12,
               display: 'flex',
               alignItems: 'center',
@@ -347,7 +347,7 @@ export const QuickDebtCollectionModal: React.FC<QuickDebtCollectionModalProps> =
               borderRadius: 8,
               background: 'rgba(16, 185, 129, 0.15)',
               border: '1px solid rgba(16, 185, 129, 0.4)',
-              color: '#34d399',
+              color: '#059669',
               fontSize: 12,
               display: 'flex',
               alignItems: 'center',
@@ -368,9 +368,9 @@ export const QuickDebtCollectionModal: React.FC<QuickDebtCollectionModalProps> =
               style={{
                 padding: '9px 16px',
                 borderRadius: 8,
-                background: 'rgba(255, 255, 255, 0.05)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                color: '#94a3b8',
+                background: 'var(--bg-subtle)',
+                border: '1px solid var(--border-subtle)',
+                color: 'var(--text-muted)',
                 fontSize: 12,
                 fontWeight: 600,
                 cursor: 'pointer'

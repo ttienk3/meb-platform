@@ -420,7 +420,7 @@ function MainApp() {
             </div>
 
             {/* Cột Phải: Giỏ Hàng Đa Đơn Vị Tính, Sổ Nợ Khách Hàng & Nút Thanh Toán F9 */}
-            <div className="glass-panel" style={{ padding: 14, overflow: 'hidden', display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0 }}>
+            <div className="glass-panel" style={{ padding: '10px 12px', overflowY: 'auto', overflowX: 'hidden', display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0 }}>
               <CartPanel 
                 items={activeDraft.items}
                 onUpdateQty={handleUpdateQty}

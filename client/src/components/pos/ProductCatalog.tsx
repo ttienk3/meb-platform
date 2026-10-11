@@ -3,7 +3,7 @@ import { api, type ProductInventory } from '../../services/api';
 import { branchStore } from '../../services/branchContext';
 import { Search, Barcode, AlertCircle, RefreshCw, X, LayoutGrid, Table, AlertTriangle, Clock, Plus } from 'lucide-react';
 import { PosDynamicActionsBar } from './PosDynamicActionsBar';
-import { getProductImageUrl } from '../../utils/productImages';
+import { getProductImageUrl, getProductFallbackSvg } from '../../utils/productImages';
 
 interface ProductCatalogProps {
   onSelectProduct: (product: ProductInventory) => void;
@@ -351,10 +351,10 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
                       }}
                       className="product-table-row"
                     >
-                      <td style={{ padding: '6px 8px', width: 65, minWidth: 65, textAlign: 'center' }}>
+                      <td style={{ padding: '6px 8px', width: 65, minWidth: 65, textAlign: 'center', verticalAlign: 'middle' }}>
                         <div style={{
-                          width: 48,
-                          height: 48,
+                          width: 44,
+                          height: 44,
                           borderRadius: 8,
                           overflow: 'hidden',
                           background: 'var(--bg-main)',
@@ -367,15 +367,19 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
                           <img 
                             src={getProductImageUrl(p.code, p.image_url, p.category, p.name)} 
                             alt={p.name}
+                            onError={(e) => {
+                              e.currentTarget.onerror = null;
+                              e.currentTarget.src = getProductFallbackSvg(p.code, p.category, p.name);
+                            }}
                             style={{ width: '100%', height: '100%', objectFit: 'contain', padding: 2 }}
                             loading="lazy"
                           />
                         </div>
                       </td>
-                      <td style={{ padding: '8px 12px', width: 110, minWidth: 110, fontFamily: 'monospace', color: 'var(--text-muted)', fontWeight: 600, fontSize: 13, whiteSpace: 'nowrap' }}>
+                      <td style={{ padding: '8px 12px', width: 110, minWidth: 110, fontFamily: 'monospace', color: 'var(--text-muted)', fontWeight: 600, fontSize: 13, whiteSpace: 'nowrap', verticalAlign: 'middle' }}>
                         {p.code}
                       </td>
-                      <td style={{ padding: '8px 14px' }}>
+                      <td style={{ padding: '8px 14px', verticalAlign: 'middle' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
                           <span style={{ fontWeight: 600, color: 'var(--text-main)', fontSize: 14 }}>{p.name}</span>
                           {(p.track_expiry || p.has_expiry || p.expiry_date) && (
@@ -415,10 +419,10 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
                           )}
                         </div>
                       </td>
-                      <td style={{ padding: '8px 12px', width: 80, minWidth: 80, color: 'var(--text-muted)', fontSize: 13, whiteSpace: 'nowrap' }}>
+                      <td style={{ padding: '8px 12px', width: 80, minWidth: 80, color: 'var(--text-muted)', fontSize: 13, whiteSpace: 'nowrap', verticalAlign: 'middle' }}>
                         {p.base_uom}
                       </td>
-                      <td style={{ padding: '8px 14px', width: 130, minWidth: 130, textAlign: 'right', whiteSpace: 'nowrap' }}>
+                      <td style={{ padding: '8px 14px', width: 130, minWidth: 130, textAlign: 'right', whiteSpace: 'nowrap', verticalAlign: 'middle' }}>
                         <span style={{
                           fontWeight: 700,
                           fontSize: 13,
@@ -432,31 +436,33 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
                           {Number(p.available_qty).toLocaleString('vi-VN')} {p.base_uom}
                         </span>
                       </td>
-                      <td style={{ padding: '8px 14px', width: 120, minWidth: 120, textAlign: 'right', fontWeight: 700, color: 'var(--text-main)', fontSize: 15, whiteSpace: 'nowrap' }}>
+                      <td style={{ padding: '8px 14px', width: 120, minWidth: 120, textAlign: 'right', fontWeight: 700, color: 'var(--text-main)', fontSize: 15, whiteSpace: 'nowrap', verticalAlign: 'middle' }}>
                         {Number(p.default_selling_price).toLocaleString('vi-VN')}đ
                       </td>
-                      <td style={{ padding: '8px 14px', width: 110, minWidth: 110, textAlign: 'center', whiteSpace: 'nowrap' }}>
+                      <td style={{ padding: '8px 14px', width: 110, minWidth: 110, textAlign: 'center', whiteSpace: 'nowrap', verticalAlign: 'middle' }}>
                         <button
                           type="button"
                           onClick={(e) => { e.stopPropagation(); onSelectProduct(p); }}
                           style={{
-                            background: 'var(--bg-subtle)',
-                            border: '1px solid var(--border-subtle)',
-                            color: 'var(--primary)',
+                            background: 'var(--primary-subtle, #eff6ff)',
+                            border: '1px solid var(--primary-border, #bfdbfe)',
+                            color: 'var(--primary, #2563eb)',
                             borderRadius: 6,
                             padding: '6px 14px',
                             fontSize: 13,
                             fontWeight: 700,
                             cursor: 'pointer',
-                            height: 34,
+                            height: 32,
                             whiteSpace: 'nowrap',
                             display: 'inline-flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            gap: 4
+                            gap: 4,
+                            boxShadow: '0 1px 2px rgba(0,0,0,0.04)'
                           }}
                         >
-                          <Plus size={14} /> Chọn
+                          <Plus size={14} strokeWidth={2.5} style={{ flexShrink: 0 }} />
+                          <span style={{ lineHeight: 1 }}>Chọn</span>
                         </button>
                       </td>
                     </tr>
@@ -521,6 +527,10 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
                       <img 
                         src={getProductImageUrl(p.code, p.image_url, p.category, p.name)} 
                         alt={p.name}
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = getProductFallbackSvg(p.code, p.category, p.name);
+                        }}
                         style={{ width: '100%', height: '100%', objectFit: 'contain', padding: 6 }}
                         loading="lazy"
                       />

@@ -27,8 +27,8 @@ export const PosHelpModal: React.FC<PosHelpModalProps> = ({ isOpen, onClose }) =
       style={{
         position: 'fixed',
         inset: 0,
-        backgroundColor: 'rgba(5, 10, 20, 0.85)',
-        backdropFilter: 'blur(8px)',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        backdropFilter: 'blur(4px)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -38,45 +38,46 @@ export const PosHelpModal: React.FC<PosHelpModalProps> = ({ isOpen, onClose }) =
       onClick={onClose}
     >
       <div 
+        className="glass-panel"
         style={{
-          background: 'linear-gradient(145deg, #0f172a, #1e293b)',
-          border: '1px solid rgba(56, 189, 248, 0.3)',
+          background: 'var(--bg-card)',
+          border: '1px solid var(--border-subtle)',
           borderRadius: 16,
           width: '100%',
           maxWidth: 620,
-          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 30px rgba(56, 189, 248, 0.15)',
+          boxShadow: '0 20px 40px -12px rgba(0, 0, 0, 0.25)',
           overflow: 'hidden',
-          color: '#f8fafc'
+          color: 'var(--text-main)'
         }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
         <div style={{
-          padding: '18px 24px',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+          padding: '16px 20px',
+          borderBottom: '1px solid var(--border-subtle)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          background: 'rgba(56, 189, 248, 0.05)'
+          background: 'var(--bg-card)'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <div style={{
               width: 36,
               height: 36,
               borderRadius: 10,
-              background: 'rgba(56, 189, 248, 0.2)',
+              background: 'var(--primary-subtle)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#38bdf8'
+              color: 'var(--primary)'
             }}>
               <Keyboard size={20} />
             </div>
             <div>
-              <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: '#f8fafc' }}>
+              <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: 'var(--text-main)' }}>
                 Bảng Phím Tắt Bán Hàng POS
               </h3>
-              <p style={{ margin: 0, fontSize: 12, color: '#94a3b8' }}>
+              <p style={{ margin: 0, fontSize: 12, color: 'var(--text-muted)' }}>
                 Thao tác thần tốc dành riêng cho quầy thu ngân & máy quét mã vạch
               </p>
             </div>
@@ -87,7 +88,7 @@ export const PosHelpModal: React.FC<PosHelpModalProps> = ({ isOpen, onClose }) =
             style={{
               background: 'transparent',
               border: 'none',
-              color: '#94a3b8',
+              color: 'var(--text-muted)',
               cursor: 'pointer',
               padding: 6,
               borderRadius: 8
@@ -108,8 +109,8 @@ export const PosHelpModal: React.FC<PosHelpModalProps> = ({ isOpen, onClose }) =
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   padding: '10px 14px',
-                  background: 'rgba(255, 255, 255, 0.03)',
-                  border: '1px solid rgba(255, 255, 255, 0.06)',
+                  background: 'var(--bg-subtle)',
+                  border: '1px solid var(--border-subtle)',
                   borderRadius: 10
                 }}
               >
@@ -119,19 +120,19 @@ export const PosHelpModal: React.FC<PosHelpModalProps> = ({ isOpen, onClose }) =
                     padding: '4px 10px',
                     fontSize: 13,
                     fontWeight: 800,
-                    color: '#38bdf8',
-                    background: '#090d16',
-                    border: '1px solid rgba(56, 189, 248, 0.4)',
+                    color: 'var(--primary)',
+                    background: 'var(--bg-card)',
+                    border: '1px solid var(--border-subtle)',
                     borderRadius: 6,
-                    boxShadow: '0 2px 4px rgba(0,0,0,0.4)',
+                    boxShadow: '0 1px 2px rgba(0,0,0,0.06)',
                     minWidth: 42,
                     textAlign: 'center'
                   }}>
                     {s.key}
                   </kbd>
                   <div>
-                    <div style={{ fontSize: 13, fontWeight: 700, color: '#f1f5f9' }}>{s.label}</div>
-                    <div style={{ fontSize: 11, color: '#94a3b8' }}>{s.desc}</div>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-main)' }}>{s.label}</div>
+                    <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>{s.desc}</div>
                   </div>
                 </div>
               </div>
