@@ -33,6 +33,7 @@ import { QuickDebtCollectionModal } from './QuickDebtCollectionModal';
 import { VietQrModal } from './VietQrModal';
 import { offlineSync } from '../../services/offlineSyncService';
 import { getProductImageUrl, getProductFallbackSvg } from '../../utils/productImages';
+import { systemSettingsStore } from '../../services/systemSettings';
 
 export interface CartItem {
   product_id: string;
@@ -1310,6 +1311,10 @@ export const CartPanel: React.FC<CartPanelProps> = ({
         onClose={() => setIsVietQrOpen(false)}
         amount={paymentMode === 'BANK_TRANSFER' ? totalAmount : (parseFloat(splitBankInput) || totalAmount)}
         orderCode={`HD-POS-${(activeDraftId || 'ORD').replace(/[^a-zA-Z0-9]/g, '').slice(-4).toUpperCase() || '01'}`}
+        bankCode={systemSettingsStore.getSettings().bankCode}
+        bankName={systemSettingsStore.getSettings().bankName}
+        accountNumber={systemSettingsStore.getSettings().accountNumber}
+        accountName={systemSettingsStore.getSettings().accountName}
         onConfirmPaid={async () => {
           setIsVietQrOpen(false);
           await handleCheckout();

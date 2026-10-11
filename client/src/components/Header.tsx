@@ -25,7 +25,8 @@ import {
   LogOut,
   ChevronDown,
   Sun,
-  Moon
+  Moon,
+  Settings
 } from 'lucide-react';
 import { CreateBranchModal } from './branch/CreateBranchModal';
 import { LoginModal } from './auth/LoginModal';
@@ -37,13 +38,15 @@ interface HeaderProps {
   onTabChange: (tab: NavTab) => void;
   onOpenShiftModal?: () => void;
   onOpenReturnModal?: () => void;
+  onOpenSettingsModal?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
   activeTab,
   onTabChange,
   onOpenShiftModal,
-  onOpenReturnModal
+  onOpenReturnModal,
+  onOpenSettingsModal
 }) => {
   const [branches, setBranches] = useState<Branch[]>([]);
   const [currentBranch, setCurrentBranch] = useState<Branch | null>(null);
@@ -481,6 +484,29 @@ export const Header: React.FC<HeaderProps> = ({
             {theme === 'light' ? <Sun size={15} color="#d97706" /> : <Moon size={15} color="#38bdf8" />}
           </button>
 
+          {/* NÚT CÀI ĐẶT HỆ THỐNG & TÙY BIẾN QUẦY */}
+          <button
+            type="button"
+            onClick={onOpenSettingsModal}
+            className="btn-action"
+            style={{
+              width: 32,
+              height: 32,
+              padding: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: 6,
+              background: 'var(--bg-subtle)',
+              border: '1px solid var(--border-subtle)',
+              cursor: 'pointer',
+              color: 'var(--text-main)'
+            }}
+            title="Cài đặt tài khoản ngân hàng VietQR, tên cửa hàng, nhân viên, phông chữ..."
+          >
+            <Settings size={15} />
+          </button>
+
           {/* USER PROFILE DROPDOWN (CHUẨN FB / SHOPEE / YOUTUBE) */}
           <div className="profile-menu-container" style={{ position: 'relative' }}>
             <button
@@ -605,6 +631,31 @@ export const Header: React.FC<HeaderProps> = ({
                 >
                   <Plus size={14} color="var(--primary)" />
                   <span>+ Thêm Chi Nhánh Mới</span>
+                </button>
+
+                {/* Cài đặt tài khoản & tùy biến hệ thống */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    onOpenSettingsModal?.();
+                    setIsProfileMenuOpen(false);
+                  }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 8,
+                    padding: '8px 10px',
+                    borderRadius: 6,
+                    border: 'none',
+                    background: 'transparent',
+                    color: 'var(--text-main)',
+                    fontSize: 12,
+                    cursor: 'pointer',
+                    textAlign: 'left'
+                  }}
+                >
+                  <Settings size={14} color="var(--primary)" />
+                  <span>⚙️ Cài đặt & Tùy biến Hệ thống</span>
                 </button>
 
                 {/* Cài đặt App Desktop PWA nếu khả dụng */}

@@ -6,6 +6,7 @@ interface VietQrModalProps {
   onClose: () => void;
   amount: number;
   orderCode?: string;
+  bankCode?: string;
   bankName?: string;
   accountNumber?: string;
   accountName?: string;
@@ -17,6 +18,7 @@ export const VietQrModal: React.FC<VietQrModalProps> = ({
   onClose,
   amount,
   orderCode = 'HD-BAN-LE',
+  bankCode = 'MB',
   bankName = 'MB Bank (Quân Đội)',
   accountNumber = '0908123456',
   accountName = 'MEB PLATFORM STORE',
@@ -32,7 +34,7 @@ export const VietQrModal: React.FC<VietQrModalProps> = ({
     setTimeout(() => setCopied(null), 2000);
   };
 
-  const qrUrl = `https://img.vietqr.io/image/MB-${accountNumber}-compact2.png?amount=${amount}&addInfo=${encodeURIComponent(orderCode)}&accountName=${encodeURIComponent(accountName)}`;
+  const qrUrl = `https://img.vietqr.io/image/${bankCode}-${accountNumber}-compact2.png?amount=${amount}&addInfo=${encodeURIComponent(orderCode)}&accountName=${encodeURIComponent(accountName)}`;
 
   return (
     <div style={{

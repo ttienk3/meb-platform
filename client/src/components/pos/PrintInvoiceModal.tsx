@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Printer, X, CheckCircle2 } from 'lucide-react';
 import { type Branch } from '../../services/api';
+import { systemSettingsStore } from '../../services/systemSettings';
 
 export interface InvoiceData {
   order_id?: string;
@@ -252,12 +253,12 @@ export const PrintInvoiceModal: React.FC<PrintInvoiceModalProps> = ({
             {/* Header Bill */}
             <div style={{ textAlign: 'center', borderBottom: '1px dashed #000', paddingBottom: 10, marginBottom: 10 }}>
               <div style={{ fontSize: 16, fontWeight: 900, textTransform: 'uppercase' }}>
-                {currentBranch ? currentBranch.name : 'MEB SMART POS RETAIL'}
+                {systemSettingsStore.getSettings().storeName || (currentBranch ? currentBranch.name : 'MEB SMART POS RETAIL')}
               </div>
               <div style={{ fontSize: 11, color: '#333' }}>
-                Đ/c: {currentBranch ? currentBranch.code : 'Kho Tổng'} - Hệ Thống Bán Lẻ Đa Chi Nhánh
+                Đ/c: {systemSettingsStore.getSettings().address || (currentBranch ? currentBranch.address || currentBranch.code : 'Kho Tổng')}
               </div>
-              <div style={{ fontSize: 11, color: '#333' }}>Hotline: 1900 6868</div>
+              <div style={{ fontSize: 11, color: '#333' }}>Hotline: {systemSettingsStore.getSettings().hotline || '1900 6868'}</div>
               <div style={{ fontSize: 14, fontWeight: 'bold', marginTop: 6, letterSpacing: 1 }}>
                 HÓA ĐƠN BÁN HÀNG
               </div>
@@ -338,7 +339,7 @@ export const PrintInvoiceModal: React.FC<PrintInvoiceModalProps> = ({
 
             {/* Footer Bill */}
             <div style={{ textAlign: 'center', borderTop: '1px dashed #000', marginTop: 12, paddingTop: 10, fontSize: 10 }}>
-              <div style={{ fontWeight: 'bold' }}>CẢM ƠN QUÝ KHÁCH & HẸN GẶP LẠI!</div>
+              <div style={{ fontWeight: 'bold' }}>{systemSettingsStore.getSettings().invoiceSlogan || 'CẢM ƠN QUÝ KHÁCH & HẸN GẶP LẠI!'}</div>
               <div>Hóa đơn có giá trị đổi trả trong vòng 03 ngày</div>
               <div style={{ marginTop: 4, color: '#666' }}>Powered by MEB Cloud Engine</div>
             </div>
