@@ -93,12 +93,15 @@ html, body, #root {
 /* ==========================================================================
    FORM CONTROLS (CHUẨN TỐI GIẢN FACEBOOK / GOOGLE SEARCH)
    ========================================================================== */
+input, select, textarea, button {
+  font-family: inherit;
+}
+
 input, select, textarea {
   background-color: var(--bg-input) !important;
   color: var(--text-main) !important;
   border: 1px solid var(--border-subtle) !important;
   border-radius: var(--radius-sm);
-  font-family: inherit;
   font-size: 13px;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
   outline: none;

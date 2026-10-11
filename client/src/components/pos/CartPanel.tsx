@@ -31,9 +31,9 @@ import {
 import { QuickCustomerModal } from './QuickCustomerModal';
 import { QuickDebtCollectionModal } from './QuickDebtCollectionModal';
 import { VietQrModal } from './VietQrModal';
+import { SettingsModal } from '../settings/SettingsModal';
 import { offlineSync } from '../../services/offlineSyncService';
 import { getProductImageUrl, getProductFallbackSvg } from '../../utils/productImages';
-import { systemSettingsStore } from '../../services/systemSettings';
 
 export interface CartItem {
   product_id: string;
@@ -101,6 +101,7 @@ export const CartPanel: React.FC<CartPanelProps> = ({
   const [isQuickCustomerOpen, setIsQuickCustomerOpen] = useState<boolean>(false);
   const [isDebtModalOpen, setIsDebtModalOpen] = useState<boolean>(false);
   const [isVietQrOpen, setIsVietQrOpen] = useState<boolean>(false);
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState<boolean>(false);
   
   // Phương thức thanh toán: CASH | BANK_TRANSFER | DEBT | SPLIT
   const [paymentMode, setPaymentMode] = useState<'CASH' | 'BANK_TRANSFER' | 'DEBT' | 'SPLIT'>('CASH');
@@ -1311,10 +1312,7 @@ export const CartPanel: React.FC<CartPanelProps> = ({
         onClose={() => setIsVietQrOpen(false)}
         amount={paymentMode === 'BANK_TRANSFER' ? totalAmount : (parseFloat(splitBankInput) || totalAmount)}
         orderCode={`HD-POS-${(activeDraftId || 'ORD').replace(/[^a-zA-Z0-9]/g, '').slice(-4).toUpperCase() || '01'}`}
-        bankCode={systemSettingsStore.getSettings().bankCode}
-        bankName={systemSettingsStore.getSettings().bankName}
-        accountNumber={systemSettingsStore.getSettings().accountNumber}
-        accountName={systemSettingsStore.getSettings().accountName}
+        onOpenSettings={() => setIsSettingsModalOpen(true)}
         onConfirmPaid={async () => {
           setIsVietQrOpen(false);
           await handleCheckout();
@@ -1444,6 +1442,13 @@ export const CartPanel: React.FC<CartPanelProps> = ({
           </div>
         </div>
       )}
+
+      {/* MODAL CÀI ĐẶT HỆ THỐNG / TÀI KHOẢN NGÂN HÀNG */}
+      <SettingsModal
+        isOpen={isSettingsModalOpen}
+        onClose={() => setIsSettingsModalOpen(false)}
+        defaultTab="BANK"
+      />
     </div>
   );
 };

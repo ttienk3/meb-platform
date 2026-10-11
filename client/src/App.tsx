@@ -17,7 +17,6 @@ import { HQDashboardTab } from './components/hq/HQDashboardTab';
 import { CashbookTab } from './components/cashbook/CashbookTab';
 import { PosHelpModal } from './components/pos/PosHelpModal';
 import { CustomerDisplayView } from './components/pos/CustomerDisplayView';
-import { SystemSettingsModal } from './components/settings/SystemSettingsModal';
 
 export function App() {
   const isCustomerDisplay = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('view') === 'customer-display';
@@ -159,12 +158,6 @@ function MainApp() {
   const [isShiftModalOpen, setIsShiftModalOpen] = useState(false);
   const [isReturnModalOpen, setIsReturnModalOpen] = useState(false);
   const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
-  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return new URLSearchParams(window.location.search).get('settings') === 'open';
-    }
-    return false;
-  });
 
   useEffect(() => {
     const unsub = branchStore.subscribe((config, branch) => {
@@ -238,18 +231,12 @@ function MainApp() {
         e.preventDefault();
         setIsReturnModalOpen(prev => !prev);
       }
-      // F12: Cài đặt hệ thống & tùy biến quầy
-      else if (e.key === 'F12') {
-        e.preventDefault();
-        setIsSettingsModalOpen(prev => !prev);
-      }
       // Escape: Đóng modal
       else if (e.key === 'Escape') {
         setIsHelpModalOpen(false);
         setIsShiftModalOpen(false);
         setIsReturnModalOpen(false);
         setIsPrintModalOpen(false);
-        setIsSettingsModalOpen(false);
       }
     };
 
@@ -358,7 +345,6 @@ function MainApp() {
         onTabChange={setActiveTab}
         onOpenShiftModal={() => setIsShiftModalOpen(true)}
         onOpenReturnModal={() => setIsReturnModalOpen(true)}
-        onOpenSettingsModal={() => setIsSettingsModalOpen(true)}
       />
 
       {/* 2. KHU VỰC THÂN GIAO DIỆN CHÍNH */}
@@ -536,12 +522,6 @@ function MainApp() {
       <PosHelpModal
         isOpen={isHelpModalOpen}
         onClose={() => setIsHelpModalOpen(false)}
-      />
-
-      {/* 7. MODAL CÀI ĐẶT HỆ THỐNG, VIETQR, THÔNG TIN CỬA HÀNG, NHÂN VIÊN & TÙY BIẾN GIAO DIỆN */}
-      <SystemSettingsModal
-        isOpen={isSettingsModalOpen}
-        onClose={() => setIsSettingsModalOpen(false)}
       />
 
       {/* 7. THANH PHÍM TẮT TRỰC QUAN CHÂN MÀN HÌNH (POS HOTKEYS FOOTER) */}

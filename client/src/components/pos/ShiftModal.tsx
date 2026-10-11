@@ -16,6 +16,7 @@ import {
 import { api, type ShiftInfo, type ShiftSummary } from '../../services/api';
 import { branchStore } from '../../services/branchContext';
 import { ZReportModal } from './ZReportModal';
+import { storeSettings } from '../../services/storeSettingsService';
 
 interface ShiftModalProps {
   isOpen: boolean;
@@ -31,7 +32,7 @@ export const ShiftModal: React.FC<ShiftModalProps> = ({
   onShiftUpdated
 }) => {
   // State mở ca mới
-  const [openStaffName, setOpenStaffName] = useState('Thu Ngân Chính');
+  const [openStaffName, setOpenStaffName] = useState(() => storeSettings.getActiveStaff()?.name || 'Thu Ngân Chính');
   const [openInitialAmount, setOpenInitialAmount] = useState<number>(1000000);
 
   // Sub-tab cho ca đang mở: 'CLOSE', 'CASH_FLOW', hoặc 'CASH_DROP' (Q13)
@@ -408,6 +409,33 @@ export const ShiftModal: React.FC<ShiftModalProps> = ({
                     }}
                   />
                 </div>
+                {storeSettings.getSettings().staffList.length > 0 && (
+                  <div style={{ marginTop: 8, display: 'flex', flexWrap: 'wrap', gap: 6, alignItems: 'center' }}>
+                    <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>Chọn nhanh:</span>
+                    {storeSettings.getSettings().staffList.map(st => (
+                      <button
+                        key={st.id}
+                        type="button"
+                        onClick={() => {
+                          setOpenStaffName(st.name);
+                          storeSettings.setActiveStaff(st.id);
+                        }}
+                        style={{
+                          padding: '3px 8px',
+                          borderRadius: 6,
+                          fontSize: 11,
+                          fontWeight: 600,
+                          cursor: 'pointer',
+                          background: openStaffName === st.name ? 'var(--primary)' : 'var(--bg-subtle)',
+                          color: openStaffName === st.name ? '#ffffff' : 'var(--text-main)',
+                          border: `1px solid ${openStaffName === st.name ? 'var(--primary)' : 'var(--border-subtle)'}`
+                        }}
+                      >
+                        {st.name}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <div style={{ marginBottom: 20 }}>

@@ -1,5 +1,6 @@
 import React from 'react';
-import { QrCode, X, CheckCircle2, Copy, Check } from 'lucide-react';
+import { QrCode, X, CheckCircle2, Copy, Check, Settings } from 'lucide-react';
+import { storeSettings } from '../../services/storeSettingsService';
 
 interface VietQrModalProps {
   isOpen: boolean;
@@ -11,6 +12,7 @@ interface VietQrModalProps {
   accountNumber?: string;
   accountName?: string;
   onConfirmPaid?: () => void;
+  onOpenSettings?: () => void;
 }
 
 export const VietQrModal: React.FC<VietQrModalProps> = ({
@@ -18,13 +20,20 @@ export const VietQrModal: React.FC<VietQrModalProps> = ({
   onClose,
   amount,
   orderCode = 'HD-BAN-LE',
-  bankCode = 'MB',
-  bankName = 'MB Bank (Quân Đội)',
-  accountNumber = '0908123456',
-  accountName = 'MEB PLATFORM STORE',
-  onConfirmPaid
+  bankCode,
+  bankName,
+  accountNumber,
+  accountName,
+  onConfirmPaid,
+  onOpenSettings
 }) => {
   const [copied, setCopied] = React.useState<string | null>(null);
+  const currentSettings = storeSettings.getSettings();
+
+  const finalBankCode = bankCode || currentSettings.bankCode || 'MB';
+  const finalBankName = bankName || currentSettings.bankName || 'MB Bank (Quân Đội)';
+  const finalAccountNumber = accountNumber || currentSettings.bankAccountNumber || '0908123456';
+  const finalAccountName = accountName || currentSettings.bankAccountName || 'TRAN TIEN';
 
   if (!isOpen) return null;
 
@@ -34,13 +43,13 @@ export const VietQrModal: React.FC<VietQrModalProps> = ({
     setTimeout(() => setCopied(null), 2000);
   };
 
-  const qrUrl = `https://img.vietqr.io/image/${bankCode}-${accountNumber}-compact2.png?amount=${amount}&addInfo=${encodeURIComponent(orderCode)}&accountName=${encodeURIComponent(accountName)}`;
+  const qrUrl = `https://img.vietqr.io/image/${finalBankCode}-${finalAccountNumber}-compact2.png?amount=${amount}&addInfo=${encodeURIComponent(orderCode)}&accountName=${encodeURIComponent(finalAccountName)}`;
 
   return (
     <div style={{
       position: 'fixed',
       inset: 0,
-      backgroundColor: 'rgba(0, 0, 0, 0.75)',
+      backgroundColor: 'rgba(0, 0, 0, 0.65)',
       backdropFilter: 'blur(6px)',
       display: 'flex',
       alignItems: 'center',
@@ -49,41 +58,42 @@ export const VietQrModal: React.FC<VietQrModalProps> = ({
       padding: 16
     }}>
       <div style={{
-        background: '#0f172a',
-        border: '1px solid rgba(255, 255, 255, 0.15)',
+        background: 'var(--bg-card, #ffffff)',
+        color: 'var(--text-main, #0f172a)',
+        border: '1px solid var(--border-subtle, #e2e8f0)',
         borderRadius: 16,
         width: '100%',
         maxWidth: 440,
         overflow: 'hidden',
-        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
+        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
       }}>
         {/* HEADER */}
         <div style={{
           padding: '16px 20px',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+          borderBottom: '1px solid var(--border-subtle, #e2e8f0)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          background: 'rgba(30, 41, 59, 0.5)'
+          background: 'var(--bg-subtle, #f8fafc)'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <div style={{
               width: 36,
               height: 36,
               borderRadius: 10,
-              background: 'rgba(56, 189, 248, 0.15)',
+              background: 'var(--primary-subtle, #e0f2fe)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#38bdf8'
+              color: 'var(--primary, #0284c7)'
             }}>
               <QrCode size={20} />
             </div>
             <div>
-              <h3 style={{ fontSize: 16, fontWeight: 700, color: '#f8fafc', margin: 0 }}>
+              <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, color: 'var(--text-main)' }}>
                 Quét Mã VietQR Chuyển Khoản
               </h3>
-              <p style={{ fontSize: 11, color: '#94a3b8', margin: 0 }}>
+              <p style={{ fontSize: 11, color: 'var(--text-muted)', margin: 0 }}>
                 Mã QR động chuẩn Napas 247
               </p>
             </div>
@@ -93,7 +103,7 @@ export const VietQrModal: React.FC<VietQrModalProps> = ({
             style={{
               background: 'transparent',
               border: 'none',
-              color: '#94a3b8',
+              color: 'var(--text-muted)',
               cursor: 'pointer',
               padding: 4
             }}
@@ -106,14 +116,14 @@ export const VietQrModal: React.FC<VietQrModalProps> = ({
         <div style={{ padding: 20, textAlign: 'center' }}>
           {/* SỐ TIỀN CẦN THANH TOÁN */}
           <div style={{
-            background: 'rgba(56, 189, 248, 0.1)',
-            border: '1px solid rgba(56, 189, 248, 0.25)',
+            background: 'var(--primary-subtle, #f0f9ff)',
+            border: '1px solid rgba(2, 132, 199, 0.2)',
             borderRadius: 12,
-            padding: '12px 16px',
-            marginBottom: 16
+            padding: '10px 16px',
+            marginBottom: 14
           }}>
-            <div style={{ fontSize: 12, color: '#94a3b8', marginBottom: 2 }}>Số tiền cần thanh toán:</div>
-            <div style={{ fontSize: 24, fontWeight: 800, color: '#38bdf8' }}>
+            <div style={{ fontSize: 11.5, color: 'var(--text-muted)', marginBottom: 2 }}>Số tiền cần thanh toán:</div>
+            <div style={{ fontSize: 24, fontWeight: 800, color: 'var(--primary, #0284c7)' }}>
               {amount.toLocaleString('vi-VN')} đ
             </div>
           </div>
@@ -122,135 +132,168 @@ export const VietQrModal: React.FC<VietQrModalProps> = ({
           <div style={{
             background: '#ffffff',
             borderRadius: 12,
-            padding: 12,
+            padding: 10,
             display: 'inline-block',
-            boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.3)',
-            marginBottom: 16
+            boxShadow: '0 4px 15px rgba(0, 0, 0, 0.08)',
+            border: '1px solid var(--border-subtle, #e2e8f0)',
+            marginBottom: 14
           }}>
             <img 
               src={qrUrl} 
               alt="VietQR Code" 
-              style={{ width: 220, height: 220, objectFit: 'contain', display: 'block' }}
+              style={{ width: 210, height: 210, objectFit: 'contain', display: 'block' }}
             />
           </div>
 
           {/* THÔNG TIN CHUYỂN KHOẢN KÈM NÚT COPY */}
           <div style={{
-            background: 'rgba(15, 23, 42, 0.8)',
-            border: '1px solid rgba(255, 255, 255, 0.08)',
+            background: 'var(--bg-subtle, #f8fafc)',
+            border: '1px solid var(--border-subtle, #e2e8f0)',
             borderRadius: 10,
             padding: 12,
             textAlign: 'left',
             fontSize: 12,
             display: 'flex',
             flexDirection: 'column',
-            gap: 8,
+            gap: 7,
             marginBottom: 16
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ color: '#94a3b8' }}>Ngân hàng:</span>
-              <span style={{ color: '#f8fafc', fontWeight: 600 }}>{bankName}</span>
+              <span style={{ color: 'var(--text-muted)' }}>Ngân hàng:</span>
+              <span style={{ color: 'var(--text-main)', fontWeight: 600 }}>{finalBankName}</span>
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ color: '#94a3b8' }}>Số tài khoản:</span>
+              <span style={{ color: 'var(--text-muted)' }}>Số tài khoản:</span>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                <span style={{ color: '#38bdf8', fontWeight: 700 }}>{accountNumber}</span>
+                <span style={{ color: 'var(--primary)', fontWeight: 800, fontSize: 13 }}>{finalAccountNumber}</span>
                 <button
-                  onClick={() => handleCopy(accountNumber, 'acc')}
+                  type="button"
+                  onClick={() => handleCopy(finalAccountNumber, 'acc')}
                   style={{
-                    background: 'rgba(255, 255, 255, 0.08)',
-                    border: 'none',
+                    background: 'var(--bg-card)',
+                    border: '1px solid var(--border-subtle)',
                     borderRadius: 4,
                     padding: '2px 6px',
-                    color: '#94a3b8',
+                    color: 'var(--text-muted)',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
                     gap: 4,
-                    fontSize: 10
+                    fontSize: 10.5
                   }}
                 >
-                  {copied === 'acc' ? <Check size={11} color="#34d399" /> : <Copy size={11} />}
+                  {copied === 'acc' ? <Check size={11} color="#059669" /> : <Copy size={11} />}
                   <span>{copied === 'acc' ? 'Đã chép' : 'Sao chép'}</span>
                 </button>
               </div>
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ color: '#94a3b8' }}>Chủ tài khoản:</span>
-              <span style={{ color: '#f8fafc', fontWeight: 600 }}>{accountName}</span>
+              <span style={{ color: 'var(--text-muted)' }}>Chủ tài khoản:</span>
+              <span style={{ color: 'var(--text-main)', fontWeight: 700 }}>{finalAccountName}</span>
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ color: '#94a3b8' }}>Nội dung CK:</span>
+              <span style={{ color: 'var(--text-muted)' }}>Nội dung CK:</span>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                <span style={{ color: '#f8fafc', fontWeight: 600 }}>{orderCode}</span>
+                <span style={{ color: 'var(--text-main)', fontWeight: 600 }}>{orderCode}</span>
                 <button
+                  type="button"
                   onClick={() => handleCopy(orderCode, 'code')}
                   style={{
-                    background: 'rgba(255, 255, 255, 0.08)',
-                    border: 'none',
+                    background: 'var(--bg-card)',
+                    border: '1px solid var(--border-subtle)',
                     borderRadius: 4,
                     padding: '2px 6px',
-                    color: '#94a3b8',
+                    color: 'var(--text-muted)',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
                     gap: 4,
-                    fontSize: 10
+                    fontSize: 10.5
                   }}
                 >
-                  {copied === 'code' ? <Check size={11} color="#34d399" /> : <Copy size={11} />}
+                  {copied === 'code' ? <Check size={11} color="#059669" /> : <Copy size={11} />}
                   <span>{copied === 'code' ? 'Đã chép' : 'Sao chép'}</span>
                 </button>
               </div>
             </div>
           </div>
 
-          {/* NÚT XÁC NHẬN */}
-          <div style={{ display: 'flex', gap: 10 }}>
-            <button
-              onClick={onClose}
-              style={{
-                flex: 1,
-                padding: '10px 16px',
-                borderRadius: 8,
-                background: 'rgba(255, 255, 255, 0.08)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                color: '#cbd5e1',
-                fontSize: 13,
-                fontWeight: 600,
-                cursor: 'pointer'
-              }}
-            >
-              Đóng lại
-            </button>
-            {onConfirmPaid && (
+          {/* NÚT THAY ĐỔI CÀI ĐẶT NGÂN HÀNG & NÚT XÁC NHẬN */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <div style={{ display: 'flex', gap: 10 }}>
               <button
-                onClick={() => {
-                  onConfirmPaid();
-                  onClose();
-                }}
+                type="button"
+                onClick={onClose}
                 style={{
-                  flex: 2,
-                  padding: '10px 16px',
+                  flex: 1,
+                  padding: '10px 14px',
                   borderRadius: 8,
-                  background: 'linear-gradient(135deg, #059669 0%, #10b981 100%)',
-                  border: 'none',
-                  color: '#ffffff',
+                  background: 'var(--bg-subtle)',
+                  border: '1px solid var(--border-subtle)',
+                  color: 'var(--text-muted)',
                   fontSize: 13,
-                  fontWeight: 700,
-                  cursor: 'pointer',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: 6,
-                  boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)'
+                  fontWeight: 600,
+                  cursor: 'pointer'
                 }}
               >
-                <CheckCircle2 size={16} />
-                <span>Khách Đã Chuyển Khoản Xong</span>
+                Đóng lại
+              </button>
+              {onConfirmPaid && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    onConfirmPaid();
+                    onClose();
+                  }}
+                  style={{
+                    flex: 2,
+                    padding: '10px 16px',
+                    borderRadius: 8,
+                    background: 'linear-gradient(135deg, #059669 0%, #10b981 100%)',
+                    border: 'none',
+                    color: '#ffffff',
+                    fontSize: 13,
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 6,
+                    boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)'
+                  }}
+                >
+                  <CheckCircle2 size={16} />
+                  <span>Khách Đã Chuyển Khoản Xong</span>
+                </button>
+              )}
+            </div>
+
+            {onOpenSettings && (
+              <button
+                type="button"
+                onClick={() => {
+                  onClose();
+                  onOpenSettings();
+                }}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: 'var(--primary)',
+                  fontSize: 12,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 5,
+                  padding: '4px 8px'
+                }}
+              >
+                <Settings size={13} />
+                <span>Đổi thông tin ngân hàng / Tên chủ tài khoản</span>
               </button>
             )}
           </div>

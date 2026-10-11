@@ -30,6 +30,7 @@ import {
 } from 'lucide-react';
 import { CreateBranchModal } from './branch/CreateBranchModal';
 import { LoginModal } from './auth/LoginModal';
+import { SettingsModal } from './settings/SettingsModal';
 
 export type NavTab = 'hq' | 'pos' | 'inbound' | 'transfers' | 'debts' | 'cashbook' | 'audit' | 'studio';
 
@@ -38,15 +39,13 @@ interface HeaderProps {
   onTabChange: (tab: NavTab) => void;
   onOpenShiftModal?: () => void;
   onOpenReturnModal?: () => void;
-  onOpenSettingsModal?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
   activeTab,
   onTabChange,
   onOpenShiftModal,
-  onOpenReturnModal,
-  onOpenSettingsModal
+  onOpenReturnModal
 }) => {
   const [branches, setBranches] = useState<Branch[]>([]);
   const [currentBranch, setCurrentBranch] = useState<Branch | null>(null);
@@ -67,6 +66,7 @@ export const Header: React.FC<HeaderProps> = ({
   // Xác thực người dùng cá nhân & Phân quyền (A3)
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(() => api.getUserProfile());
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState<boolean>(false);
 
   // Chế độ Giao diện Bán Hàng: Light (Thương mại / Siêu thị) vs Dark (Ca đêm / Bar)
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
@@ -373,6 +373,16 @@ export const Header: React.FC<HeaderProps> = ({
                       <SlidersHorizontal size={14} />
                       <span>No-Code Studio</span>
                     </button>
+                    <button
+                      type="button"
+                      className="nav-tab-btn"
+                      onClick={() => { setIsSettingsModalOpen(true); setIsAdminMenuOpen(false); }}
+                      style={{ justifyContent: 'flex-start', width: '100%', height: 32 }}
+                      title="Cài đặt ngân hàng, nhân viên, phông chữ, mẫu hóa đơn"
+                    >
+                      <Settings size={14} color="var(--primary)" />
+                      <span>Cài Đặt Hệ Thống</span>
+                    </button>
                   </div>
                 )}
               </div>
@@ -484,10 +494,10 @@ export const Header: React.FC<HeaderProps> = ({
             {theme === 'light' ? <Sun size={15} color="#d97706" /> : <Moon size={15} color="#38bdf8" />}
           </button>
 
-          {/* NÚT CÀI ĐẶT HỆ THỐNG & TÙY BIẾN QUẦY */}
+          {/* NÚT CÀI ĐẶT HỆ THỐNG NHANH */}
           <button
             type="button"
-            onClick={onOpenSettingsModal}
+            onClick={() => setIsSettingsModalOpen(true)}
             className="btn-action"
             style={{
               width: 32,
@@ -499,12 +509,11 @@ export const Header: React.FC<HeaderProps> = ({
               borderRadius: 6,
               background: 'var(--bg-subtle)',
               border: '1px solid var(--border-subtle)',
-              cursor: 'pointer',
-              color: 'var(--text-main)'
+              cursor: 'pointer'
             }}
-            title="Cài đặt tài khoản ngân hàng VietQR, tên cửa hàng, nhân viên, phông chữ..."
+            title="⚙️ Cài đặt hệ thống: Ngân hàng, Nhân viên, Phông chữ & Giao diện"
           >
-            <Settings size={15} />
+            <Settings size={15} color="var(--text-main)" />
           </button>
 
           {/* USER PROFILE DROPDOWN (CHUẨN FB / SHOPEE / YOUTUBE) */}
@@ -633,11 +642,11 @@ export const Header: React.FC<HeaderProps> = ({
                   <span>+ Thêm Chi Nhánh Mới</span>
                 </button>
 
-                {/* Cài đặt tài khoản & tùy biến hệ thống */}
+                {/* Thiết lập & Cài đặt hệ thống */}
                 <button
                   type="button"
                   onClick={() => {
-                    onOpenSettingsModal?.();
+                    setIsSettingsModalOpen(true);
                     setIsProfileMenuOpen(false);
                   }}
                   style={{
@@ -650,12 +659,13 @@ export const Header: React.FC<HeaderProps> = ({
                     background: 'transparent',
                     color: 'var(--text-main)',
                     fontSize: 12,
+                    fontWeight: 600,
                     cursor: 'pointer',
                     textAlign: 'left'
                   }}
                 >
                   <Settings size={14} color="var(--primary)" />
-                  <span>⚙️ Cài đặt & Tùy biến Hệ thống</span>
+                  <span>Cài Đặt & Tùy Biến</span>
                 </button>
 
                 {/* Cài đặt App Desktop PWA nếu khả dụng */}
@@ -769,6 +779,12 @@ export const Header: React.FC<HeaderProps> = ({
           }
           await branchStore.addBranchAndSwitch(res.data.id);
         }}
+      />
+
+      {/* MODAL CÀI ĐẶT HỆ THỐNG: NGÂN HÀNG, NHÂN VIÊN, CỬA HÀNG & PHÔNG CHỮ */}
+      <SettingsModal
+        isOpen={isSettingsModalOpen}
+        onClose={() => setIsSettingsModalOpen(false)}
       />
     </>
   );
