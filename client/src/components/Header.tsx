@@ -22,7 +22,10 @@ import {
   Wallet,
   User,
   Key,
-  LogOut
+  LogOut,
+  ChevronDown,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { CreateBranchModal } from './branch/CreateBranchModal';
 import { LoginModal } from './auth/LoginModal';
@@ -61,6 +64,37 @@ export const Header: React.FC<HeaderProps> = ({
   // Xác thực người dùng cá nhân & Phân quyền (A3)
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(() => api.getUserProfile());
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
+
+  // Chế độ Giao diện Bán Hàng: Light (Thương mại / Siêu thị) vs Dark (Ca đêm / Bar)
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('meb_pos_theme') as 'light' | 'dark';
+      if (saved) return saved;
+    }
+    return 'light';
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('meb_pos_theme', theme);
+  }, [theme]);
+
+  // Menu Dropdown cho Kho Vận và Quản Trị
+  const [isWarehouseMenuOpen, setIsWarehouseMenuOpen] = useState<boolean>(false);
+  const [isAdminMenuOpen, setIsAdminMenuOpen] = useState<boolean>(false);
+
+  // Đóng dropdown khi click ra ngoài
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest('.nav-dropdown-container')) {
+        setIsWarehouseMenuOpen(false);
+        setIsAdminMenuOpen(false);
+      }
+    };
+    window.addEventListener('click', handleClickOutside);
+    return () => window.removeEventListener('click', handleClickOutside);
+  }, []);
 
   // Đồng bộ ca bán hàng hiện tại của chi nhánh
   const syncShift = async () => {
@@ -219,24 +253,9 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* 2. THANH ĐIỀU HƯỚNG TÁCH BIỆT BENTO TABS */}
         <nav className="nav-tabs" style={{ flex: 1, minWidth: 0, justifyContent: 'center' }}>
-          {!isCashierOnly && (
-            <button 
-              className={`nav-tab-btn ${activeTab === 'hq' ? 'active' : ''}`}
-              onClick={() => onTabChange('hq')}
-              style={{
-                background: activeTab === 'hq' ? 'linear-gradient(135deg, rgba(59, 130, 246, 0.25) 0%, rgba(29, 78, 216, 0.3) 100%)' : undefined,
-                borderColor: activeTab === 'hq' ? 'rgba(59, 130, 246, 0.5)' : undefined,
-                color: activeTab === 'hq' ? '#38bdf8' : undefined
-              }}
-            >
-              <Building2 size={14} />
-              <span>Tổng Bộ</span>
-            </button>
-          )}
-
           <button 
             className={`nav-tab-btn ${activeTab === 'pos' ? 'active' : ''}`}
-            onClick={() => onTabChange('pos')}
+            onClick={() => { onTabChange('pos'); setIsWarehouseMenuOpen(false); setIsAdminMenuOpen(false); }}
           >
             <ShoppingCart size={14} />
             <span>Quầy Bán Hàng</span>
@@ -244,7 +263,7 @@ export const Header: React.FC<HeaderProps> = ({
 
           <button 
             className={`nav-tab-btn ${activeTab === 'cashbook' ? 'active' : ''}`}
-            onClick={() => onTabChange('cashbook')}
+            onClick={() => { onTabChange('cashbook'); setIsWarehouseMenuOpen(false); setIsAdminMenuOpen(false); }}
           >
             <Wallet size={14} />
             <span>Sổ Quỹ</span>
@@ -252,7 +271,7 @@ export const Header: React.FC<HeaderProps> = ({
 
           <button 
             className={`nav-tab-btn ${activeTab === 'debts' ? 'active' : ''}`}
-            onClick={() => onTabChange('debts')}
+            onClick={() => { onTabChange('debts'); setIsWarehouseMenuOpen(false); setIsAdminMenuOpen(false); }}
           >
             <BookOpen size={14} />
             <span>Công Nợ</span>
@@ -260,43 +279,145 @@ export const Header: React.FC<HeaderProps> = ({
 
           {!isCashierOnly && (
             <>
-              <button 
-                className={`nav-tab-btn ${activeTab === 'inbound' ? 'active' : ''}`}
-                onClick={() => onTabChange('inbound')}
-              >
-                <PackagePlus size={14} />
-                <span>Nhập Hàng</span>
-              </button>
+              {/* MENU KHO VẬN (Nhập hàng, Điều chuyển, Kiểm kê) */}
+              <div className="nav-dropdown-container" style={{ position: 'relative' }}>
+                <button 
+                  type="button"
+                  className={`nav-tab-btn ${['inbound', 'transfers', 'audit'].includes(activeTab) ? 'active' : ''}`}
+                  onClick={(e) => { e.stopPropagation(); setIsWarehouseMenuOpen(prev => !prev); setIsAdminMenuOpen(false); }}
+                  style={{ gap: 3 }}
+                  title="Nhập hàng, điều chuyển kho & kiểm kê"
+                >
+                  {activeTab === 'inbound' ? <PackagePlus size={14} /> : activeTab === 'transfers' ? <Truck size={14} /> : activeTab === 'audit' ? <ClipboardCheck size={14} /> : <Truck size={14} />}
+                  <span>
+                    {activeTab === 'inbound' ? 'Nhập Hàng' : activeTab === 'transfers' ? 'Điều Chuyển' : activeTab === 'audit' ? 'Kiểm Kê' : 'Kho Vận'}
+                  </span>
+                  <ChevronDown size={11} />
+                </button>
 
-              <button 
-                className={`nav-tab-btn ${activeTab === 'transfers' ? 'active' : ''}`}
-                onClick={() => onTabChange('transfers')}
-              >
-                <Truck size={14} />
-                <span>Điều Chuyển</span>
-              </button>
+                {isWarehouseMenuOpen && (
+                  <div style={{
+                    position: 'absolute',
+                    top: '100%',
+                    left: 0,
+                    marginTop: 4,
+                    background: 'var(--dropdown-bg, var(--bg-card))',
+                    border: '1px solid var(--border-subtle)',
+                    borderRadius: 8,
+                    boxShadow: 'var(--card-shadow)',
+                    padding: 4,
+                    minWidth: 135,
+                    zIndex: 150,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 2
+                  }}>
+                    <button
+                      type="button"
+                      className={`nav-tab-btn ${activeTab === 'inbound' ? 'active' : ''}`}
+                      onClick={() => { onTabChange('inbound'); setIsWarehouseMenuOpen(false); }}
+                      style={{ justifyContent: 'flex-start', width: '100%', height: 30 }}
+                    >
+                      <PackagePlus size={14} />
+                      <span>Nhập Hàng</span>
+                    </button>
+                    <button
+                      type="button"
+                      className={`nav-tab-btn ${activeTab === 'transfers' ? 'active' : ''}`}
+                      onClick={() => { onTabChange('transfers'); setIsWarehouseMenuOpen(false); }}
+                      style={{ justifyContent: 'flex-start', width: '100%', height: 30 }}
+                    >
+                      <Truck size={14} />
+                      <span>Điều Chuyển</span>
+                    </button>
+                    <button
+                      type="button"
+                      className={`nav-tab-btn ${activeTab === 'audit' ? 'active' : ''}`}
+                      onClick={() => { onTabChange('audit'); setIsWarehouseMenuOpen(false); }}
+                      style={{ justifyContent: 'flex-start', width: '100%', height: 30 }}
+                    >
+                      <ClipboardCheck size={14} />
+                      <span>Kiểm Kê</span>
+                    </button>
+                  </div>
+                )}
+              </div>
 
-              <button 
-                className={`nav-tab-btn ${activeTab === 'audit' ? 'active' : ''}`}
-                onClick={() => onTabChange('audit')}
-              >
-                <ClipboardCheck size={14} />
-                <span>Kiểm Kê</span>
-              </button>
+              {/* MENU QUẢN TRỊ (Tổng bộ HQ, No-Code Studio) */}
+              <div className="nav-dropdown-container" style={{ position: 'relative' }}>
+                <button 
+                  type="button"
+                  className={`nav-tab-btn ${['hq', 'studio'].includes(activeTab) ? 'active' : ''}`}
+                  onClick={(e) => { e.stopPropagation(); setIsAdminMenuOpen(prev => !prev); setIsWarehouseMenuOpen(false); }}
+                  style={{ gap: 3 }}
+                  title="Tổng bộ chuỗi HQ & Cấu hình No-Code"
+                >
+                  {activeTab === 'hq' ? <Building2 size={14} /> : activeTab === 'studio' ? <SlidersHorizontal size={14} /> : <Building2 size={14} />}
+                  <span>{activeTab === 'hq' ? 'Tổng Bộ' : activeTab === 'studio' ? 'No-Code' : 'Quản Trị'}</span>
+                  <ChevronDown size={11} />
+                </button>
 
-              <button 
-                className={`nav-tab-btn ${activeTab === 'studio' ? 'active' : ''}`}
-                onClick={() => onTabChange('studio')}
-              >
-                <SlidersHorizontal size={14} />
-                <span>No-Code</span>
-              </button>
+                {isAdminMenuOpen && (
+                  <div style={{
+                    position: 'absolute',
+                    top: '100%',
+                    left: 0,
+                    marginTop: 4,
+                    background: 'var(--dropdown-bg, var(--bg-card))',
+                    border: '1px solid var(--border-subtle)',
+                    borderRadius: 8,
+                    boxShadow: 'var(--card-shadow)',
+                    padding: 4,
+                    minWidth: 140,
+                    zIndex: 150,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 2
+                  }}>
+                    <button
+                      type="button"
+                      className={`nav-tab-btn ${activeTab === 'hq' ? 'active' : ''}`}
+                      onClick={() => { onTabChange('hq'); setIsAdminMenuOpen(false); }}
+                      style={{ justifyContent: 'flex-start', width: '100%', height: 30 }}
+                    >
+                      <Building2 size={14} />
+                      <span>Tổng Bộ HQ</span>
+                    </button>
+                    <button
+                      type="button"
+                      className={`nav-tab-btn ${activeTab === 'studio' ? 'active' : ''}`}
+                      onClick={() => { onTabChange('studio'); setIsAdminMenuOpen(false); }}
+                      style={{ justifyContent: 'flex-start', width: '100%', height: 30 }}
+                    >
+                      <SlidersHorizontal size={14} />
+                      <span>No-Code Studio</span>
+                    </button>
+                  </div>
+                )}
+              </div>
             </>
           )}
         </nav>
 
         {/* 3. TRẠNG THÁI CA TRỰC, SWITCH VAI TRÒ & PWA DESKTOP APP */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
+          {/* NÚT CHUYỂN ĐỔI CHẾ ĐỘ SÁNG / TỐI */}
+          <button
+            type="button"
+            onClick={() => setTheme(prev => prev === 'light' ? 'dark' : 'light')}
+            className="btn-action"
+            style={{
+              padding: '3px 8px',
+              fontSize: 11,
+              fontWeight: 600,
+              height: 28
+            }}
+            title={`Đang dùng: ${theme === 'light' ? 'Bán Hàng Sáng (Thương mại)' : 'Ca Đêm (Tối)'}. Bấm để chuyển đổi.`}
+          >
+            {theme === 'light' ? <Sun size={13} color="#f59e0b" /> : <Moon size={13} color="#38bdf8" />}
+            <span>{theme === 'light' ? 'Sáng' : 'Tối'}</span>
+          </button>
+
           {/* Nút chuyển đổi vai trò: Chủ Chuỗi vs Thu Ngân Bán Hàng */}
           <button
             type="button"
@@ -313,15 +434,15 @@ export const Header: React.FC<HeaderProps> = ({
               gap: 4,
               padding: '4px 8px',
               borderRadius: 6,
-              background: isCashierOnly ? 'rgba(16, 185, 129, 0.15)' : 'rgba(56, 189, 248, 0.12)',
-              border: isCashierOnly ? '1px solid rgba(16, 185, 129, 0.4)' : '1px solid rgba(56, 189, 248, 0.3)',
-              color: isCashierOnly ? '#34d399' : '#38bdf8',
+              background: isCashierOnly ? 'rgba(16, 185, 129, 0.15)' : 'rgba(2, 132, 199, 0.12)',
+              border: isCashierOnly ? '1px solid rgba(16, 185, 129, 0.4)' : '1px solid rgba(2, 132, 199, 0.3)',
+              color: isCashierOnly ? '#059669' : '#0284c7',
               fontSize: 11,
               fontWeight: 700,
               cursor: 'pointer',
               height: 28
             }}
-            title="Chuyển chế độ: Chủ Chuỗi (Tất cả tab) vs Thu Ngân (Gọn gàng)"
+            title="Chuyển chế độ: Chủ Chuỗi (Đầy đủ chức năng) vs Thu Ngân (Gọn gàng)"
           >
             {isCashierOnly ? <span>🛒 Thu Ngân</span> : <span>👑 Quản Lý</span>}
           </button>
@@ -339,7 +460,7 @@ export const Header: React.FC<HeaderProps> = ({
                 borderRadius: 6,
                 background: 'rgba(245, 158, 11, 0.12)',
                 border: '1px solid rgba(245, 158, 11, 0.3)',
-                color: '#fbbf24',
+                color: '#d97706',
                 fontSize: 11,
                 fontWeight: 600,
                 cursor: 'pointer',
@@ -361,7 +482,9 @@ export const Header: React.FC<HeaderProps> = ({
               style={{ whiteSpace: 'nowrap', cursor: 'pointer', padding: '3px 8px', fontSize: 11, height: 28, boxSizing: 'border-box' }}
             >
               <Clock size={12} />
-              <span>{currentShift.staff_name || 'Ca Mở'}</span>
+              <span style={{ maxWidth: 90, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                {currentShift.staff_name || 'Ca Mở'}
+              </span>
             </div>
           ) : (
             <div 

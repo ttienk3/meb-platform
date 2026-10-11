@@ -25,12 +25,14 @@ import {
   Wifi,
   WifiOff,
   Gift,
-  RefreshCw
+  RefreshCw,
+  Edit3
 } from 'lucide-react';
 import { QuickCustomerModal } from './QuickCustomerModal';
 import { QuickDebtCollectionModal } from './QuickDebtCollectionModal';
 import { VietQrModal } from './VietQrModal';
 import { offlineSync } from '../../services/offlineSyncService';
+import { getProductImageUrl } from '../../utils/productImages';
 
 export interface CartItem {
   product_id: string;
@@ -41,6 +43,7 @@ export interface CartItem {
   available_qty: number;
   quantity: number;
   unit_price: number;
+  image_url?: string;
 }
 
 export interface OrderDraft {
@@ -764,93 +767,122 @@ export const CartPanel: React.FC<CartPanelProps> = ({
               <div 
                 key={it.product_id}
                 style={{
-                  background: 'rgba(18, 24, 38, 0.9)',
-                  border: isExceeded ? '1px solid #f43f5e' : '1px solid rgba(255, 255, 255, 0.08)',
-                  borderRadius: 6,
-                  padding: '6px 8px',
+                  background: 'var(--bg-card)',
+                  border: isExceeded ? '1px solid #f43f5e' : '1px solid var(--border-subtle)',
+                  borderRadius: 8,
+                  padding: '7px 9px',
                   display: 'flex',
-                  flexDirection: 'column',
-                  gap: 4
+                  alignItems: 'center',
+                  gap: 9,
+                  boxShadow: 'var(--card-shadow)'
                 }}
               >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-main)', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                    {it.name}
-                  </div>
-                  <button 
-                    onClick={() => onRemoveItem(it.product_id)} 
-                    style={{ background: 'transparent', border: 'none', color: '#64748b', cursor: 'pointer', padding: 2 }}
-                    title="Xóa món"
-                  >
-                    <Trash2 size={13} />
-                  </button>
+                {/* Ảnh Thumbnail Sản Phẩm Trong Giỏ */}
+                <div style={{
+                  width: 42,
+                  height: 42,
+                  borderRadius: 6,
+                  overflow: 'hidden',
+                  background: 'var(--bg-main)',
+                  border: '1px solid var(--border-subtle)',
+                  flexShrink: 0,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
+                  <img 
+                    src={getProductImageUrl(it.code, it.image_url, undefined, it.name)}
+                    alt={it.name}
+                    style={{ width: '100%', height: '100%', objectFit: 'contain', padding: 2 }}
+                    loading="lazy"
+                  />
                 </div>
 
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div style={{ fontSize: 11, color: 'var(--text-dim)' }}>
-                    <span style={{ color: '#38bdf8', fontWeight: 600 }}>{it.uom}</span> • {it.code}
+                {/* Chi Tiết Tên, Đơn Giá & Số Lượng */}
+                <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 3 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-main)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      {it.name}
+                    </div>
+                    <button 
+                      onClick={() => onRemoveItem(it.product_id)} 
+                      style={{ background: 'transparent', border: 'none', color: 'var(--text-dim)', cursor: 'pointer', padding: '0 2px' }}
+                      title="Xóa món"
+                    >
+                      <Trash2 size={13} />
+                    </button>
                   </div>
 
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                    {/* Bộ nút tăng/giảm số lượng */}
-                    <div style={{ display: 'flex', alignItems: 'center', background: '#090d16', border: '1px solid rgba(255, 255, 255, 0.12)', borderRadius: 5, padding: '1px 3px' }}>
-                      <button 
-                        onClick={() => onUpdateQty(it.product_id, -1)}
-                        style={{ background: 'transparent', border: 'none', color: 'var(--text-main)', cursor: 'pointer', padding: '1px 3px' }}
-                      >
-                        <Minus size={11} />
-                      </button>
-                      <input 
-                        type="number"
-                        value={it.quantity}
-                        onChange={(e) => onSetQty(it.product_id, Math.max(1, parseInt(e.target.value, 10) || 1))}
-                        style={{ width: 28, textAlign: 'center', background: 'transparent', border: 'none', color: 'var(--text-main)', fontSize: 12, fontWeight: 700, outline: 'none' }}
-                      />
-                      <button 
-                        onClick={() => onUpdateQty(it.product_id, 1)}
-                        style={{ background: 'transparent', border: 'none', color: 'var(--text-main)', cursor: 'pointer', padding: '1px 3px' }}
-                      >
-                        <Plus size={11} />
-                      </button>
-                    </div>
-
-                    <div style={{ textAlign: 'right', display: 'flex', alignItems: 'center', gap: 3 }}>
-                      <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--primary)' }}>
-                        {(it.quantity * it.unit_price).toLocaleString('vi-VN')}đ
-                      </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    {/* ĐVT và Đơn Giá Có Thể Bấm Để Sửa */}
+                    <div style={{ fontSize: 11, color: 'var(--text-dim)', display: 'flex', alignItems: 'center', gap: 4 }}>
+                      <span style={{ color: '#0284c7', fontWeight: 700 }}>{it.uom}</span>
+                      <span>•</span>
+                      <span>@{it.unit_price.toLocaleString('vi-VN')}đ</span>
                       {onUpdatePrice && (
-                        <input 
-                          type="number"
-                          min="0"
-                          step="1000"
-                          value={it.unit_price}
-                          onChange={(e) => onUpdatePrice(it.product_id, Math.max(0, parseInt(e.target.value, 10) || 0))}
-                          title="Sửa đơn giá"
-                          style={{
-                            width: 58,
-                            padding: '1px 2px',
-                            fontSize: 10,
-                            fontWeight: 600,
-                            color: '#38bdf8',
-                            background: 'rgba(56, 189, 248, 0.08)',
-                            border: '1px solid rgba(56, 189, 248, 0.25)',
-                            borderRadius: 3,
-                            textAlign: 'right',
-                            outline: 'none'
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const pStr = prompt(`Nhập đơn giá mới cho ${it.name} (${it.uom}):`, String(it.unit_price));
+                            if (pStr !== null) {
+                              const newP = Math.max(0, parseInt(pStr, 10) || 0);
+                              onUpdatePrice(it.product_id, newP);
+                            }
                           }}
-                        />
+                          style={{
+                            background: 'transparent',
+                            border: 'none',
+                            color: 'var(--primary)',
+                            cursor: 'pointer',
+                            padding: 0,
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            marginLeft: 2
+                          }}
+                          title="Bấm để sửa đơn giá"
+                        >
+                          <Edit3 size={11} />
+                        </button>
                       )}
                     </div>
-                  </div>
-                </div>
 
-                {/* Cảnh báo vượt quá tồn khả dụng */}
-                {isExceeded && (
-                  <div style={{ fontSize: 10, color: '#fb7185', display: 'flex', alignItems: 'center', gap: 4 }}>
-                    <AlertTriangle size={11} />
-                    Vượt tồn kho khả dụng ({it.available_qty} {it.uom})
+                    {/* Bộ nút tăng/giảm số lượng và Thành tiền */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', background: 'var(--bg-main)', border: '1px solid var(--border-subtle)', borderRadius: 5, padding: '1px 3px' }}>
+                        <button 
+                          onClick={() => onUpdateQty(it.product_id, -1)}
+                          style={{ background: 'transparent', border: 'none', color: 'var(--text-main)', cursor: 'pointer', padding: '1px 3px' }}
+                        >
+                          <Minus size={11} />
+                        </button>
+                        <input 
+                          type="number"
+                          value={it.quantity}
+                          onChange={(e) => onSetQty(it.product_id, Math.max(1, parseInt(e.target.value, 10) || 1))}
+                          style={{ width: 28, textAlign: 'center', background: 'transparent', border: 'none', color: 'var(--text-main)', fontSize: 12, fontWeight: 700, outline: 'none' }}
+                        />
+                        <button 
+                          onClick={() => onUpdateQty(it.product_id, 1)}
+                          style={{ background: 'transparent', border: 'none', color: 'var(--text-main)', cursor: 'pointer', padding: '1px 3px' }}
+                        >
+                          <Plus size={11} />
+                        </button>
+                      </div>
+
+                      <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--accent-retail, #059669)', minWidth: 62, textAlign: 'right' }}>
+                        {(it.quantity * it.unit_price).toLocaleString('vi-VN')}đ
+                      </div>
+                    </div>
                   </div>
-                )}
+
+                  {/* Cảnh báo vượt quá tồn khả dụng */}
+                  {isExceeded && (
+                    <div style={{ fontSize: 10, color: '#fb7185', display: 'flex', alignItems: 'center', gap: 4 }}>
+                      <AlertTriangle size={11} />
+                      Vượt tồn kho khả dụng ({it.available_qty} {it.uom})
+                    </div>
+                  )}
+                </div>
               </div>
             );
           })

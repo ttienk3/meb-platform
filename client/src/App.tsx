@@ -257,7 +257,8 @@ function MainApp() {
           conversion_rate: 1,
           available_qty: Number(product.available_qty || 0),
           quantity: 1,
-          unit_price: Number(product.default_selling_price || 0)
+          unit_price: Number(product.default_selling_price || 0),
+          image_url: product.image_url
         }
       ];
     });

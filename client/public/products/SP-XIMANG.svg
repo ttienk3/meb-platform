@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgXiMang" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#e2e8f0"/>
+    </linearGradient>
+    <linearGradient id="sackPaper" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fed7aa"/>
+      <stop offset="50%" stop-color="#fdba74"/>
+      <stop offset="100%" stop-color="#ea580c"/>
+    </linearGradient>
+    <filter id="shadowXiMang" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="3" dy="5" stdDeviation="5" flood-color="#7c2d12" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  <rect width="200" height="200" rx="20" fill="url(#bgXiMang)"/>
+  <g filter="url(#shadowXiMang)" transform="translate(38, 20)">
+    <!-- Bao xi măng kraft dập nếp -->
+    <rect x="10" y="15" width="104" height="135" rx="12" fill="url(#sackPaper)"/>
+    <!-- Đường may mép bao -->
+    <line x1="10" y1="25" x2="114" y2="25" stroke="#ffffff" stroke-width="2" stroke-dasharray="3,3"/>
+    <line x1="10" y1="140" x2="114" y2="140" stroke="#ffffff" stroke-width="2" stroke-dasharray="3,3"/>
+    <!-- Dải nhãn xanh biểu tượng Hà Tiên -->
+    <rect x="18" y="45" width="88" height="50" rx="6" fill="#15803d"/>
+    <circle cx="62" cy="70" r="16" fill="#ffffff"/>
+    <polygon points="62,59 53,77 71,77" fill="#15803d"/>
+    <text x="62" y="112" font-family="'Impact', Arial, sans-serif" font-weight="900" font-size="15" fill="#ffffff" text-anchor="middle">HÀ TIÊN</text>
+    <text x="62" y="125" font-family="Arial, sans-serif" font-weight="800" font-size="10" fill="#ffffff" text-anchor="middle">PCB 40 • 50KG</text>
+  </g>
+</svg>

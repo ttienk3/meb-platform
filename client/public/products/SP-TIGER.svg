@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgTiger" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0284c7"/>
+      <stop offset="100%" stop-color="#0369a1"/>
+    </linearGradient>
+    <linearGradient id="canBody" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#94a3b8"/>
+      <stop offset="15%" stop-color="#cbd5e1"/>
+      <stop offset="40%" stop-color="#f1f5f9"/>
+      <stop offset="70%" stop-color="#0369a1"/>
+      <stop offset="100%" stop-color="#075985"/>
+    </linearGradient>
+    <linearGradient id="goldBanner" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+    <filter id="shadowCan" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="3" dy="5" stdDeviation="5" flood-color="#082f49" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  <rect width="200" height="200" rx="20" fill="#f0f9ff"/>
+  <!-- Lon bia Tiger -->
+  <g filter="url(#shadowCan)" transform="translate(60, 20)">
+    <!-- Đỉnh lon -->
+    <ellipse cx="40" cy="15" rx="32" ry="7" fill="#cbd5e1" stroke="#64748b" stroke-width="1.5"/>
+    <ellipse cx="40" cy="14" rx="22" ry="4" fill="#94a3b8"/>
+    <!-- Thân lon -->
+    <path d="M 8,15 L 8,145 Q 8,155 40,155 Q 72,155 72,145 L 72,15 Z" fill="url(#canBody)"/>
+    <!-- Dải xanh và nhãn vàng Tiger -->
+    <rect x="8" y="45" width="64" height="75" fill="#0369a1"/>
+    <path d="M 12,65 Q 40,55 68,65 L 68,100 Q 40,90 12,100 Z" fill="url(#goldBanner)"/>
+    <!-- Logo hổ và chữ Tiger -->
+    <text x="40" y="84" font-family="'Impact', Arial, sans-serif" font-weight="900" font-size="15" fill="#082f49" text-anchor="middle" letter-spacing="1">TIGER</text>
+    <text x="40" y="94" font-family="Arial, sans-serif" font-weight="700" font-size="7" fill="#082f49" text-anchor="middle">LAGER BEER</text>
+    <text x="40" y="130" font-family="Arial, sans-serif" font-weight="600" font-size="8" fill="#f8fafc" text-anchor="middle">330ml • 5% vol</text>
+  </g>
+</svg>

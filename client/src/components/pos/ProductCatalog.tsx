@@ -3,6 +3,7 @@ import { api, type ProductInventory } from '../../services/api';
 import { branchStore } from '../../services/branchContext';
 import { Search, Barcode, AlertCircle, RefreshCw, X, LayoutGrid, Table, AlertTriangle, Clock } from 'lucide-react';
 import { PosDynamicActionsBar } from './PosDynamicActionsBar';
+import { getProductImageUrl } from '../../utils/productImages';
 
 interface ProductCatalogProps {
   onSelectProduct: (product: ProductInventory) => void;
@@ -297,13 +298,14 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
 
       {/* 3. HIỂN THỊ HÀNG HÓA: DẠNG BẢNG EXCEL SIÊU TỐC HOẶC LƯỚI THẺ BENTO */}
       {viewMode === 'table' ? (
-        <div style={{ flex: 1, minHeight: 0, overflowY: 'auto', background: 'rgba(15, 23, 42, 0.6)', borderRadius: 10, border: '1px solid var(--border-subtle)' }}>
+        <div style={{ flex: 1, minHeight: 0, overflowY: 'auto', background: 'var(--bg-card)', borderRadius: 10, border: '1px solid var(--border-subtle)' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: 13 }}>
-            <thead style={{ position: 'sticky', top: 0, zIndex: 2, background: '#0f172a' }}>
+            <thead style={{ position: 'sticky', top: 0, zIndex: 2, background: 'var(--table-header-bg)' }}>
               <tr style={{ borderBottom: '1px solid var(--border-subtle)', color: 'var(--text-dim)', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                <th style={{ padding: '8px 12px' }}>Mã SP</th>
+                <th style={{ padding: '8px 8px', width: 48, textAlign: 'center' }}>Ảnh</th>
+                <th style={{ padding: '8px 10px' }}>Mã SP</th>
                 <th style={{ padding: '8px 12px' }}>Tên Sản Phẩm</th>
-                <th style={{ padding: '8px 12px' }}>ĐVT</th>
+                <th style={{ padding: '8px 10px' }}>ĐVT</th>
                 <th style={{ padding: '8px 12px', textAlign: 'right' }}>Tồn Khả Dụng</th>
                 <th style={{ padding: '8px 12px', textAlign: 'right' }}>Giá Bán</th>
                 <th style={{ padding: '8px 12px', textAlign: 'center' }}>Thao Tác</th>
@@ -312,13 +314,13 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
             <tbody>
               {loading && products.length === 0 ? (
                 <tr>
-                  <td colSpan={6} style={{ textAlign: 'center', padding: 40, color: 'var(--text-muted)' }}>
+                  <td colSpan={7} style={{ textAlign: 'center', padding: 40, color: 'var(--text-muted)' }}>
                     Đang tải dữ liệu hàng hóa & tồn kho chi nhánh...
                   </td>
                 </tr>
               ) : filteredProducts.length === 0 ? (
                 <tr>
-                  <td colSpan={6} style={{ textAlign: 'center', padding: 40, color: 'var(--text-muted)' }}>
+                  <td colSpan={7} style={{ textAlign: 'center', padding: 40, color: 'var(--text-muted)' }}>
                     Không tìm thấy sản phẩm nào phù hợp.
                   </td>
                 </tr>
@@ -330,11 +332,33 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
                       key={p.id}
                       onClick={() => onSelectProduct(p)}
                       style={{
-                        borderBottom: '1px solid rgba(255, 255, 255, 0.04)',
+                        borderBottom: '1px solid var(--border-subtle)',
                         cursor: 'pointer',
                         transition: 'background 0.15s ease'
                       }}
+                      className="product-table-row"
                     >
+                      <td style={{ padding: '4px 6px', width: 48, textAlign: 'center' }}>
+                        <div style={{
+                          width: 38,
+                          height: 38,
+                          borderRadius: 6,
+                          overflow: 'hidden',
+                          background: 'var(--bg-main)',
+                          border: '1px solid var(--border-subtle)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          margin: '0 auto'
+                        }}>
+                          <img 
+                            src={getProductImageUrl(p.code, p.image_url, p.category, p.name)} 
+                            alt={p.name}
+                            style={{ width: '100%', height: '100%', objectFit: 'contain', padding: 2 }}
+                            loading="lazy"
+                          />
+                        </div>
+                      </td>
                       <td style={{ padding: '6px 10px', fontFamily: 'monospace', color: 'var(--primary)', fontWeight: 600, fontSize: 12 }}>
                         {p.code}
                       </td>
@@ -385,7 +409,7 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
                         <span style={{
                           fontWeight: 700,
                           fontSize: 12,
-                          color: isOutOfStock ? '#ef4444' : '#10b981',
+                          color: isOutOfStock ? '#ef4444' : '#059669',
                           background: isOutOfStock ? 'rgba(239, 68, 68, 0.12)' : 'rgba(16, 185, 129, 0.12)',
                           padding: '1px 6px',
                           borderRadius: 4
@@ -401,9 +425,9 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
                           type="button"
                           onClick={(e) => { e.stopPropagation(); onSelectProduct(p); }}
                           style={{
-                            background: 'rgba(56, 189, 248, 0.15)',
-                            border: '1px solid rgba(56, 189, 248, 0.3)',
-                            color: 'var(--primary)',
+                            background: 'rgba(2, 132, 199, 0.12)',
+                            border: '1px solid rgba(2, 132, 199, 0.3)',
+                            color: '#0284c7',
                             borderRadius: 5,
                             padding: '3px 8px',
                             fontSize: 11,
@@ -426,8 +450,8 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
           flex: 1, 
           overflowY: 'auto', 
           display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', 
-          gap: 14,
+          gridTemplateColumns: 'repeat(auto-fill, minmax(185px, 1fr))', 
+          gap: 12,
           alignContent: 'start',
           paddingRight: 4
         }}>
@@ -449,48 +473,98 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
                   onClick={() => onSelectProduct(p)}
                   className="product-card"
                   style={{
-                    background: 'rgba(18, 24, 38, 0.75)',
-                    border: '1px solid var(--border-subtle)',
-                    borderRadius: 'var(--radius-md)',
-                    padding: 14,
+                    padding: 10,
                     cursor: 'pointer',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',
-                    gap: 10,
-                    transition: 'all 0.18s ease',
+                    gap: 8,
                     opacity: isOutOfStock ? 0.65 : 1
                   }}
                 >
                   <div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 6, marginBottom: 4 }}>
-                      <div style={{ display: 'flex', gap: 4, alignItems: 'center', flexWrap: 'wrap' }}>
-                        <span style={{ fontSize: 11, color: 'var(--text-dim)', fontWeight: 600 }}>{p.code}</span>
+                    {/* KHUNG ẢNH SẢN PHẨM CHẤT LƯỢNG CAO */}
+                    <div style={{
+                      width: '100%',
+                      height: 110,
+                      borderRadius: 8,
+                      overflow: 'hidden',
+                      position: 'relative',
+                      background: 'var(--bg-main)',
+                      border: '1px solid var(--border-subtle)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginBottom: 8
+                    }}>
+                      <img 
+                        src={getProductImageUrl(p.code, p.image_url, p.category, p.name)} 
+                        alt={p.name}
+                        style={{ width: '100%', height: '100%', objectFit: 'contain', padding: 6 }}
+                        loading="lazy"
+                      />
+                      {p.category && (
+                        <span style={{
+                          position: 'absolute',
+                          top: 4,
+                          left: 4,
+                          fontSize: 9,
+                          fontWeight: 700,
+                          padding: '1px 5px',
+                          borderRadius: 3,
+                          background: 'rgba(15, 23, 42, 0.75)',
+                          backdropFilter: 'blur(4px)',
+                          color: '#38bdf8',
+                          border: '1px solid rgba(56, 189, 248, 0.25)'
+                        }}>
+                          {p.category}
+                        </span>
+                      )}
+                      {p.is_combo && (
+                        <span style={{
+                          position: 'absolute',
+                          top: 4,
+                          right: 4,
+                          fontSize: 9,
+                          fontWeight: 700,
+                          padding: '1px 5px',
+                          borderRadius: 3,
+                          background: 'rgba(168, 85, 247, 0.9)',
+                          color: '#ffffff'
+                        }}>
+                          Combo
+                        </span>
+                      )}
+                    </div>
+
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 4, marginBottom: 3 }}>
+                      <div style={{ display: 'flex', gap: 3, alignItems: 'center', flexWrap: 'wrap' }}>
+                        <span style={{ fontSize: 10, color: 'var(--text-dim)', fontWeight: 600 }}>{p.code}</span>
                         {(p.track_expiry || p.has_expiry || p.expiry_date) && (
                           <span style={{ 
-                            fontSize: 10, 
+                            fontSize: 9, 
                             fontWeight: 700, 
                             color: '#f59e0b', 
                             background: 'rgba(245, 158, 11, 0.15)', 
-                            padding: '1px 5px', 
-                            borderRadius: 4, 
+                            padding: '1px 4px', 
+                            borderRadius: 3, 
                             border: '1px solid rgba(245, 158, 11, 0.3)',
                             display: 'inline-flex',
                             alignItems: 'center',
                             gap: 2
                           }}>
-                            <Clock size={9} />
+                            <Clock size={8} />
                             {p.batch_number ? `Lô ${p.batch_number}` : 'Lô/HSD'}
                           </span>
                         )}
                         {(p.is_aging_stock || Number(p.days_in_inventory || 0) >= 90) && (
                           <span style={{ 
-                            fontSize: 10, 
+                            fontSize: 9, 
                             fontWeight: 700, 
                             color: '#f87171', 
                             background: 'rgba(239, 68, 68, 0.15)', 
-                            padding: '1px 5px', 
-                            borderRadius: 4, 
+                            padding: '1px 4px', 
+                            borderRadius: 3, 
                             border: '1px solid rgba(239, 68, 68, 0.3)'
                           }}>
                             ⚠️ Tồn lâu
@@ -498,12 +572,12 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
                         )}
                       </div>
                       <span style={{ 
-                        fontSize: 11, 
+                        fontSize: 10, 
                         fontWeight: 600, 
-                        padding: '1px 6px',
-                        borderRadius: 4,
+                        padding: '1px 5px',
+                        borderRadius: 3,
                         background: isOutOfStock ? 'rgba(244, 63, 94, 0.15)' : 'rgba(16, 185, 129, 0.12)',
-                        color: isOutOfStock ? '#fb7185' : '#34d399'
+                        color: isOutOfStock ? '#fb7185' : '#059669'
                       }}>
                         {isOutOfStock ? 'Hết hàng' : (() => {
                           const qty = Number(p.available_qty || 0);
@@ -523,24 +597,25 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
                     </div>
 
                     <h4 style={{ 
-                      fontSize: 14, 
+                      fontSize: 13, 
                       fontWeight: 600, 
-                      lineHeight: 1.35, 
+                      lineHeight: 1.3, 
                       color: 'var(--text-main)',
                       display: '-webkit-box',
                       WebkitLineClamp: 2,
                       WebkitBoxOrient: 'vertical',
-                      overflow: 'hidden'
+                      overflow: 'hidden',
+                      margin: 0
                     }}>
                       {p.name}
                     </h4>
                   </div>
 
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: 8 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', borderTop: '1px solid var(--border-subtle)', paddingTop: 6 }}>
                     <div style={{ fontSize: 11, color: 'var(--text-dim)' }}>
                       ĐVT: <strong style={{ color: 'var(--text-muted)' }}>{p.base_uom}</strong>
                     </div>
-                    <div style={{ fontSize: 15, fontWeight: 700, color: 'var(--primary)' }}>
+                    <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--accent-retail, #059669)' }}>
                       {Number(p.default_selling_price || 0).toLocaleString('vi-VN')}đ
                     </div>
                   </div>
